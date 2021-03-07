@@ -1,7 +1,7 @@
 #include "geometry.h"
 
 double Geometry::euclidean_metric(const Geometry::Point a, const Geometry::Point b) {
-    return sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
+    return std::sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
 }
 
 double Geometry::area_of_treangle(const Geometry::Point a, const Geometry::Point b, const Geometry::Point c) {
