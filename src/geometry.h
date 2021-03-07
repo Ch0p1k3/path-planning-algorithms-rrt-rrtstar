@@ -69,10 +69,10 @@ namespace Geometry {
         return (T(0) < val) - (val <= T(0));
     }
 
-    double euclidean_metric(const Geometry::Point, const Geometry::Point);
-    double area_of_treangle(const Geometry::Point, const Geometry::Point, const Geometry::Point);
-    int sign_area_of_treangle(const Geometry::Point, const Geometry::Point, const Geometry::Point);
-    bool intersection_of_two_segments(const Geometry::Segment, const Geometry::Segment);
-    bool intersection_of_segment_and_rectangle(const Geometry::Segment, const Geometry::Rectangle);
+    double euclideanMetric(const Geometry::Point, const Geometry::Point);
+    double areaOfTreangle(const Geometry::Point, const Geometry::Point, const Geometry::Point);
+    int signAreaOfTreangle(const Geometry::Point, const Geometry::Point, const Geometry::Point);
+    bool intersectionOfTwoSegments(const Geometry::Segment, const Geometry::Segment);
+    bool intersectionOfSegmentAndRectangle(const Geometry::Segment, const Geometry::Rectangle);
 }
 #endif
