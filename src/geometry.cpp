@@ -1,4 +1,4 @@
-#include "geometry.h"
+#include "geometry.hpp"
 
 double Geometry::euclideanMetric(const Geometry::Point a, const Geometry::Point b) {
     return std::sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));

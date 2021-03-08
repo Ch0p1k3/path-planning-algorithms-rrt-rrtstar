@@ -1,7 +1,8 @@
-# set(HEADERS                 )
+set(HEADERS     geometry.hpp
+                map.hpp
+                constants.hpp)
 
-# set(SOURCES                 )
+set(SOURCES     geometry.cpp
+                map.cpp)
 
-# add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} main.cpp)
-
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} main.cpp)
