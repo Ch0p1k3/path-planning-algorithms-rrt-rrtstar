@@ -4,11 +4,12 @@
 #include <algorithm>
 #include <cmath>
 
-namespace Geometry {
-
+namespace Geometry
+{
     const double EPS = 1e-9;
 
-    struct Point {
+    struct Point
+    {
         double x, y;
 
         Point() = default;
@@ -22,7 +23,8 @@ namespace Geometry {
         }
     };
 
-    struct Rectangle {
+    struct Rectangle
+    {
         Point first, second;
 
         Rectangle() = default;
@@ -36,7 +38,8 @@ namespace Geometry {
         , second(x2, y2) {}
     };
 
-    struct Segment {
+    struct Segment
+    {
         Point first, second;
 
         Segment() = default;
@@ -50,7 +53,8 @@ namespace Geometry {
         , second(x2, y2) {}
     };
 
-    struct Line {
+    struct Line
+    {
         double a, b, c;
 
         Line(const Geometry::Point p, const Geometry::Point q) {
@@ -65,7 +69,8 @@ namespace Geometry {
     };
 
     template <typename T> 
-    int sgn(const T val) {
+    int sgn(const T val)
+    {
         return (T(0) < val) - (val <= T(0));
     }
 

@@ -1,18 +1,22 @@
 #include "geometry.hpp"
 
-double Geometry::euclideanMetric(const Geometry::Point a, const Geometry::Point b) {
+double Geometry::euclideanMetric(const Geometry::Point a, const Geometry::Point b)
+{
     return std::sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
 }
 
-double Geometry::areaOfTreangle(const Geometry::Point a, const Geometry::Point b, const Geometry::Point c) {
+double Geometry::areaOfTreangle(const Geometry::Point a, const Geometry::Point b, const Geometry::Point c)
+{
     return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
 
-int Geometry::signAreaOfTreangle(const Geometry::Point a, const Geometry::Point b, const Geometry::Point c) {
+int Geometry::signAreaOfTreangle(const Geometry::Point a, const Geometry::Point b, const Geometry::Point c)
+{
     return Geometry::sgn<double>((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x));
 }
 
-bool Geometry::intersectionOfTwoSegments(const Geometry::Segment a, const Geometry::Segment b) {
+bool Geometry::intersectionOfTwoSegments(const Geometry::Segment a, const Geometry::Segment b)
+{
     auto help = [](double a, double b, double c, double d) {
         if (a > b) std::swap(a, b);
         if (c > d) std::swap(c, d);
@@ -42,7 +46,8 @@ bool Geometry::intersectionOfTwoSegments(const Geometry::Segment a, const Geomet
     return check(a.first, a.second, left) && check(b.first, b.second, left);
 }
 
-bool Geometry::intersectionOfSegmentAndRectangle(const Geometry::Segment a, const Geometry::Rectangle b) {
+bool Geometry::intersectionOfSegmentAndRectangle(const Geometry::Segment a, const Geometry::Rectangle b)
+{
     Geometry::Segment first(b.first.x, b.first.y, b.first.x, b.second.y);
     Geometry::Segment second(b.first.x, b.first.y, b.second.x, b.first.y);
     Geometry::Segment third(b.first.x, b.second.y, b.second.x, b.second.y);
