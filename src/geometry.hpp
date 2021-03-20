@@ -1,6 +1,7 @@
 #ifndef GEOMETRY_HPP
 #define GEOMETRY_HPP
 
+#include <iostream>
 #include <algorithm>
 #include <cmath>
 
@@ -18,7 +19,7 @@ namespace Geometry
         : x(x1)
         , y(y1) {}
 
-        bool operator== (const Geometry::Point a) const {
+        bool operator==(const Geometry::Point a) const {
             return abs(x - a.x) < Geometry::EPS && (y - a.y) < Geometry::EPS;
         }
     };
@@ -80,4 +81,6 @@ namespace Geometry
     bool intersectionOfTwoSegments(const Geometry::Segment, const Geometry::Segment);
     bool intersectionOfSegmentAndRectangle(const Geometry::Segment, const Geometry::Rectangle);
 }
+
+std::ostream& operator<<(std::ostream& out, const Geometry::Point&);
 #endif

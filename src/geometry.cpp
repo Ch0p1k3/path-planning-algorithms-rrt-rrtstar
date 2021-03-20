@@ -57,3 +57,8 @@ bool Geometry::intersectionOfSegmentAndRectangle(const Geometry::Segment a, cons
         || Geometry::intersectionOfTwoSegments(a, third)
         || Geometry::intersectionOfTwoSegments(a, forth);
 }
+
+std::ostream& operator<<(std::ostream& out, const Geometry::Point& a) {
+    out << "(" << a.x << ", " << a.y << ")";
+    return out;
+}
