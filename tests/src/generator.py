@@ -22,7 +22,7 @@ def generate_object(file: TextIOWrapper, filepath: str, typealgorithm: str):
     freeceils = []
     for i in range(4, len(arr)):
         tmp = []
-        for j, e in enumerate(arr[i]):
+        for j, e in enumerate(arr[i].strip()):
             (tmp.append('0'), freeceils.append((j, i))) if e == '.' else tmp.append('1')
         row = ET.SubElement(grid, 'row')
         row.text = ' '.join(tmp)
@@ -33,6 +33,8 @@ def generate_object(file: TextIOWrapper, filepath: str, typealgorithm: str):
     algorithm = ET.SubElement(root, 'algorithm')
     searchtype = ET.SubElement(algorithm, 'searchtype')
     searchtype.text = typealgorithm
+    numberofiterations = ET.SubElement(algorithm, 'numberofiterations')
+    numberofiterations.text = str(1000000)
     tree.write(filepath, pretty_print=True)
 
 def main():
