@@ -1,3 +1,3 @@
 ALGORITHMS = [
-    'RRT', 'RRT_star'
+    'rrt', 'rrtstar'
 ]
