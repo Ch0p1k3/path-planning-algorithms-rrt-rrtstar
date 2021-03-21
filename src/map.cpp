@@ -157,34 +157,16 @@ bool Map::buildMap(const char *filePath)
     return true;
 }
 
-Map::Map(const char *filePath) {
+Map::Map(const char *filePath) 
+{
     if (!buildMap(filePath)) {
         std::cerr << "Error! Input Error!\n";
         exit(EXIT_FAILURE);
     }
 }
 
-size_t Map::getMapHeight() const
+const std::vector<bool>& Map::operator[](const size_t i) const
 {
-    return height;
-}
-
-size_t Map::getMapWidth() const
-{
-    return width;
-}
-
-Geometry::Point Map::getStart() const
-{
-    return start;
-}
-
-Geometry::Point Map::getFinish() const
-{
-    return finish;
-}
-
-const std::vector<bool>& Map::operator[](const size_t i) const {
     return grid[i];
 }
 
