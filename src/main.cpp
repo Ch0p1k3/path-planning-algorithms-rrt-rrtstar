@@ -1,4 +1,5 @@
 #include <iostream>
+#include "algorithm.hpp"
 #include "geometry.hpp"
 #include "map.hpp"
 
@@ -19,4 +20,7 @@ int main(int argc, char *argv[])
         }
         std::cout << '\n';
     }
+    Algorithm algo(argv[1]);
+    std::cout << algo.getSearchType() << '\n';
+    std::cout << algo.getNumberOfIterations() << '\n';
 }

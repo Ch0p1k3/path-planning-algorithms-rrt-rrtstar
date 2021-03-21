@@ -1,5 +1,5 @@
-#ifndef GEOMETRY_HPP
-#define GEOMETRY_HPP
+#ifndef RRT_RRTstar_GEOMETRY_HPP
+#define RRT_RRTstar_GEOMETRY_HPP
 
 #include <iostream>
 #include <algorithm>

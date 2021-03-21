@@ -1,5 +1,5 @@
-#ifndef MAP_HPP
-#define MAP_HPP
+#ifndef RRT_RRTstar_MAP_HPP
+#define RRT_RRTstar_MAP_HPP
 
 #include <iostream>
 #include <vector>
@@ -24,10 +24,25 @@ public:
     Map() = delete;
     ~Map() = default;
 
-    size_t getMapHeight() const;
-    size_t getMapWidth() const;
-    Geometry::Point getStart() const;
-    Geometry::Point getFinish() const;
+    inline size_t getMapHeight() const
+    {
+        return height;
+    }
+
+    inline size_t getMapWidth() const
+    {
+        return width;
+    }
+
+    inline Geometry::Point getStart() const
+    {
+        return start;
+    }
+
+    inline Geometry::Point getFinish() const
+    {
+        return finish;
+    }
 
     const std::vector<bool>& operator[](const size_t) const;
 };
