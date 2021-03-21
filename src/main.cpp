@@ -1,6 +1,7 @@
 #include <iostream>
 #include "algorithm.hpp"
 #include "geometry.hpp"
+#include "obstacle.hpp"
 #include "map.hpp"
 
 int main(int argc, char *argv[])
@@ -23,4 +24,7 @@ int main(int argc, char *argv[])
     Algorithm algo(argv[1]);
     std::cout << algo.getSearchType() << '\n';
     std::cout << algo.getNumberOfIterations() << '\n';
+    Obstacle ob(m);
+    std::cout << ob.freeObstacle(Geometry::Point(0, 0), Geometry::Point(3, 0)) << '\n';
+    std::cout << ob.freeObstacle(Geometry::Point(17, 19.5), Geometry::Point(20, 19.5)) << '\n';
 }
