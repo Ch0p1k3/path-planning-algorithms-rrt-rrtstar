@@ -1,3 +1,7 @@
 [submodule "src/lib/pugixml"]
 	path = src/lib/pugixml
 	url = https://github.com/zeux/pugixml
+
+[submodule "src/lib/nanoflann"]
+	path = src/lib/nanoflann
+	url = https://github.com/jlblancoc/nanoflann
