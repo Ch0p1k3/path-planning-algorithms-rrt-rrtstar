@@ -23,13 +23,17 @@ def generate_object(file: TextIOWrapper, filepath: str, typealgorithm: str):
     for i in range(4, len(arr)):
         tmp = []
         for j, e in enumerate(arr[i].strip()):
-            (tmp.append('0'), freeceils.append((j, i))) if e == '.' else tmp.append('1')
+            if e == '.':
+                tmp.append('0')
+                freeceils.append((j, i))
+            else:
+                tmp.append('1')
         row = ET.SubElement(grid, 'row')
         row.text = ' '.join(tmp)
     randomsh(freeceils)
-    startx.text, starty.text = str(.5 + freeceils[0][1]), str(.5 + freeceils[0][0])
+    startx.text, starty.text = str(.5 + freeceils[0][0]), str(.5 + freeceils[0][1])
     randomsh(freeceils)
-    finishx.text, finishy.text = str(.5 + freeceils[0][1]), str(.5 + freeceils[0][0])
+    finishx.text, finishy.text = str(.5 + freeceils[0][0]), str(.5 + freeceils[0][1])
     algorithm = ET.SubElement(root, 'algorithm')
     searchtype = ET.SubElement(algorithm, 'searchtype')
     searchtype.text = typealgorithm

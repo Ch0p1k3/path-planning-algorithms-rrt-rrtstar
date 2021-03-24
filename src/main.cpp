@@ -18,12 +18,13 @@ int main(int argc, char *argv[])
     std::cout << m.getFinish() << '\n';
     std::cout << m.getMapHeight() << '\n';
     std::cout << m.getMapWidth() << '\n';
-    for (size_t i = 0; i < m.getMapHeight(); ++i) {
-        for (size_t j = 0; j < m.getMapWidth(); ++j) {
-            std::cout << m[i][j] << ' ';
-        }
-        std::cout << '\n';
-    }
+    // for (size_t i = 0; i < m.getMapHeight(); ++i) {
+    //     for (size_t j = 0; j < m.getMapWidth(); ++j) {
+    //         std::cout << m[i][j] << ' ';
+    //     }
+    //     std::cout << '\n';
+    // }
+    std::cout << m[239][50] << '\n';
     Algorithm algo(argv[1]);
     std::cout << algo.getSearchType() << '\n';
     std::cout << algo.getNumberOfIterations() << '\n';

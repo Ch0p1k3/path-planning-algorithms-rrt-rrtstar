@@ -14,16 +14,16 @@ class Tree
 public:
     struct Node
     {
-        std::vector<std::shared_ptr<Node>> childrens;
-        std::shared_ptr<Node> parent;
+        std::vector<Node *> childrens;
+        Node *parent;
         Geometry::Point point;
         double distance;
 
-        Node(std::vector<std::shared_ptr<Node>> otherChildrens,
-            std::shared_ptr<Node> otherParent,
-            Geometry::Point otherPoint,
+        Node(const std::vector<Node *>& otherChildrens,
+            Node *otherParent,
+            const Geometry::Point& otherPoint,
             double otherDistance)
-            : childrens(otherChildrens)
+            : childrens(otherChildrens.begin(), otherChildrens.end())
             , parent(otherParent)
             , point(otherPoint)
             , distance(otherDistance) {}
@@ -42,12 +42,12 @@ public:
     };
 
 private:
-    std::shared_ptr<Node> root;
+    Node *root;
     
     struct Point
     {
         double  x, y;
-        std::shared_ptr<Node> link;
+        Node *link;
     };
 
     struct PointCloud
@@ -87,15 +87,15 @@ private:
         bool printingLastChild;
     };
     nodePrintStateT* rootState;
-    void printNode(const std::shared_ptr<Node>, std::ostream&);
-
+    void printNode(const Node *, std::ostream&);
+    void deleteTree(Node *);
 public:
     Tree() = delete;
     Tree(const Geometry::Point&);
     ~Tree();
 
-    std::shared_ptr<Node> getNearest(const Geometry::Point&) const;
-    std::shared_ptr<Node> insert(std::shared_ptr<Node>, const Geometry::Point&);
+    Node *getNearest(const Geometry::Point&) const;
+    Node *insert(Node *, const Geometry::Point&);
     void printTree(std::ostream& = std::cout);
 };
 

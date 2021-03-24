@@ -4,14 +4,15 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
 {
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
-    std::shared_ptr<Tree::Node> finishNode;
+    Tree::Node *finishNode = nullptr;
     const double EPS = CI_STEP_SIZE;
-    for (size_t it = 0; it < rrt.getNumberOfIterations(); ++it) {
+    const size_t numberOfIter = rrt.getNumberOfIterations();
+    for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
-        std::shared_ptr<Tree::Node> xNearest = rrt.getNearest(xRand);
+        Tree::Node *xNearest = rrt.getNearest(xRand);
         Geometry::Point xNew = rrt.steer(xNearest->point, xRand);
         if (rrt.obstacleFree(xNearest->point, xNew)) {
-            std::shared_ptr<Tree::Node> newNode = rrt.insertEdge(xNearest, xNew);
+            Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
             if (newNode) {
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     if (!finishNode) {
@@ -32,8 +33,8 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
         std::cout << "Path not found\n";
     } else {
         std::cout << "Result distance: " << finishNode->distance << '\n';
-        auto tmp = finishNode;
-        std::vector<std::shared_ptr<Tree::Node>> res;
+        Tree::Node *tmp = finishNode;
+        std::vector<Tree::Node *> res;
         while (tmp) {
             res.push_back(tmp);
             tmp = tmp->parent;

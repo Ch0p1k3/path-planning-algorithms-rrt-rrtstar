@@ -134,6 +134,22 @@ bool Map::buildMap(const char *filePath)
     }
     start = {startX, startY};
     finish = {finishX, finishY};
+    if (startX > width) {
+        std::cerr << "startX > width\n";
+        return false;
+    }
+    if (startY > height) {
+        std::cerr << "startY > height\n";
+        return false;
+    }
+    if (finishX > width) {
+        std::cerr << "finishX > width\n";
+        return false;
+    }
+    if (finishY > height) {
+        std::cerr << "finishY > height\n";
+        return false;
+    }
     size_t i = 0;
     bool value = false;
     std::string rowStr;
@@ -153,6 +169,14 @@ bool Map::buildMap(const char *filePath)
             return false;
         }
         ++i;
+    }
+    if (grid[(size_t)startY][(size_t)startX]) {
+        std::cerr << "Start point on obstacle!\n";
+        return false;
+    }
+    if (grid[(size_t)finishY][(size_t)finishX]) {
+        std::cerr << "Finish point on obstacle!\n";
+        return false;
     }
     return true;
 }

@@ -10,10 +10,10 @@ Obstacle::Obstacle(const Map& map)
             if (map[i][j]) {
                 double l = static_cast<double>(i);
                 double k = static_cast<double>(j);
-                cloud.pts.push_back(Point{l, k, l, k, l + 1, k + 1});
-                cloud.pts.push_back(Point{l + 1, k + 1, l, k, l + 1, k + 1});
-                cloud.pts.push_back(Point{l + 1, k, l, k, l + 1, k + 1});
-                cloud.pts.push_back(Point{l, k + 1, l, k, l + 1, k + 1});
+                cloud.pts.push_back(Point{k, l, k, l, k + 1, l + 1});
+                cloud.pts.push_back(Point{k + 1, l + 1, k, l, k + 1, l + 1});
+                cloud.pts.push_back(Point{k + 1, l, k, l, k + 1, l + 1});
+                cloud.pts.push_back(Point{k, l + 1, k, l, k + 1, l + 1});
             }
         }
     }

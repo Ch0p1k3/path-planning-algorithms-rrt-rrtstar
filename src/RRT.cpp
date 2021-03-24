@@ -20,12 +20,12 @@ Geometry::Point RRT::getRandomPoint() const
     return Geometry::Point{xs(gen1), ys(gen2)};
 }
 
-std::shared_ptr<Tree::Node> RRT::insertEdge(std::shared_ptr<Tree::Node> x, const Geometry::Point& y)
+Tree::Node *RRT::insertEdge(Tree::Node *x, const Geometry::Point& y)
 {
     return tree.insert(x, y);
 }
 
-std::shared_ptr<Tree::Node> RRT::getNearest(const Geometry::Point& p)
+Tree::Node *RRT::getNearest(const Geometry::Point& p)
 {
     return tree.getNearest(p);
 }
@@ -33,7 +33,9 @@ std::shared_ptr<Tree::Node> RRT::getNearest(const Geometry::Point& p)
 Geometry::Point RRT::steer(const Geometry::Point& x, const Geometry::Point& y) const
 {
     double norm = Geometry::euclideanMetric(x, y);
-
+    if (norm <= CI_STEP_SIZE) {
+        return y;
+    }
     return x + (((y - x) / norm) * stepSize);
 }
 

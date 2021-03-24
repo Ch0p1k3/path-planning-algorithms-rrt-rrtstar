@@ -24,22 +24,22 @@ public:
     Map() = delete;
     ~Map() = default;
 
-    inline size_t getMapHeight() const
+    size_t getMapHeight() const
     {
         return height;
     }
 
-    inline size_t getMapWidth() const
+    size_t getMapWidth() const
     {
         return width;
     }
 
-    inline Geometry::Point getStart() const
+    Geometry::Point getStart() const
     {
         return start;
     }
 
-    inline Geometry::Point getFinish() const
+    Geometry::Point getFinish() const
     {
         return finish;
     }

@@ -7,7 +7,6 @@ cd PathPlanningAlgorithms-RRT-RRTstar-
 cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild
 cd build
 make
-make install
 ```
 
 Debug building
@@ -16,7 +15,6 @@ cd PathPlanningAlgorithms-RRT-RRTstar-
 cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild
 cd build
 make
-make install
 ```
 
 ### Windows
@@ -26,7 +24,6 @@ cd PathPlanningAlgorithms-RRT-RRTstar-
 cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild -G"MinGW Makefiles"
 cd build
 mingw32-make
-mingw32-make install
 ```
 
 Debug building
@@ -35,5 +32,4 @@ cd PathPlanningAlgorithms-RRT-RRTstar-
 cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild -G"MinGW Makefiles"
 cd build
 mingw32-make
-mingw32-make install
 ```
