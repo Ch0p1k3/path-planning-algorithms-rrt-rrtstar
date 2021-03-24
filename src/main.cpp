@@ -4,6 +4,8 @@
 #include "obstacle.hpp"
 #include "map.hpp"
 #include "tree.hpp"
+#include "RRT.hpp"
+#include "process.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -38,4 +40,7 @@ int main(int argc, char *argv[])
     tr.insert(nearest, {1.1, 1.1});
     tr.insert(nearest, {1.04, 1.04});
     tr.printTree();
+    std::cout << "-----------------------\n";
+    std::cout << "-----------------------\n";
+    RRTAlgorithm::launch(m, algo);
 }

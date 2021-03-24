@@ -19,24 +19,29 @@ namespace Geometry
         : x(x1)
         , y(y1) {}
 
-        inline bool operator==(const Geometry::Point a) const
+        bool operator==(const Geometry::Point a) const
         {
             return abs(x - a.x) < Geometry::EPS && (y - a.y) < Geometry::EPS;
         }
 
-        inline Geometry::Point operator-(const Geometry::Point& other) const
+        Geometry::Point operator-(const Geometry::Point& other) const
         {
             return Geometry::Point(x - other.x, y - other.y);
         }
 
-        inline Geometry::Point operator+(const Geometry::Point& other) const
+        Geometry::Point operator+(const Geometry::Point& other) const
         {
-            return Geometry::Point(x + other.x, y + other.x);
+            return Geometry::Point(x + other.x, y + other.y);
         }
 
-        inline Geometry::Point operator/(const double lambda) const
+        Geometry::Point operator/(const double lambda) const
         {
             return Geometry::Point(x / lambda, y / lambda);
+        }
+
+        Geometry::Point operator*(const double lambda) const
+        {
+            return Geometry::Point(x * lambda, y * lambda);
         }
     };
 

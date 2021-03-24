@@ -88,13 +88,14 @@ private:
     };
     nodePrintStateT* rootState;
     void printNode(const std::shared_ptr<Node>, std::ostream&);
+
 public:
     Tree() = delete;
     Tree(const Geometry::Point&);
     ~Tree();
 
     std::shared_ptr<Node> getNearest(const Geometry::Point&) const;
-    bool insert(std::shared_ptr<Node>, const Geometry::Point&);
+    std::shared_ptr<Node> insert(std::shared_ptr<Node>, const Geometry::Point&);
     void printTree(std::ostream& = std::cout);
 };
 

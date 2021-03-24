@@ -2,10 +2,10 @@
     <map>
         <width>20</width>
         <height>20</height>
-        <startx>12</startx>
-        <starty>19</starty>
-        <finishx>12</finishx>
-        <finishy>7</finishy>
+        <startx>0</startx>
+        <starty>0</starty>
+        <finishx>15.5</finishx>
+        <finishy>19.5</finishy>
         <grid>
             <row>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</row>
             <row>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</row>
@@ -31,6 +31,6 @@
     </map>
     <algorithm>
         <searchtype>rrt</searchtype>
-        <numberofiterations>100000000</numberofiterations>
+        <numberofiterations>1000</numberofiterations>
     </algorithm>
 </root>

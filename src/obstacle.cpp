@@ -34,11 +34,11 @@ bool Obstacle::obstacleFree(const Geometry::Point& x, const Geometry::Point& y) 
     const double query_point[2] = {x.x, x.y};
     const size_t nMatches = index->radiusSearch(&query_point[0], searchRadius, resMatches, params);
     Geometry::Segment seg(x, y);
-    for (size_t i = 0; i < nMatches; ++i) {
-        std::cout << cloud.pts[resMatches[i].first].x1 << ' ' <<
-         cloud.pts[resMatches[i].first].y1 << ' ' <<
-          cloud.pts[resMatches[i].first].x2 << ' ' << cloud.pts[resMatches[i].first].y2 << '\n';
-    }
+    // for (size_t i = 0; i < nMatches; ++i) {
+    //     std::cout << cloud.pts[resMatches[i].first].x1 << ' ' <<
+    //      cloud.pts[resMatches[i].first].y1 << ' ' <<
+    //       cloud.pts[resMatches[i].first].x2 << ' ' << cloud.pts[resMatches[i].first].y2 << '\n';
+    // }
     for (size_t i = 0; i < nMatches; ++i) {
         Geometry::Rectangle r(cloud.pts[resMatches[i].first].x1, cloud.pts[resMatches[i].first].y1, cloud.pts[resMatches[i].first].x2, cloud.pts[resMatches[i].first].y2);
         if (Geometry::intersectionOfSegmentAndRectangle(seg, r)) {

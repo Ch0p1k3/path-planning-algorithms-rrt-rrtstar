@@ -50,7 +50,7 @@ public:
     Obstacle(const Map& map);
     Obstacle() = delete;
     ~Obstacle();
-
+    
     bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
 };
 
