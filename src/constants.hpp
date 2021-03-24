@@ -16,4 +16,4 @@
             #define CI_TAG_RRT_STAR                 1
         #define CS_TAG_NUMBER_OF_ITERATIONS         "numberofiterations"
 
-#define CI_STEP_SIZE                                3
+#define CI_STEP_SIZE                                3.

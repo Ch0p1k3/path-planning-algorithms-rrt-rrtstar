@@ -19,8 +19,24 @@ namespace Geometry
         : x(x1)
         , y(y1) {}
 
-        bool operator==(const Geometry::Point a) const {
+        inline bool operator==(const Geometry::Point a) const
+        {
             return abs(x - a.x) < Geometry::EPS && (y - a.y) < Geometry::EPS;
+        }
+
+        inline Geometry::Point operator-(const Geometry::Point& other) const
+        {
+            return Geometry::Point(x - other.x, y - other.y);
+        }
+
+        inline Geometry::Point operator+(const Geometry::Point& other) const
+        {
+            return Geometry::Point(x + other.x, y + other.x);
+        }
+
+        inline Geometry::Point operator/(const double lambda) const
+        {
+            return Geometry::Point(x / lambda, y / lambda);
         }
     };
 
@@ -70,16 +86,16 @@ namespace Geometry
     };
 
     template <typename T> 
-    int sgn(const T val)
+    inline int sgn(const T val)
     {
         return (T(0) < val) - (val <= T(0));
     }
 
-    double euclideanMetric(const Geometry::Point, const Geometry::Point);
-    double areaOfTreangle(const Geometry::Point, const Geometry::Point, const Geometry::Point);
-    int signAreaOfTreangle(const Geometry::Point, const Geometry::Point, const Geometry::Point);
-    bool intersectionOfTwoSegments(const Geometry::Segment, const Geometry::Segment);
-    bool intersectionOfSegmentAndRectangle(const Geometry::Segment, const Geometry::Rectangle);
+    double euclideanMetric(const Geometry::Point&, const Geometry::Point&);
+    double areaOfTreangle(const Geometry::Point&, const Geometry::Point&, const Geometry::Point&);
+    int signAreaOfTreangle(const Geometry::Point&, const Geometry::Point&, const Geometry::Point&);
+    bool intersectionOfTwoSegments(const Geometry::Segment&, const Geometry::Segment&);
+    bool intersectionOfSegmentAndRectangle(const Geometry::Segment&, const Geometry::Rectangle&);
 }
 
 std::ostream& operator<<(std::ostream& out, const Geometry::Point&);

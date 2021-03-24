@@ -51,7 +51,7 @@ public:
     Obstacle() = delete;
     ~Obstacle();
 
-    bool freeObstacle(const Geometry::Point&, const Geometry::Point&);
+    bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
 };
 
 #endif

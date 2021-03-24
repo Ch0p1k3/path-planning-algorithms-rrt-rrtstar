@@ -26,7 +26,7 @@ Obstacle::~Obstacle()
     delete index;
 }
 
-bool Obstacle::freeObstacle(const Geometry::Point& x, const Geometry::Point& y)
+bool Obstacle::obstacleFree(const Geometry::Point& x, const Geometry::Point& y) const
 {
     const double searchRadius = static_cast<double>(CI_STEP_SIZE * CI_STEP_SIZE);
     std::vector<std::pair<size_t, double>> resMatches;
