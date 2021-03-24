@@ -25,6 +25,8 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
             }
         }
     }
+    std::cout.precision(8);
+    std::cout << std::fixed;
     freopen("output.txt", "w", stdout);
     if (!finishNode) {
         std::cout << "Path not found\n";
@@ -45,6 +47,6 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
             }
         }
     }
-    std::cout << "Tree:\n";
+    std::cout << "\nTree:\n";
     rrt.printTree();
 }

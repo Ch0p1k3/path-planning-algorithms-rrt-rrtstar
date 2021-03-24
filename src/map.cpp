@@ -20,7 +20,7 @@ bool Map::buildMap(const char *filePath)
         return false;
     }
     bool hasHeight = false, hasWidth = false, hasSTX = false, hasSTY = false, hasFINX = false, hasFINY = false, hasGrid = false;
-    double startX, startY, finishX, finishY;
+    double startX = 0, startY = 0, finishX = 0, finishY = 0;
     pugi::xml_node gridNode;
     for (pugi::xml_node_iterator it = map.begin(); it != map.end(); ++it) {
         std::string nameNode = it->name();
