@@ -113,7 +113,11 @@ void Tree::recDrawTree(const Node *root, const Node *par, sf::RenderWindow& wind
     }
 
     if (!root) return;
-
+    sf::CircleShape nodeCircle(0.1f);
+    nodeCircle.setFillColor(sf::Color::Black);
+    nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+    nodeCircle.setPosition(sf::Vector2f(root->point.x, root->point.y));
+    window.draw(nodeCircle);
     if (par) {
         sf::Vertex line[] = {
             sf::Vertex(sf::Vector2f(root->point.x, root->point.y)),

@@ -65,7 +65,7 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
     window.setFramerateLimit(60);
@@ -246,7 +246,7 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
     window.setFramerateLimit(60);
@@ -373,7 +373,7 @@ void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorith
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
     window.setFramerateLimit(60);
