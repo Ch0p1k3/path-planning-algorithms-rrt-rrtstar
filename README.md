@@ -1,7 +1,7 @@
 # PathPlanningAlgorithms(RRT, RRT*)
 
 
-##Getting started
+## Getting started
 ### Linux and Mac
 Release building
 ```bash
