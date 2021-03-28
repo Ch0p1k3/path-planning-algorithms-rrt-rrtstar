@@ -22,7 +22,9 @@ def generate_object(file: TextIOWrapper, filepath: str, typealgorithm: str):
     freeceils = []
     for i in range(4, len(arr)):
         tmp = []
-        for j, e in enumerate(arr[i].strip()):
+        l = arr[i].strip()
+        for j in range(len(l)):
+            e = l[j]
             if e == '.':
                 tmp.append('0')
                 freeceils.append((j, i))

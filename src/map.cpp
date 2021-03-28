@@ -170,14 +170,6 @@ bool Map::buildMap(const char *filePath)
         }
         ++i;
     }
-    if (grid[(size_t)startY][(size_t)startX]) {
-        std::cerr << "Start point on obstacle!\n";
-        return false;
-    }
-    if (grid[(size_t)finishY][(size_t)finishX]) {
-        std::cerr << "Finish point on obstacle!\n";
-        return false;
-    }
     return true;
 }
 

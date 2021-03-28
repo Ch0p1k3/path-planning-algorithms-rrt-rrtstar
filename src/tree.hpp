@@ -8,6 +8,7 @@
 #include <utility>
 #include "geometry.hpp"
 #include "lib/nanoflann/include/nanoflann.hpp"
+#include "lib/SFML/include/SFML/Graphics.hpp"
 
 class Tree
 {
@@ -28,17 +29,24 @@ public:
             , point(otherPoint)
             , distance(otherDistance) {}
 
-        // Node(const Tree::Node& other)
-        // : childrens(other.childrens)
-        // , parent(other.parent)
-        // , point(other.point)
-        // , distance(other.distance) {}
+        Node(const Tree::Node& other)
+        : childrens(other.childrens)
+        , parent(other.parent)
+        , point(other.point)
+        , distance(other.distance) {}
 
-        // Node(Node&& other)
-        // : childrens(std::move(other.childrens))
-        // , parent(std::move(other.parent))
-        // , point(std::move(other.point))
-        // , distance(other.distance) {}
+        Node(Node&& other)
+        : childrens(std::move(other.childrens))
+        , parent(std::move(other.parent))
+        , point(std::move(other.point))
+        , distance(other.distance) {}
+
+        bool operator==(const Tree::Node& other) {
+            return other.childrens == childrens 
+            && parent == other.parent
+            && point == other.point
+            && distance == other.distance;
+        }
     };
 
 private:
@@ -89,6 +97,7 @@ private:
     nodePrintStateT* rootState;
     void printNode(const Node *, std::ostream&);
     void deleteTree(Node *);
+    void recDrawTree(const Node *, const Node *, sf::RenderWindow&);
 public:
     Tree() = delete;
     Tree(const Geometry::Point&);
@@ -97,6 +106,7 @@ public:
     Node *getNearest(const Geometry::Point&) const;
     Node *insert(Node *, const Geometry::Point&);
     void printTree(std::ostream& = std::cout);
+    void drawTree(sf::RenderWindow&);
 };
 
 #endif

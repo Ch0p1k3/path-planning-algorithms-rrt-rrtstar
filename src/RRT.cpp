@@ -32,7 +32,7 @@ Tree::Node *RRT::getNearest(const Geometry::Point& p)
 
 Geometry::Point RRT::steer(const Geometry::Point& x, const Geometry::Point& y) const
 {
-    double norm = Geometry::euclideanMetric(x, y);
+    double norm = std::sqrt(Geometry::euclideanMetric(x, y));
     if (norm <= CI_STEP_SIZE) {
         return y;
     }
@@ -47,4 +47,9 @@ bool RRT::obstacleFree(const Geometry::Point& x, const Geometry::Point& y) const
 void RRT::printTree(std::ostream& out)
 {
     tree.printTree(out);
+}
+
+void RRT::drawTree(sf::RenderWindow& window)
+{
+    tree.drawTree(window);
 }

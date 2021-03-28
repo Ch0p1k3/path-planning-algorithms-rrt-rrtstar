@@ -7,6 +7,7 @@
 #include "geometry.hpp"
 #include "map.hpp"
 #include "constants.hpp"
+#include "lib/SFML/include/SFML/Graphics.hpp"
 #include <random>
 #include <iostream>
 
@@ -21,6 +22,7 @@ private:
     double stepSize;
     Tree tree;
     Obstacle obstacles;
+    
 public:
     RRT(const Map&, const Algorithm&);
     RRT() = delete;
@@ -32,6 +34,7 @@ public:
     Geometry::Point steer(const Geometry::Point&, const Geometry::Point&) const;
     bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
     void printTree(std::ostream& = std::cout);
+    void drawTree(sf::RenderWindow& window);
 
     inline Geometry::Point getStart() const
     {

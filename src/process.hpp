@@ -8,9 +8,17 @@
 #include "map.hpp"
 #include "algorithm.hpp"
 #include "geometry.hpp"
+#include "lib/SFML/include/SFML/Graphics.hpp"
+
 namespace RRTAlgorithm
 {
     void launch(const Map&, const Algorithm&);
+
+    void launchWithVirt(const Map&, const Algorithm&);
+
+    void launchWithVirtAfter(const Map&, const Algorithm&);
+
+    void launchWithVirtAfterWithoutTree(const Map&, const Algorithm&);
 }
 
 #endif

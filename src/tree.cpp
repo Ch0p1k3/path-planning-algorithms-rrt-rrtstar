@@ -15,13 +15,17 @@ void Tree::deleteTree(Node *root)
     if (!root) return;
     for (Node *n: root->childrens) {
         deleteTree(n);
-        delete n;
+    }
+    if (root) {
+        delete root;
     }
 }
 
 Tree::~Tree()
 {
-    delete index;
+    if (index) {
+        delete index;
+    }
     deleteTree(root);
 }
 
@@ -39,7 +43,7 @@ Tree::Node *Tree::getNearest(const Geometry::Point& p) const
 
 Tree::Node *Tree::insert(Tree::Node *node, const Geometry::Point& p)
 {
-    double distance = Geometry::euclideanMetric(node->point, p) + node->distance;
+    double distance = std::sqrt(Geometry::euclideanMetric(node->point, p)) + node->distance;
     if (used.find(p.x) != used.end() && used[p.x].find(p.y) != used[p.x].end()) {
         return nullptr;
     }
@@ -94,4 +98,44 @@ void Tree::printNode(const Tree::Node *node, std::ostream& out)
 void Tree::printTree(std::ostream& out)
 {
     printNode(root, out);
+}
+
+void Tree::recDrawTree(const Node *root, const Node *par, sf::RenderWindow& window)
+{
+    sf::Event event;
+
+    if (!window.isOpen()) return;
+
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+    }
+
+    if (!root) return;
+
+    if (par) {
+        sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(root->point.x, root->point.y)),
+            sf::Vertex(sf::Vector2f(par->point.x, par->point.y)),
+        };
+        line[0].color = sf::Color::Black;
+        line[1].color = sf::Color::Black;
+        window.draw(line, 2, sf::Lines);
+    }
+
+    for (const Node *child: root->childrens) {
+        if (!window.isOpen()) return;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+        recDrawTree(child, root, window);
+    }
+}
+
+void Tree::drawTree(sf::RenderWindow& window)
+{
+    recDrawTree(root, nullptr, window);
 }

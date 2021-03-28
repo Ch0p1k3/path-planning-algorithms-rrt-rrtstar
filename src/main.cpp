@@ -6,6 +6,7 @@
 #include "tree.hpp"
 #include "RRT.hpp"
 #include "process.hpp"
+#include "lib/SFML/include/SFML/Graphics.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +25,6 @@ int main(int argc, char *argv[])
     //     }
     //     std::cout << '\n';
     // }
-    std::cout << m[239][50] << '\n';
     Algorithm algo(argv[1]);
     std::cout << algo.getSearchType() << '\n';
     std::cout << algo.getNumberOfIterations() << '\n';
@@ -43,5 +43,5 @@ int main(int argc, char *argv[])
     tr.printTree();
     std::cout << "-----------------------\n";
     std::cout << "-----------------------\n";
-    RRTAlgorithm::launch(m, algo);
+    RRTAlgorithm::launchWithVirtAfterWithoutTree(m, algo);
 }
