@@ -35,7 +35,7 @@ cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild -G"MinGW Makefiles"
 cd build
 mingw32-make install
 ```
-##Visualizer
+## Visualizer
 ![dao_arena](./images/dao_arena.png)
 ![dao_arena2](./images/dao_arena2.png)
 ![moscow_0_1024_after](./images/moscow_0_1024_after.png)
