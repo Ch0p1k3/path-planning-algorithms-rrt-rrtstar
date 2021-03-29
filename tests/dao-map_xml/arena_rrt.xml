@@ -60,6 +60,6 @@
   </map>
   <algorithm>
     <searchtype>rrt</searchtype>
-    <numberofiterations>1000</numberofiterations>
+    <numberofiterations>10000</numberofiterations>
   </algorithm>
 </root>

@@ -68,7 +68,7 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
-    window.setFramerateLimit(60);
+    // window.setFramerateLimit(10000);
     std::vector<sf::Shape> obst;
     bool isReady = false;
     while (window.isOpen()) {
@@ -109,7 +109,7 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
             sf::CircleShape finishCircle(CI_STEP_SIZE); // width / 600 * 3
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
-            finishCircle.setFillColor(sf::Color::White);
+            finishCircle.setFillColor(sf::Color::Transparent);
             finishCircle.setOutlineThickness(0.2f);
             finishCircle.setOutlineColor(sf::Color(170, 0, 0));
             window.draw(startCircle);
@@ -193,7 +193,6 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
                         line[0].color = sf::Color::Red;
                         line[1].color = sf::Color::Red;
                         window.draw(line, 2, sf::Lines);
-                        window.display();
                     }
                     res.push_back(tmp);
                     tmp = tmp->parent;
@@ -207,6 +206,9 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
                     }
                 }
             }
+            window.draw(startCircle);
+            window.draw(finishCircle);
+            window.display();
             std::cout << "\nTree:\n";
             rrt.printTree();
             isReady = true;
@@ -249,7 +251,7 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
-    window.setFramerateLimit(60);
+    // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
     bool isReady = false;
     while (window.isOpen()) {
@@ -290,7 +292,7 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
             sf::CircleShape finishCircle(CI_STEP_SIZE); // width / 600 * 3
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
-            finishCircle.setFillColor(sf::Color::White);
+            finishCircle.setFillColor(sf::Color::Transparent);
             finishCircle.setOutlineThickness(0.2f);
             finishCircle.setOutlineColor(sf::Color(170, 0, 0));
             window.draw(startCircle);
@@ -311,6 +313,8 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
                     tmp = tmp->parent;
                 }
             }
+            window.draw(startCircle);
+            window.draw(finishCircle);
             window.display();
         }
         isReady = true;
@@ -376,7 +380,7 @@ void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorith
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
-    window.setFramerateLimit(60);
+    // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
     bool isReady = false;
     while (window.isOpen()) {
@@ -417,7 +421,7 @@ void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorith
             sf::CircleShape finishCircle(CI_STEP_SIZE); // width / 600 * 3
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
-            finishCircle.setFillColor(sf::Color::White);
+            finishCircle.setFillColor(sf::Color::Transparent);
             finishCircle.setOutlineThickness(0.2f);
             finishCircle.setOutlineColor(sf::Color(170, 0, 0));
             window.draw(startCircle);

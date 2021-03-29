@@ -272,6 +272,6 @@
   </map>
   <algorithm>
     <searchtype>rrt</searchtype>
-    <numberofiterations>1000000</numberofiterations>
+    <numberofiterations>100000</numberofiterations>
   </algorithm>
 </root>

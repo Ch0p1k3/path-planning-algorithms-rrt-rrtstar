@@ -21,27 +21,35 @@ Obstacle::Obstacle(const Map& map)
     index->buildIndex();
     Geometry::Point start = map.getStart();
     Geometry::Point finish = map.getFinish();
-    const size_t numResults = 1;
-    size_t resIndex;
-    double outDistSqr;
+    const size_t numResults = 4;
+    size_t resIndex[4];
+    double outDistSqr[4];
     double queryPt[2] = {start.x, start.y};
     nanoflann::KNNResultSet<double> resultSet(numResults);
-    resultSet.init(&resIndex, &outDistSqr);
+    resultSet.init(resIndex, outDistSqr);
     index->findNeighbors(resultSet, queryPt, nanoflann::SearchParams());
-    if (start.x >= cloud.pts[resIndex].x1 && start.x <= cloud.pts[resIndex].x2
-    && start.y >= cloud.pts[resIndex].y1 && start.y <= cloud.pts[resIndex].y2) {
-        std::cerr << "Start point on obstacle!\n";
-        exit(EXIT_FAILURE);
+    if (cloud.pts.size() >= 1) {
+        for (size_t i = 0; i < resultSet.size(); ++i) {
+            if (start.x >= cloud.pts[resIndex[i]].x1 && start.x <= cloud.pts[resIndex[i]].x2
+            && start.y >= cloud.pts[resIndex[i]].y1 && start.y <= cloud.pts[resIndex[i]].y2) {
+                std::cerr << "Start point on obstacle!\n";
+                exit(EXIT_FAILURE);
+            }
+        }
     }
     queryPt[0] = finish.x;
     queryPt[1] = finish.y;
     nanoflann::KNNResultSet<double> resultSet2(numResults);
-    resultSet2.init(&resIndex, &outDistSqr);
+    resultSet2.init(resIndex, outDistSqr);
     index->findNeighbors(resultSet2, queryPt, nanoflann::SearchParams());
-    if (finish.x >= cloud.pts[resIndex].x1 && finish.x <= cloud.pts[resIndex].x2
-    && finish.y >= cloud.pts[resIndex].y1 && finish.y <= cloud.pts[resIndex].y2) {
-        std::cerr << "Finish point on obstacle!\n";
-        exit(EXIT_FAILURE);
+    if (cloud.pts.size() >= 1) {
+        for (size_t i = 0; i < resultSet2.size(); ++i) {
+            if (finish.x >= cloud.pts[resIndex[i]].x1 && finish.x <= cloud.pts[resIndex[i]].x2
+            && finish.y >= cloud.pts[resIndex[i]].y1 && finish.y <= cloud.pts[resIndex[i]].y2) {
+                std::cerr << "Finish point on obstacle!\n";
+                exit(EXIT_FAILURE);
+            }
+        }
     }
 }
 
