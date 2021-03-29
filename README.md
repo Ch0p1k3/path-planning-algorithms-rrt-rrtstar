@@ -36,10 +36,10 @@ cd build
 mingw32-make install
 ```
 ## Visualizer
-# RRTAlgorithm::launchWithVirt
+### RRTAlgorithm::launchWithVirt
 ![dao_arena](./images/dao_arena.png)
 ![dao_arena2](./images/dao_arena2.png)
-# RRTAlgorithm::launchWithVirtAfter
+### RRTAlgorithm::launchWithVirtAfter
 ![moscow_0_1024_after](./images/moscow_0_1024_after.png)
-# RRTAlgorithm::launchWithVirtAfterWithoutTree
+### RRTAlgorithm::launchWithVirtAfterWithoutTree
 ![moscow_0_1024_after_without_tree](./images/moscow_0_1024_after_without_tree.png)
