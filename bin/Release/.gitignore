@@ -1,3 +1,2 @@
-*.txt
-*.exe
-RRT-RRTstar.exe
+RRT-RRTstar*
+out*

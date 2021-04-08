@@ -111,9 +111,9 @@ void Tree::recDrawTree(const Node *root, const Node *par, sf::RenderWindow& wind
             window.close();
         }
     }
-
+    auto height = window.getView().getSize().x;
     if (!root) return;
-    sf::CircleShape nodeCircle(0.1f);
+    sf::CircleShape nodeCircle((height / 100) * 0.1);
     nodeCircle.setFillColor(sf::Color::Black);
     nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
     nodeCircle.setPosition(sf::Vector2f(root->point.x, root->point.y));

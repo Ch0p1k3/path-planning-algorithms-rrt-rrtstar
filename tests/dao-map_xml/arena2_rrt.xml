@@ -221,5 +221,6 @@
   <algorithm>
     <searchtype>rrt</searchtype>
     <numberofiterations>100000</numberofiterations>
+    <stepsize>1</stepsize>
   </algorithm>
 </root>

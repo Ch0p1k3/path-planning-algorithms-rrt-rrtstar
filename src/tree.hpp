@@ -49,6 +49,15 @@ public:
         }
     };
 
+    Tree() = delete;
+    Tree(const Geometry::Point&);
+    ~Tree();
+
+    Node *getNearest(const Geometry::Point&) const;
+    Node *insert(Node *, const Geometry::Point&);
+    void printTree(std::ostream& = std::cout);
+    void drawTree(sf::RenderWindow&);
+
 private:
     Node *root;
     
@@ -98,15 +107,6 @@ private:
     void printNode(const Node *, std::ostream&);
     void deleteTree(Node *);
     void recDrawTree(const Node *, const Node *, sf::RenderWindow&);
-public:
-    Tree() = delete;
-    Tree(const Geometry::Point&);
-    ~Tree();
-
-    Node *getNearest(const Geometry::Point&) const;
-    Node *insert(Node *, const Geometry::Point&);
-    void printTree(std::ostream& = std::cout);
-    void drawTree(sf::RenderWindow&);
 };
 
 #endif

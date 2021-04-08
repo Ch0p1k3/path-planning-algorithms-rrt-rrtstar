@@ -19,7 +19,7 @@ bool Algorithm::buildAlgorithm(const char *filePath)
         std::cerr << "Error! No '" << CS_TAG_ALGORITHM << "' tag found in XML file!" << '\n';
         return false;
     }
-    bool hasST = false, hasNOI = false;
+    bool hasST = false, hasNOI = false, hasSS = false, hasEps = false;;
     for (pugi::xml_node tag: algorithm.children()) {
         std::string nameNode = tag.name();
         std::transform(nameNode.begin(), nameNode.end(), nameNode.begin(), [](unsigned char c) {
@@ -55,6 +55,34 @@ bool Algorithm::buildAlgorithm(const char *filePath)
                     return false;
                 }
             }
+        } else if (nameNode == CS_TAG_STEP_SIZE) {
+            if (hasSS) {
+                std::cerr << "Warning! Repeat tag stepsize. The old value will be used!\n";
+            } else {
+                hasSS = true;
+                stepSize = tag.text().as_double(std::numeric_limits<double>::infinity());
+                if (std::isinf(stepSize)) {
+                    std::cerr << "Error! Stepsize should be real number!\n";
+                    return false;
+                } else if (stepSize < 1) {
+                    std::cerr << "Warning! Very small stepsize. Stepsize will be 3.\n";
+                    stepSize = 3;
+                }
+            }
+        } else if (nameNode == CS_TAG_EPS) {
+            if (hasEps) {
+                std::cerr << "Warning! Repeat tag eps. The old value will be used!\n";
+            } else {
+                hasEps = true;
+                eps = tag.text().as_double(std::numeric_limits<double>::infinity());
+                if (std::isinf(eps)) {
+                    std::cerr << "Error! Eps should be real number!\n";
+                    return false;
+                } else if (eps < 1) {
+                    std::cerr << "Warning! Very small eps. Eps will be 3.\n";
+                    eps = 3;
+                }
+            }
         } else {
             std::cerr << "Warning! Unknown tag " << nameNode << ". It will be skipped!\n";
         }
@@ -64,8 +92,16 @@ bool Algorithm::buildAlgorithm(const char *filePath)
         return false;
     }
     if (!hasNOI) {
-        std::cerr << "Error! No tag numberofiterations.\n";
-        return false;
+        numberOfIterations = 100000;
+        std::cerr << "Warning! No tag numberofiterations. Number of iterations will be 100000\n";
+    }
+    if (!hasSS) {
+        stepSize = 3.;
+        std::cerr << "Warning! No tag stepsize. Step size will be 3\n";
+    }
+    if (!hasEps) {
+        eps = 3.;
+        std::cerr << "Warning! No tag eps. Step size will be 3\n";
     }
     return true;
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include <cstdio>
 #include <limits>
 #include <sstream>
@@ -12,11 +13,6 @@
 
 class Algorithm
 {
-private:
-    size_t searchType;
-    size_t numberOfIterations;
-
-    bool buildAlgorithm(const char *);
 public:
     Algorithm() = delete;
     explicit Algorithm(const char *);
@@ -33,6 +29,24 @@ public:
     {
         return numberOfIterations;
     }
+
+    inline double getStepSize() const
+    {
+        return stepSize;
+    }
+
+    inline double getEps() const
+    {
+        return eps;
+    }
+
+private:
+    size_t searchType;
+    size_t numberOfIterations;
+    double stepSize;
+    double eps;
+
+    bool buildAlgorithm(const char *);
 };
 
 #endif

@@ -13,15 +13,6 @@
 
 class RRT
 {
-private:
-    size_t maxIter;
-    size_t height;
-    size_t width;
-    Geometry::Point start;
-    Geometry::Point finish;
-    double stepSize;
-    Tree tree;
-    Obstacle obstacles;
     
 public:
     RRT(const Map&, const Algorithm&);
@@ -50,6 +41,27 @@ public:
     {
         return maxIter;
     }
+
+    inline double getStepSize() const
+    {
+        return stepSize;
+    }
+
+    inline double getEps() const
+    {
+        return eps;
+    }
+
+private:
+    size_t maxIter;
+    size_t height;
+    size_t width;
+    Geometry::Point start;
+    Geometry::Point finish;
+    double stepSize;
+    double eps;
+    Tree tree;
+    Obstacle obstacles;
 };
 
 #endif

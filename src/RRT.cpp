@@ -6,9 +6,10 @@ RRT::RRT(const Map& map, const Algorithm& algo)
 , width(map.getMapWidth())
 , start(map.getStart())
 , finish(map.getFinish())
-, stepSize(CI_STEP_SIZE)
+, stepSize(algo.getStepSize())
+, eps(algo.getEps())
 , tree(map.getStart())
-, obstacles(map) {}
+, obstacles(map, algo) {}
 
 Geometry::Point RRT::getRandomPoint() const
 {
@@ -33,7 +34,7 @@ Tree::Node *RRT::getNearest(const Geometry::Point& p)
 Geometry::Point RRT::steer(const Geometry::Point& x, const Geometry::Point& y) const
 {
     double norm = std::sqrt(Geometry::euclideanMetric(x, y));
-    if (norm <= CI_STEP_SIZE) {
+    if (norm <= stepSize) {
         return y;
     }
     return x + (((y - x) / norm) * stepSize);

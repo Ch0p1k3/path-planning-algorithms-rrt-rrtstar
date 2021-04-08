@@ -9,16 +9,17 @@
 #include "algorithm.hpp"
 #include "geometry.hpp"
 #include "lib/SFML/include/SFML/Graphics.hpp"
+#include "roundendedline.hpp"
 
 namespace RRTAlgorithm
 {
     void launch(const Map&, const Algorithm&);
 
-    void launchWithVirt(const Map&, const Algorithm&);
+    void launchWithVis(const Map&, const Algorithm&);
 
-    void launchWithVirtAfter(const Map&, const Algorithm&);
+    void launchWithVisAfter(const Map&, const Algorithm&);
 
-    void launchWithVirtAfterWithoutTree(const Map&, const Algorithm&);
+    void launchWithVisAfterWithoutTree(const Map&, const Algorithm&);
 }
 
 #endif

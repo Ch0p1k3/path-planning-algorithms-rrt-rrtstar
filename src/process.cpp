@@ -5,7 +5,7 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Tree::Node *finishNode = nullptr;
-    const double EPS = CI_STEP_SIZE;
+    const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
@@ -22,6 +22,7 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
                             finishNode = newNode;
                         }
                     }
+                    break;
                 }
             }
         }
@@ -52,13 +53,13 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
     rrt.printTree();
 }
 
-void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
+void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
 {
     RRT rrt(map, algo);
     Geometry::Point start = rrt.getStart();
     Geometry::Point finish = rrt.getFinish();
     Tree::Node *finishNode = nullptr;
-    const double EPS = CI_STEP_SIZE * CI_STEP_SIZE;
+    const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     size_t height = map.getMapHeight();
     size_t width = map.getMapWidth();
@@ -66,7 +67,7 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
     window.setView(view);
     // window.setFramerateLimit(10000);
     std::vector<sf::Shape> obst;
@@ -102,16 +103,16 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
                     }
                 }
             }
-            sf::CircleShape startCircle(0.1);
-            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            sf::CircleShape startCircle(((double)height / 100) * 0.5);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
-            startCircle.setFillColor(sf::Color(170, 0, 0));
-            sf::CircleShape finishCircle(CI_STEP_SIZE); // width / 600 * 3
+            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            startCircle.setFillColor(sf::Color(0, 106, 0));
+            sf::CircleShape finishCircle(rrt.getEps()); // width / desksf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100 * 3
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
             finishCircle.setFillColor(sf::Color::Transparent);
-            finishCircle.setOutlineThickness(0.2f);
-            finishCircle.setOutlineColor(sf::Color(170, 0, 0));
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 10);
+            finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             window.draw(startCircle);
             window.draw(finishCircle);
             window.display();
@@ -128,7 +129,7 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
                     Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
                     if (newNode) {
                         if (window.isOpen()) {
-                            sf::CircleShape nodeCircle(0.1);
+                            sf::CircleShape nodeCircle(((double)height / 100) * 0.1);
                             nodeCircle.setFillColor(sf::Color::Black);
                             nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                             nodeCircle.setPosition(sf::Vector2f(xNew.x, xNew.y));
@@ -150,11 +151,12 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
                                     finishNode = newNode;
                                 }
                             }
+                            break;
                         }
                     }
                 } else {
                     if (window.isOpen()) {
-                        sf::CircleShape nodeCircle(0.1);
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.1);
                         nodeCircle.setFillColor(sf::Color::Red);
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(xNew.x, xNew.y));
@@ -186,13 +188,25 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
                         }
                     }
                     if (window.isOpen() && !res.empty()) {
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.15);
+                        nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                        nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
+                        window.draw(nodeCircle);
+                        nodeCircle.setPosition(sf::Vector2f(res.back()->point.x, res.back()->point.y));
+                        window.draw(nodeCircle);
                         sf::Vertex line[] = {
                             sf::Vertex(sf::Vector2f(tmp->point.x, tmp->point.y)),
                             sf::Vertex(sf::Vector2f(res.back()->point.x, res.back()->point.y)),
                         };
-                        line[0].color = sf::Color::Red;
-                        line[1].color = sf::Color::Red;
+                        line[0].color = sf::Color(sf::Color(255, 169, 0));
+                        line[1].color = sf::Color(sf::Color(255, 169, 0));
+                        CRoundendedLine line1;
+                        line1.setPosition(tmp->point.x, tmp->point.y);
+                        line1.setEndPoint(sf::Vector2f(res.back()->point.x, res.back()->point.y));
+                        line1.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line, 2, sf::Lines);
+                        window.draw(line1);
                     }
                     res.push_back(tmp);
                     tmp = tmp->parent;
@@ -216,13 +230,13 @@ void RRTAlgorithm::launchWithVirt(const Map& map, const Algorithm& algo)
     }
 }
 
-void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
+void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
 {
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Geometry::Point start = rrt.getStart();
     Tree::Node *finishNode = nullptr;
-    const double EPS = CI_STEP_SIZE;
+    const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
@@ -239,6 +253,7 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
                             finishNode = newNode;
                         }
                     }
+                    break;
                 }
             }
         }
@@ -249,7 +264,7 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
     window.setView(view);
     // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
@@ -285,30 +300,40 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
                     }
                 }
             }
-            sf::CircleShape startCircle(0.1);
-            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            sf::CircleShape startCircle(((double)height / 100) * 0.5);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
-            startCircle.setFillColor(sf::Color(170, 0, 0));
-            sf::CircleShape finishCircle(CI_STEP_SIZE); // width / 600 * 3
+            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            startCircle.setFillColor(sf::Color(0, 106, 0));
+            sf::CircleShape finishCircle(rrt.getEps()); // width / desksf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100 * 3
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
             finishCircle.setFillColor(sf::Color::Transparent);
-            finishCircle.setOutlineThickness(0.2f);
-            finishCircle.setOutlineColor(sf::Color(170, 0, 0));
-            window.draw(startCircle);
-            window.draw(finishCircle);
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 10);
+            finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             rrt.drawTree(window);
             if (finishNode) {
                 Tree::Node *tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.15);
+                        nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                        nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
+                        window.draw(nodeCircle);
+                        nodeCircle.setPosition(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
+                        window.draw(nodeCircle);
                         sf::Vertex line[] = {
                             sf::Vertex(sf::Vector2f(tmp->point.x, tmp->point.y)),
                             sf::Vertex(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y)),
                         };
-                        line[0].color = sf::Color::Red;
-                        line[1].color = sf::Color::Red;
+                        line[0].color = sf::Color(sf::Color(255, 169, 0));
+                        line[1].color = sf::Color(sf::Color(255, 169, 0));
+                        CRoundendedLine line1;
+                        line1.setPosition(tmp->point.x, tmp->point.y);
+                        line1.setEndPoint(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
+                        line1.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line, 2, sf::Lines);
+                        window.draw(line1);
                     }
                     tmp = tmp->parent;
                 }
@@ -316,42 +341,42 @@ void RRTAlgorithm::launchWithVirtAfter(const Map& map, const Algorithm& algo)
             window.draw(startCircle);
             window.draw(finishCircle);
             window.display();
+            std::cout.precision(8);
+            std::cout << std::fixed;
+            freopen("output.txt", "w", stdout);
+            if (!finishNode) {
+                std::cout << "Path not found\n";
+            } else {
+                std::cout << "Result distance: " << finishNode->distance << '\n';
+                Tree::Node *tmp = finishNode;
+                std::vector<Tree::Node *> res;
+                while (tmp) {
+                    res.push_back(tmp);
+                    tmp = tmp->parent;
+                }
+                std::reverse(res.begin(), res.end());
+                for (size_t i = 0; i < res.size(); ++i) {
+                    if (!i) {
+                        std::cout << res[i]->point;
+                    } else {
+                        std::cout << "->" << res[i]->point;
+                    }
+                }
+            }
+            std::cout << "\nTree:\n";
+            rrt.printTree();
         }
         isReady = true;
     }
-    std::cout.precision(8);
-    std::cout << std::fixed;
-    freopen("output.txt", "w", stdout);
-    if (!finishNode) {
-        std::cout << "Path not found\n";
-    } else {
-        std::cout << "Result distance: " << finishNode->distance << '\n';
-        Tree::Node *tmp = finishNode;
-        std::vector<Tree::Node *> res;
-        while (tmp) {
-            res.push_back(tmp);
-            tmp = tmp->parent;
-        }
-        std::reverse(res.begin(), res.end());
-        for (size_t i = 0; i < res.size(); ++i) {
-            if (!i) {
-                std::cout << res[i]->point;
-            } else {
-                std::cout << "->" << res[i]->point;
-            }
-        }
-    }
-    std::cout << "\nTree:\n";
-    rrt.printTree();
 }
 
-void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorithm& algo)
+void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm& algo)
 {
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Geometry::Point start = rrt.getStart();
     Tree::Node *finishNode = nullptr;
-    const double EPS = CI_STEP_SIZE;
+    const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
@@ -368,6 +393,7 @@ void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorith
                             finishNode = newNode;
                         }
                     }
+                    break;
                 }
             }
         }
@@ -378,7 +404,7 @@ void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorith
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
     window.setView(view);
     // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
@@ -414,59 +440,71 @@ void RRTAlgorithm::launchWithVirtAfterWithoutTree(const Map& map, const Algorith
                     }
                 }
             }
-            sf::CircleShape startCircle(0.1);
-            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            sf::CircleShape startCircle(((double)height / 100) * 0.5);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
-            startCircle.setFillColor(sf::Color(170, 0, 0));
-            sf::CircleShape finishCircle(CI_STEP_SIZE); // width / 600 * 3
+            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            startCircle.setFillColor(sf::Color(0, 106, 0));
+            sf::CircleShape finishCircle(rrt.getEps()); // width / desksf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100 * 3
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
             finishCircle.setFillColor(sf::Color::Transparent);
-            finishCircle.setOutlineThickness(0.2f);
-            finishCircle.setOutlineColor(sf::Color(170, 0, 0));
-            window.draw(startCircle);
-            window.draw(finishCircle);
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 10);
+            finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             if (finishNode) {
                 Tree::Node *tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.15);
+                        nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                        nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
+                        window.draw(nodeCircle);
+                        nodeCircle.setPosition(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
+                        window.draw(nodeCircle);
                         sf::Vertex line[] = {
                             sf::Vertex(sf::Vector2f(tmp->point.x, tmp->point.y)),
                             sf::Vertex(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y)),
                         };
-                        line[0].color = sf::Color::Red;
-                        line[1].color = sf::Color::Red;
+                        line[0].color = sf::Color(sf::Color(255, 169, 0));
+                        line[1].color = sf::Color(sf::Color(255, 169, 0));
+                        CRoundendedLine line1;
+                        line1.setPosition(tmp->point.x, tmp->point.y);
+                        line1.setEndPoint(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
+                        line1.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line, 2, sf::Lines);
+                        window.draw(line1);
                     }
                     tmp = tmp->parent;
                 }
             }
+            window.draw(startCircle);
+            window.draw(finishCircle);
             window.display();
+            std::cout.precision(8);
+            std::cout << std::fixed;
+            freopen("output.txt", "w", stdout);
+            if (!finishNode) {
+                std::cout << "Path not found\n";
+            } else {
+                std::cout << "Result distance: " << finishNode->distance << '\n';
+                Tree::Node *tmp = finishNode;
+                std::vector<Tree::Node *> res;
+                while (tmp) {
+                    res.push_back(tmp);
+                    tmp = tmp->parent;
+                }
+                std::reverse(res.begin(), res.end());
+                for (size_t i = 0; i < res.size(); ++i) {
+                    if (!i) {
+                        std::cout << res[i]->point;
+                    } else {
+                        std::cout << "->" << res[i]->point;
+                    }
+                }
+            }
+            std::cout << "\nTree:\n";
+            rrt.printTree();
         }
         isReady = true;
     }
-    std::cout.precision(8);
-    std::cout << std::fixed;
-    freopen("output.txt", "w", stdout);
-    if (!finishNode) {
-        std::cout << "Path not found\n";
-    } else {
-        std::cout << "Result distance: " << finishNode->distance << '\n';
-        Tree::Node *tmp = finishNode;
-        std::vector<Tree::Node *> res;
-        while (tmp) {
-            res.push_back(tmp);
-            tmp = tmp->parent;
-        }
-        std::reverse(res.begin(), res.end());
-        for (size_t i = 0; i < res.size(); ++i) {
-            if (!i) {
-                std::cout << res[i]->point;
-            } else {
-                std::cout << "->" << res[i]->point;
-            }
-        }
-    }
-    std::cout << "\nTree:\n";
-    rrt.printTree();
 }

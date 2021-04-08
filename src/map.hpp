@@ -12,13 +12,6 @@
 
 class Map
 {
-private:
-    size_t height, width;
-    Geometry::Point start;
-    Geometry::Point finish;
-    std::vector<std::vector<bool>> grid;
-
-    bool buildMap(const char *);
 public:
     explicit Map(const char *);
     Map() = delete;
@@ -45,6 +38,14 @@ public:
     }
 
     const std::vector<bool>& operator[](const size_t) const;
+
+private:
+    size_t height, width;
+    Geometry::Point start;
+    Geometry::Point finish;
+    std::vector<std::vector<bool>> grid;
+
+    bool buildMap(const char *);
 };
 
 #endif

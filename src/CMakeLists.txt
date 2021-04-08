@@ -7,7 +7,8 @@ set(HEADERS     geometry.hpp
                 obstacle.hpp
                 tree.hpp
                 RRT.hpp
-                process.hpp)
+                process.hpp
+                roundendedline.hpp)
 
 set(SOURCES     geometry.cpp
                 map.cpp
@@ -16,7 +17,8 @@ set(SOURCES     geometry.cpp
                 obstacle.cpp
                 tree.cpp
                 RRT.cpp
-                process.cpp)
+                process.cpp
+                roundendedline.cpp)
 
 
 set(SFML_DIR "${PROJECT_SOURCE_DIR}/src/lib/SFML/lib/cmake/SFML")

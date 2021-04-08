@@ -1,7 +1,8 @@
 #include "obstacle.hpp"
 
-Obstacle::Obstacle(const Map& map)
+Obstacle::Obstacle(const Map& map, const Algorithm& algo)
 {
+    stepSize = algo.getStepSize();
     size_t n = map.getMapHeight();
     size_t m = map.getMapWidth();
     cloud.pts.clear();
@@ -86,7 +87,7 @@ bool Obstacle::obstacleFree(const Geometry::Point& x, const Geometry::Point& y) 
     //     }
     // }
     // return true;
-    const double searchRadius = static_cast<double>(CI_STEP_SIZE * CI_STEP_SIZE);
+    const double searchRadius = Geometry::euclideanMetric(x, y);
     std::vector<std::pair<size_t, double>> resMatches;
     nanoflann::SearchParams params;
     const double query_point[2] = {x.x, x.y};

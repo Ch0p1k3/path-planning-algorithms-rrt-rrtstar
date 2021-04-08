@@ -7,9 +7,17 @@
 #include "geometry.hpp"
 #include "constants.hpp"
 #include "map.hpp"
+#include "algorithm.hpp"
 
 class Obstacle
 {
+public:
+    Obstacle(const Map&, const Algorithm&);
+    Obstacle() = delete;
+    ~Obstacle();
+    
+    bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
+
 private:
     struct Point
     {
@@ -46,12 +54,8 @@ private:
 
     kdTree *index;
     PointCloud cloud;
-public:
-    Obstacle(const Map& map);
-    Obstacle() = delete;
-    ~Obstacle();
-    
-    bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
+
+    double stepSize;
 };
 
 #endif
