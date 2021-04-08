@@ -2,7 +2,8 @@
 
 ## Description
 
-A software project at the Higher School of Economics. Finding the shortest paths(at the moment, RRT algorithm implemented).
+A software project at the Higher School of Economics. 
+Pathfinding algorithms(at the moment, RRT algorithm implemented).
 
 This project uses
 
