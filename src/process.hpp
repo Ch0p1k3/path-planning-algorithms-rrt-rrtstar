@@ -1,6 +1,8 @@
 #ifndef RRT_RRTstar_PROCESS_HPP
 #define RRT_RRTstar_PROCESS_HPP
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <algorithm>
 #include <optional>
 #include <vector>
@@ -9,7 +11,6 @@
 #include "algorithm.hpp"
 #include "geometry.hpp"
 #include "lib/SFML/include/SFML/Graphics.hpp"
-#include "roundendedline.hpp"
 
 namespace RRTAlgorithm
 {

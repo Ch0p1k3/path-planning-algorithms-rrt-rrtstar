@@ -67,7 +67,7 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
+    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
     // window.setFramerateLimit(10000);
     std::vector<sf::Shape> obst;
@@ -188,25 +188,19 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                         }
                     }
                     if (window.isOpen() && !res.empty()) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.15);
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.2);
                         nodeCircle.setFillColor(sf::Color(255, 169, 0));
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
                         window.draw(nodeCircle);
                         nodeCircle.setPosition(sf::Vector2f(res.back()->point.x, res.back()->point.y));
                         window.draw(nodeCircle);
-                        sf::Vertex line[] = {
-                            sf::Vertex(sf::Vector2f(tmp->point.x, tmp->point.y)),
-                            sf::Vertex(sf::Vector2f(res.back()->point.x, res.back()->point.y)),
-                        };
-                        line[0].color = sf::Color(sf::Color(255, 169, 0));
-                        line[1].color = sf::Color(sf::Color(255, 169, 0));
-                        CRoundendedLine line1;
-                        line1.setPosition(tmp->point.x, tmp->point.y);
-                        line1.setEndPoint(sf::Vector2f(res.back()->point.x, res.back()->point.y));
-                        line1.setFillColor(sf::Color(255, 169, 0));
-                        window.draw(line, 2, sf::Lines);
-                        window.draw(line1);
+                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res.back()->point, tmp->point)), (double)height / 100 * 0.2));
+                        line2.rotate(std::atan2(res.back()->point.y - tmp->point.y, res.back()->point.x - tmp->point.x) / M_PI * 180);
+                        line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
+                        line2.setPosition(tmp->point.x, tmp->point.y);
+                        line2.setFillColor(sf::Color(255, 169, 0));
+                        window.draw(line2);
                     }
                     res.push_back(tmp);
                     tmp = tmp->parent;
@@ -264,7 +258,7 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
+    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
     // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
@@ -315,25 +309,19 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
                 Tree::Node *tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.15);
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.2);
                         nodeCircle.setFillColor(sf::Color(255, 169, 0));
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
                         window.draw(nodeCircle);
                         nodeCircle.setPosition(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
                         window.draw(nodeCircle);
-                        sf::Vertex line[] = {
-                            sf::Vertex(sf::Vector2f(tmp->point.x, tmp->point.y)),
-                            sf::Vertex(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y)),
-                        };
-                        line[0].color = sf::Color(sf::Color(255, 169, 0));
-                        line[1].color = sf::Color(sf::Color(255, 169, 0));
-                        CRoundendedLine line1;
-                        line1.setPosition(tmp->point.x, tmp->point.y);
-                        line1.setEndPoint(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
-                        line1.setFillColor(sf::Color(255, 169, 0));
-                        window.draw(line, 2, sf::Lines);
-                        window.draw(line1);
+                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(tmp->parent->point, tmp->point)), (double)height / 100 * 0.2));
+                        line2.rotate(std::atan2(tmp->parent->point.y - tmp->point.y, tmp->parent->point.x - tmp->point.x) / M_PI * 180);
+                        line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
+                        line2.setPosition(tmp->point.x, tmp->point.y);
+                        line2.setFillColor(sf::Color(255, 169, 0));
+                        window.draw(line2);
                     }
                     tmp = tmp->parent;
                 }
@@ -404,7 +392,7 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
+    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
     // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
@@ -454,25 +442,19 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
                 Tree::Node *tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.15);
+                        sf::CircleShape nodeCircle(((double)height / 100) * 0.2);
                         nodeCircle.setFillColor(sf::Color(255, 169, 0));
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
                         window.draw(nodeCircle);
                         nodeCircle.setPosition(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
                         window.draw(nodeCircle);
-                        sf::Vertex line[] = {
-                            sf::Vertex(sf::Vector2f(tmp->point.x, tmp->point.y)),
-                            sf::Vertex(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y)),
-                        };
-                        line[0].color = sf::Color(sf::Color(255, 169, 0));
-                        line[1].color = sf::Color(sf::Color(255, 169, 0));
-                        CRoundendedLine line1;
-                        line1.setPosition(tmp->point.x, tmp->point.y);
-                        line1.setEndPoint(sf::Vector2f(tmp->parent->point.x, tmp->parent->point.y));
-                        line1.setFillColor(sf::Color(255, 169, 0));
-                        window.draw(line, 2, sf::Lines);
-                        window.draw(line1);
+                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(tmp->parent->point, tmp->point)), (double)height / 100 * 0.2));
+                        line2.rotate(std::atan2(tmp->parent->point.y - tmp->point.y, tmp->parent->point.x - tmp->point.x) / M_PI * 180);
+                        line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
+                        line2.setPosition(tmp->point.x, tmp->point.y);
+                        line2.setFillColor(sf::Color(255, 169, 0));
+                        window.draw(line2);
                     }
                     tmp = tmp->parent;
                 }

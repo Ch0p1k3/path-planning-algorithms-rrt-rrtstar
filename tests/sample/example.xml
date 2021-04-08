@@ -32,5 +32,7 @@
     <algorithm>
         <searchtype>rrt</searchtype>
         <numberofiterations>1000</numberofiterations>
+        <stepsize>1</stepsize>
+        <eps>1</eps>
     </algorithm>
 </root>
