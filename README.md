@@ -42,8 +42,8 @@ git submodule update
   - Tag "algorithm" describes the algrithm options.
     - `searchtype` - the type of the search. Arguments are `rrt` or `rrtstar`. RRT and RRT* algorithm, respectively.
     - `numberofiterations` - number of iterations of the algorithm. In the case of RRT, if a path is found, the construction of the tree stops. In the case of RRT* algorithm will be improve path length. If you do not specify this tag, the default is set to 100000.
-    - `stepsize` - maximum edge size in a tree. If you do not specify this tag, the default is set to 3.
-    - `eps` - error area the finish point.
+    - `stepsize` - maximum edge size in a tree. If you do not specify this tag, the default is set to 3. The value must be greater or equal than 1.
+    - `eps` - error area the finish point. If you do not specify this tag, the default is set to 3. The value must be greater or equal than 1.
 
 You can see an example of input data in the folder `tests`. [Sample](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example.xml). 
 In case of incorrect data, there may be undefined behavior.
@@ -130,8 +130,7 @@ That is, if a higher priority argument is specified, the others will be ignored.
 - `-v`
 ![vis](./images/Vis_Moscow_1024_rrt.gif)
 
-- `-va` - same as `-v`, but after 
-after working out the algorithm
+- `-va` - same as `-v`, but after working out the algorithm
 ![visAfter](./images/VisAfter_Moscow_1024_rrt.png)
 
 - `-vawt`
