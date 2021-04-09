@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <optional>
 #include <vector>
+#include <chrono>
 #include "RRT.hpp"
 #include "map.hpp"
 #include "algorithm.hpp"

@@ -1036,5 +1036,7 @@
   <algorithm>
     <searchtype>rrt</searchtype>
     <numberofiterations>1000000</numberofiterations>
+    <eps>15</eps>
+    <stepsize>20</stepsize>
   </algorithm>
 </root>

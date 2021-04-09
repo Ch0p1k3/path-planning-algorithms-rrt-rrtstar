@@ -2,11 +2,13 @@
 
 void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
 {
+    size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Tree::Node *finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
+    auto time = std::chrono::steady_clock::now();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
         Tree::Node *xNearest = rrt.getNearest(xRand);
@@ -14,6 +16,7 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
         if (rrt.obstacleFree(xNearest->point, xNew)) {
             Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
             if (newNode) {
+                ++countOfEdges;
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     if (!finishNode) {
                         finishNode = newNode;
@@ -27,11 +30,12 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
             }
         }
     }
+    double timeRes = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
-    freopen("output.txt", "w", stdout);
+    std::cout << "Time: " << timeRes << "\nCount of edges: " << countOfEdges << '\n';
     if (!finishNode) {
-        std::cout << "Path not found\n";
+        std::cout << "Path not found.\n";
     } else {
         std::cout << "Result distance: " << finishNode->distance << '\n';
         Tree::Node *tmp = finishNode;
@@ -40,21 +44,24 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
             res.push_back(tmp);
             tmp = tmp->parent;
         }
+        std::cout << "Path:\n";
         std::reverse(res.begin(), res.end());
         for (size_t i = 0; i < res.size(); ++i) {
             if (!i) {
                 std::cout << res[i]->point;
             } else {
-                std::cout << "->" << res[i]->point;
+                std::cout << "\n" << res[i]->point;
             }
         }
     }
-    std::cout << "\nTree:\n";
-    rrt.printTree();
+    // std::cout << "\nTree:\n";
+    // rrt.printTree();
 }
 
 void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
 {
+    
+    size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point start = rrt.getStart();
     Geometry::Point finish = rrt.getFinish();
@@ -72,6 +79,7 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
     // window.setFramerateLimit(10000);
     std::vector<sf::Shape> obst;
     bool isReady = false;
+    auto time = std::chrono::steady_clock::now();
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -111,11 +119,14 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
             finishCircle.setFillColor(sf::Color::Transparent);
-            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 10);
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 40);
             finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             window.draw(startCircle);
             window.draw(finishCircle);
             window.display();
+            auto time = std::chrono::steady_clock::now();
+            double resTime = 0;
+            auto tmp = std::chrono::steady_clock::now();
             for (size_t it = 0; (it < numberOfIter); ++it) {
                 while (window.pollEvent(event)) {
                     if (event.type == sf::Event::Closed) {
@@ -128,6 +139,8 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                 if (rrt.obstacleFree(xNearest->point, xNew)) {
                     Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
                     if (newNode) {
+                        ++countOfEdges;
+                        tmp = std::chrono::steady_clock::now();
                         if (window.isOpen()) {
                             sf::CircleShape nodeCircle(((double)height / 100) * 0.1);
                             nodeCircle.setFillColor(sf::Color::Black);
@@ -143,6 +156,7 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                             window.draw(line, 2, sf::Lines);
                             window.display();
                         }
+                        resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
                         if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                             if (!finishNode) {
                                 finishNode = newNode;
@@ -155,6 +169,7 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                         }
                     }
                 } else {
+                    tmp = std::chrono::steady_clock::now();
                     if (window.isOpen()) {
                         sf::CircleShape nodeCircle(((double)height / 100) * 0.1);
                         nodeCircle.setFillColor(sf::Color::Red);
@@ -170,13 +185,16 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                         window.draw(line, 2, sf::Lines);
                         window.display();
                     }
+                    resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
                 }
             }
+            resTime += std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
             std::cout.precision(8);
             std::cout << std::fixed;
-            freopen("output.txt", "w", stdout);
+            std::cout << "Time: " << resTime << '\n';
+            std::cout << "Count of edges: " << countOfEdges << '\n';
             if (!finishNode) {
-                std::cout << "Path not found\n";
+                std::cout << "Path not found.\n";
             } else {
                 std::cout << "Result distance: " << finishNode->distance << '\n';
                 Tree::Node *tmp = finishNode;
@@ -205,20 +223,19 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                     res.push_back(tmp);
                     tmp = tmp->parent;
                 }
+                std::cout << "Path:\n";
                 std::reverse(res.begin(), res.end());
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
                         std::cout << res[i]->point;
                     } else {
-                        std::cout << "->" << res[i]->point;
+                        std::cout << "\n" << res[i]->point;
                     }
                 }
             }
             window.draw(startCircle);
             window.draw(finishCircle);
             window.display();
-            std::cout << "\nTree:\n";
-            rrt.printTree();
             isReady = true;
         }
     }
@@ -226,12 +243,14 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
 
 void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
 {
+    size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Geometry::Point start = rrt.getStart();
     Tree::Node *finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
+    auto time = std::chrono::steady_clock::now();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
         Tree::Node *xNearest = rrt.getNearest(xRand);
@@ -239,6 +258,7 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
         if (rrt.obstacleFree(xNearest->point, xNew)) {
             Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
             if (newNode) {
+                ++countOfEdges;
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     if (!finishNode) {
                         finishNode = newNode;
@@ -252,6 +272,11 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
             }
         }
     }
+    double resTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
+    std::cout.precision(8);
+    std::cout << std::fixed;
+    std::cout << "Time: " << resTime << '\n';
+    std::cout << "Count of edges: " << countOfEdges << '\n';
     size_t height = map.getMapHeight();
     size_t width = map.getMapWidth();
     sf::ContextSettings settings;
@@ -260,7 +285,6 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
-    // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
     bool isReady = false;
     while (window.isOpen()) {
@@ -302,7 +326,7 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
             finishCircle.setFillColor(sf::Color::Transparent);
-            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 10);
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 40);
             finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             rrt.drawTree(window);
             if (finishNode) {
@@ -329,11 +353,8 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
             window.draw(startCircle);
             window.draw(finishCircle);
             window.display();
-            std::cout.precision(8);
-            std::cout << std::fixed;
-            freopen("output.txt", "w", stdout);
             if (!finishNode) {
-                std::cout << "Path not found\n";
+                std::cout << "Path not found.\n";
             } else {
                 std::cout << "Result distance: " << finishNode->distance << '\n';
                 Tree::Node *tmp = finishNode;
@@ -347,12 +368,10 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
                     if (!i) {
                         std::cout << res[i]->point;
                     } else {
-                        std::cout << "->" << res[i]->point;
+                        std::cout << "\n" << res[i]->point;
                     }
                 }
             }
-            std::cout << "\nTree:\n";
-            rrt.printTree();
         }
         isReady = true;
     }
@@ -360,12 +379,14 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
 
 void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm& algo)
 {
+    size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Geometry::Point start = rrt.getStart();
     Tree::Node *finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
+    auto time = std::chrono::steady_clock::now();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
         Tree::Node *xNearest = rrt.getNearest(xRand);
@@ -373,6 +394,7 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
         if (rrt.obstacleFree(xNearest->point, xNew)) {
             Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
             if (newNode) {
+                ++countOfEdges;
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     if (!finishNode) {
                         finishNode = newNode;
@@ -386,6 +408,11 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
             }
         }
     }
+    double resTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
+    std::cout.precision(8);
+    std::cout << std::fixed;
+    std::cout << "Time: " << resTime << '\n';
+    std::cout << "Count of edges: " << countOfEdges << '\n';
     size_t height = map.getMapHeight();
     size_t width = map.getMapWidth();
     sf::ContextSettings settings;
@@ -394,7 +421,6 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
     sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
     sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
     window.setView(view);
-    // window.setFramerateLimit(60);
     std::vector<sf::Shape> obst;
     bool isReady = false;
     while (window.isOpen()) {
@@ -436,7 +462,7 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
             finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
             finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
             finishCircle.setFillColor(sf::Color::Transparent);
-            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 10);
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 40);
             finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             if (finishNode) {
                 Tree::Node *tmp = finishNode;
@@ -462,11 +488,8 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
             window.draw(startCircle);
             window.draw(finishCircle);
             window.display();
-            std::cout.precision(8);
-            std::cout << std::fixed;
-            freopen("output.txt", "w", stdout);
             if (!finishNode) {
-                std::cout << "Path not found\n";
+                std::cout << "Path not found.\n";
             } else {
                 std::cout << "Result distance: " << finishNode->distance << '\n';
                 Tree::Node *tmp = finishNode;
@@ -480,12 +503,10 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
                     if (!i) {
                         std::cout << res[i]->point;
                     } else {
-                        std::cout << "->" << res[i]->point;
+                        std::cout << "\n" << res[i]->point;
                     }
                 }
             }
-            std::cout << "\nTree:\n";
-            rrt.printTree();
         }
         isReady = true;
     }
