@@ -10,6 +10,7 @@
 #include "process.hpp"
 #include "constants.hpp"
 #include "searchresult.hpp"
+#include "log.hpp"
 #include "outdata.hpp"
 
 int main(int argc, char *argv[])
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
             hasVisAfterWithoutTree = true;
         }
     }
+    Log log(filePath);
     SearchResult res;
     if (hasVisAfterWithoutTree) {
         res = RRTAlgorithm::launchWithVisAfterWithoutTree(m, algo);
@@ -43,5 +45,5 @@ int main(int argc, char *argv[])
     } else {
         res = RRTAlgorithm::launch(m, algo);
     }
-    OutData::fill(filePath, res);
+    OutData::fill(log.getPath(), res);
 }

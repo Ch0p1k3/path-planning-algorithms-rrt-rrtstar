@@ -9,7 +9,8 @@ set(HEADERS     geometry.hpp
                 RRT.hpp
                 process.hpp
                 searchresult.hpp
-                outdata.hpp)
+                outdata.hpp
+                log.hpp)
 
 set(SOURCES     geometry.cpp
                 map.cpp
@@ -19,7 +20,8 @@ set(SOURCES     geometry.cpp
                 tree.cpp
                 RRT.cpp
                 process.cpp
-                outdata.cpp)
+                outdata.cpp
+                log.cpp)
 
 
 set(SFML_DIR "${PROJECT_SOURCE_DIR}/src/lib/SFML/lib/cmake/SFML")

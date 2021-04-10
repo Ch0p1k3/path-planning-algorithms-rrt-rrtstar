@@ -22,6 +22,8 @@
         #define CS_TAG_NUMBER_OF_ITERATIONS         "numberofiterations"
         #define CS_TAG_STEP_SIZE                    "stepsize"
         #define CS_TAG_EPS                          "eps"
+    #define CS_TAG_LOG                              "log"
+        #define CS_TAG_PATH_FILE                    "path"
 // output file
     #define CS_TAG_TIME                             "time"
     #define CS_TAG_COUNT_OF_EDGES                   "countofedges"

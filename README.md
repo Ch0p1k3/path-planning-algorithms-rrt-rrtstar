@@ -29,7 +29,7 @@ git submodule update
 
 ## Input and output
 
-### Input files
+### Input file
 
 - Mandatory tag `root`. It describes the parameters.
   - Tag `map`. It describes the map.
@@ -40,14 +40,26 @@ git submodule update
     - `finishx` - the finish coordinate x. A number from `0` to `width - 1`.
     - `finishy` - the finish coordinate y. A number from `0` to `height - 1`.
     - Tag `grid` describes your map, where each line is separated by a `line` tag. `0` is free cell, `1` is obstruction.
-  - Tag "algorithm" describes the algrithm options.
+  - Tag `algorithm` describes the algrithm options.
     - `searchtype` - the type of the search. Arguments are `rrt` or `rrtstar`. RRT and RRT* algorithm, respectively.
     - `numberofiterations` - number of iterations of the algorithm. In the case of RRT, if a path is found, the construction of the tree stops. In the case of RRT* algorithm will be improve path length. If you do not specify this tag, the default is set to 100000.
     - `stepsize` - maximum edge size in a tree. If you do not specify this tag, the default is set to 3. The value must be greater or equal than 1.
     - `eps` - error area the finish point. If you do not specify this tag, the default is set to 3. The value must be greater or equal than 1.
+  - Tag `log` - specified output options. This is optional. If there are not the tag, the output file will be create in the same name and directory with suffix _log.
+    - `path` - path to output file(with the name of file).
 
-You can see an example of input data in the folder `tests`. [Sample](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example.xml). 
-In case of incorrect data, there may be undefined behavior.
+You can see an example of input data in the folder `tests`. [Sample](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example.xml). In case of incorrect data, there may be undefined behavior.
+
+### Output file
+
+- Tag `root`. It describes the parameters.
+  - `time` - algorithm running time.
+  - `countofedges` - number of edges created.
+  - `pathfound` - the tag that describes whether a path is found.
+  - `distance` - length of the path found.
+  - `path` - describes points of the path.
+
+[Example of output data](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example_log.xml).
 
 ## Getting started
 
@@ -130,12 +142,18 @@ That is, if a higher priority argument is specified, the others will be ignored.
 
 - `-v`
 ![vis](./images/Vis_Moscow_1024_rrt.gif)
+![vis](./images/Vis_Berlin_1024_rrt.gif)
+![vis](./images/Vis_Dervin_1024_rrt.gif)
 
 - `-va` - same as `-v`, but after working out the algorithm
-![visAfter](./images/VisAfter_Moscow_1024_rrt.png)
+![visAfter](./images/brc000d.png)
+![visAfter](./images/brc100d.png)
+![visAfter](./images/brc101d.png)
 
 - `-vawt`
-![visAfter](./images/VisAfterWithoutTree_Moscow_1024_rrt.png)
+![visAfter](./images/brc200d.png)
+![visAfter](./images/brc201d.png)
+![visAfter](./images/brc300d.png)
 
 ## Mentors
 

@@ -10,7 +10,7 @@
 
 namespace OutData
 {
-    void fill(const char *, const SearchResult &);
+    void fill(const std::string&, const SearchResult &);
 }
 
 #endif

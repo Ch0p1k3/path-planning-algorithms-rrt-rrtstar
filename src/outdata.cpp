@@ -1,15 +1,7 @@
 #include "outdata.hpp"
 
-void OutData::fill(const char *filePath, const SearchResult& result)
+void OutData::fill(const std::string& filePath, const SearchResult& result)
 {
-    std::string str;
-    str.append(filePath);
-    size_t found = str.find_last_of(".");
-    if (found != std::string::npos) {
-        str.insert(found, "_log");
-    } else {
-        str.append("_log");
-    }
     pugi::xml_document document;
     document.append_child(CS_TAG_ROOT);
     pugi::xml_node root = document.child(CS_TAG_ROOT);
@@ -38,5 +30,5 @@ void OutData::fill(const char *filePath, const SearchResult& result)
         root.last_child().set_value("false");
     }
     // document.print(std::cout);
-    std::cout << "Saving result: " << document.save_file(str.c_str()) << '\n';
+    std::cout << "Saving result: " << document.save_file(filePath.c_str()) << '\n';
 }

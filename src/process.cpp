@@ -119,7 +119,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                     }
                 }
             }
-            sf::CircleShape startCircle(((double)height / 100) * 0.5);
+            sf::CircleShape startCircle(((double)height / 100) * 1);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
             startCircle.setPosition(sf::Vector2f(start.x, start.y));
             startCircle.setFillColor(sf::Color(0, 106, 0));
@@ -338,7 +338,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
                     }
                 }
             }
-            sf::CircleShape startCircle(((double)height / 100) * 0.5);
+            sf::CircleShape startCircle(((double)height / 100) * 1);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
             startCircle.setPosition(sf::Vector2f(start.x, start.y));
             startCircle.setFillColor(sf::Color(0, 106, 0));
@@ -484,7 +484,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
                     }
                 }
             }
-            sf::CircleShape startCircle(((double)height / 100) * 0.5);
+            sf::CircleShape startCircle(((double)height / 100) * 1);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
             startCircle.setPosition(sf::Vector2f(start.x, start.y));
             startCircle.setFillColor(sf::Color(0, 106, 0));

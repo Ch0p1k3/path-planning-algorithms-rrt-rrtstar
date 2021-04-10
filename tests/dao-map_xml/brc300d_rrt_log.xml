@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<root>
+	<time>0.000174</time>
+	<countofedges>7</countofedges>
+	<pathfound>true</pathfound>
+	<distance>18.000000</distance>
+	<path>
+		<node number="0" x="223.5" y="27.5" />
+		<node number="1" x="222.95312324351463" y="30.449733176613783" />
+		<node number="2" x="220.41235073325811" y="32.044874252232106" />
+		<node number="3" x="217.83888965821791" y="33.586723173252885" />
+		<node number="4" x="218.25487981432278" y="36.557741885752662" />
+		<node number="5" x="219.44422332475327" y="39.311913633156387" />
+		<node number="6" x="217.17243290932274" y="41.27124216823109" />
+	</path>
+</root>
