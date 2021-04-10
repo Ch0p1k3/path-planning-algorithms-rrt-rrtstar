@@ -1,6 +1,6 @@
 #include "process.hpp"
 
-void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
+const SearchResult RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
 {
     size_t countOfEdges = 0;
     RRT rrt(map, algo);
@@ -33,34 +33,41 @@ void RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
     double timeRes = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
+    SearchResult searchResult;
+    searchResult.time = timeRes;
+    searchResult.countOfEdges = countOfEdges;
     std::cout << "Time: " << timeRes << "\nCount of edges: " << countOfEdges << '\n';
     if (!finishNode) {
+        searchResult.pathFound = false;
         std::cout << "Path not found.\n";
     } else {
+        searchResult.pathFound = true;
+        searchResult.distance = finishNode->distance;
         std::cout << "Result distance: " << finishNode->distance << '\n';
         Tree::Node *tmp = finishNode;
-        std::vector<Tree::Node *> res;
+        std::vector<Geometry::Point> res;
         while (tmp) {
-            res.push_back(tmp);
+            res.push_back(tmp->point);
             tmp = tmp->parent;
         }
         std::cout << "Path:\n";
         std::reverse(res.begin(), res.end());
+        searchResult.path = res;
         for (size_t i = 0; i < res.size(); ++i) {
             if (!i) {
-                std::cout << res[i]->point;
+                std::cout << res[i];
             } else {
-                std::cout << "\n" << res[i]->point;
+                std::cout << "\n" << res[i];
             }
         }
+        if (!res.empty()) std::cout << '\n';
     }
-    // std::cout << "\nTree:\n";
-    // rrt.printTree();
+    return searchResult;
 }
 
-void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
+const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
 {
-    
+    SearchResult searchResult;
     size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point start = rrt.getStart();
@@ -73,8 +80,9 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
+    double coef = std::min((double)desktop.width / width, (double)desktop.height / height);
+    sf::RenderWindow window(sf::VideoMode((unsigned int)(width * coef * 0.95), (unsigned int)(height * coef * 0.95), desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
     window.setView(view);
     // window.setFramerateLimit(10000);
     std::vector<sf::Shape> obst;
@@ -191,14 +199,19 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
             resTime += std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
             std::cout.precision(8);
             std::cout << std::fixed;
+            searchResult.time = resTime;
+            searchResult.countOfEdges = countOfEdges;
             std::cout << "Time: " << resTime << '\n';
             std::cout << "Count of edges: " << countOfEdges << '\n';
             if (!finishNode) {
+                searchResult.pathFound = false;
                 std::cout << "Path not found.\n";
             } else {
+                searchResult.pathFound = true;
+                searchResult.distance = finishNode->distance;
                 std::cout << "Result distance: " << finishNode->distance << '\n';
                 Tree::Node *tmp = finishNode;
-                std::vector<Tree::Node *> res;
+                std::vector<Geometry::Point> res;
                 while (tmp) {
                     while (window.pollEvent(event)) {
                         if (event.type == sf::Event::Closed) {
@@ -211,27 +224,29 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
                         window.draw(nodeCircle);
-                        nodeCircle.setPosition(sf::Vector2f(res.back()->point.x, res.back()->point.y));
+                        nodeCircle.setPosition(sf::Vector2f(res.back().x, res.back().y));
                         window.draw(nodeCircle);
-                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res.back()->point, tmp->point)), (double)height / 100 * 0.2));
-                        line2.rotate(std::atan2(res.back()->point.y - tmp->point.y, res.back()->point.x - tmp->point.x) / M_PI * 180);
+                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res.back(), tmp->point)), (double)height / 100 * 0.2));
+                        line2.rotate(std::atan2(res.back().y - tmp->point.y, res.back().x - tmp->point.x) / M_PI * 180);
                         line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
                         line2.setPosition(tmp->point.x, tmp->point.y);
                         line2.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line2);
                     }
-                    res.push_back(tmp);
+                    res.push_back(tmp->point);
                     tmp = tmp->parent;
                 }
                 std::cout << "Path:\n";
                 std::reverse(res.begin(), res.end());
+                searchResult.path = res;
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
-                        std::cout << res[i]->point;
+                        std::cout << res[i];
                     } else {
-                        std::cout << "\n" << res[i]->point;
+                        std::cout << "\n" << res[i];
                     }
                 }
+                if (!res.empty()) std::cout << '\n';
             }
             window.draw(startCircle);
             window.draw(finishCircle);
@@ -239,10 +254,12 @@ void RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
             isReady = true;
         }
     }
+    return searchResult;
 }
 
-void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
+const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
 {
+    SearchResult searchResult;
     size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
@@ -275,6 +292,8 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
     double resTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
+    searchResult.time = resTime;
+    searchResult.countOfEdges = countOfEdges;
     std::cout << "Time: " << resTime << '\n';
     std::cout << "Count of edges: " << countOfEdges << '\n';
     size_t height = map.getMapHeight();
@@ -282,8 +301,9 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
+    double coef = std::min((double)desktop.width / width, (double)desktop.height / height);
+    sf::RenderWindow window(sf::VideoMode((unsigned int)(width * coef * 0.95), (unsigned int)(height * coef * 0.95), desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
     window.setView(view);
     std::vector<sf::Shape> obst;
     bool isReady = false;
@@ -354,31 +374,38 @@ void RRTAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
             window.draw(finishCircle);
             window.display();
             if (!finishNode) {
+                searchResult.pathFound = false;
                 std::cout << "Path not found.\n";
             } else {
+                searchResult.pathFound = true;
+                searchResult.distance = finishNode->distance;
                 std::cout << "Result distance: " << finishNode->distance << '\n';
                 Tree::Node *tmp = finishNode;
-                std::vector<Tree::Node *> res;
+                std::vector<Geometry::Point> res;
                 while (tmp) {
-                    res.push_back(tmp);
+                    res.push_back(tmp->point);
                     tmp = tmp->parent;
                 }
                 std::reverse(res.begin(), res.end());
+                searchResult.path = res;
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
-                        std::cout << res[i]->point;
+                        std::cout << res[i];
                     } else {
-                        std::cout << "\n" << res[i]->point;
+                        std::cout << "\n" << res[i];
                     }
                 }
+                if (!res.empty()) std::cout << '\n';
             }
         }
         isReady = true;
     }
+    return searchResult;
 }
 
-void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm& algo)
+const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm& algo)
 {
+    SearchResult searchResult;
     size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
@@ -411,6 +438,8 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
     double resTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
+    searchResult.time = resTime;
+    searchResult.countOfEdges = countOfEdges;
     std::cout << "Time: " << resTime << '\n';
     std::cout << "Count of edges: " << countOfEdges << '\n';
     size_t height = map.getMapHeight();
@@ -418,8 +447,9 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100, desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
-    sf::View view(sf::FloatRect(0., 0., (float)width + 1, (float)height + 1));
+    double coef = std::min((double)desktop.width / width, (double)desktop.height / height);
+    sf::RenderWindow window(sf::VideoMode((unsigned int)(width * coef * 0.95), (unsigned int)(height * coef * 0.95), desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
     window.setView(view);
     std::vector<sf::Shape> obst;
     bool isReady = false;
@@ -489,25 +519,31 @@ void RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm
             window.draw(finishCircle);
             window.display();
             if (!finishNode) {
+                searchResult.pathFound = false;
                 std::cout << "Path not found.\n";
             } else {
+                searchResult.pathFound = true;
+                searchResult.distance = finishNode->distance;
                 std::cout << "Result distance: " << finishNode->distance << '\n';
                 Tree::Node *tmp = finishNode;
-                std::vector<Tree::Node *> res;
+                std::vector<Geometry::Point> res;
                 while (tmp) {
-                    res.push_back(tmp);
+                    res.push_back(tmp->point);
                     tmp = tmp->parent;
                 }
                 std::reverse(res.begin(), res.end());
+                searchResult.path = res;
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
-                        std::cout << res[i]->point;
+                        std::cout << res[i];
                     } else {
-                        std::cout << "\n" << res[i]->point;
+                        std::cout << "\n" << res[i];
                     }
                 }
+                if (!res.empty()) std::cout << '\n';
             }
         }
         isReady = true;
     }
+    return searchResult;
 }

@@ -651,5 +651,6 @@
   <algorithm>
     <searchtype>rrt</searchtype>
     <numberofiterations>1000000</numberofiterations>
+    <stepsize>5</stepsize>
   </algorithm>
 </root>

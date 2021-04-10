@@ -15,9 +15,9 @@ Geometry::Point RRT::getRandomPoint() const
 {
     std::random_device rd;
     std::mt19937 gen1(rd());
-    std::uniform_real_distribution<> xs(0, width + 1);
+    std::uniform_real_distribution<> xs(0, width);
     std::mt19937 gen2(rd());
-    std::uniform_real_distribution<> ys(0, height + 1);
+    std::uniform_real_distribution<> ys(0, height);
     return Geometry::Point{xs(gen1), ys(gen2)};
 }
 

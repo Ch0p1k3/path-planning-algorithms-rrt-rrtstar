@@ -7,21 +7,22 @@
 #include <optional>
 #include <vector>
 #include <chrono>
+#include "lib/SFML/include/SFML/Graphics.hpp"
 #include "RRT.hpp"
 #include "map.hpp"
 #include "algorithm.hpp"
 #include "geometry.hpp"
-#include "lib/SFML/include/SFML/Graphics.hpp"
+#include "searchresult.hpp"
 
 namespace RRTAlgorithm
 {
-    void launch(const Map&, const Algorithm&);
+    const SearchResult launch(const Map&, const Algorithm&);
 
-    void launchWithVis(const Map&, const Algorithm&);
+    const SearchResult launchWithVis(const Map&, const Algorithm&);
 
-    void launchWithVisAfter(const Map&, const Algorithm&);
+    const SearchResult launchWithVisAfter(const Map&, const Algorithm&);
 
-    void launchWithVisAfterWithoutTree(const Map&, const Algorithm&);
+    const SearchResult launchWithVisAfterWithoutTree(const Map&, const Algorithm&);
 }
 
 #endif
