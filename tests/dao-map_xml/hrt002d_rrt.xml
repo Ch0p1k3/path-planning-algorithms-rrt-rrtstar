@@ -2,10 +2,10 @@
   <map>
     <height>50</height>
     <width>49</width>
-    <startx>19.5</startx>
-    <starty>8.5</starty>
-    <finishx>21.5</finishx>
-    <finishy>46.5</finishy>
+    <startx>12.5</startx>
+    <starty>23.5</starty>
+    <finishx>15.5</finishx>
+    <finishy>22.5</finishy>
     <grid>
       <row>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</row>
       <row>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</row>

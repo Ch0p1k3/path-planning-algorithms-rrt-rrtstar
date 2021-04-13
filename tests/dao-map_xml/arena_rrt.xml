@@ -2,10 +2,10 @@
   <map>
     <height>49</height>
     <width>49</width>
-    <startx>20.5</startx>
-    <starty>22.5</starty>
-    <finishx>41.5</finishx>
-    <finishy>24.5</finishy>
+    <startx>35.5</startx>
+    <starty>40.5</starty>
+    <finishx>26.5</finishx>
+    <finishy>15.5</finishy>
     <grid>
       <row>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</row>
       <row>1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1</row>
@@ -60,6 +60,6 @@
   </map>
   <algorithm>
     <searchtype>rrt</searchtype>
-    <numberofiterations>10000</numberofiterations>
+    <numberofiterations>1000000</numberofiterations>
   </algorithm>
 </root>

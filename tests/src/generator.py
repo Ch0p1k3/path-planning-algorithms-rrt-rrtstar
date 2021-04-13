@@ -27,7 +27,7 @@ def generate_object(file: TextIOWrapper, filepath: str, typealgorithm: str):
             e = l[j]
             if e == '.':
                 tmp.append('0')
-                freeceils.append((j, i))
+                freeceils.append((j, i - 4))
             else:
                 tmp.append('1')
         row = ET.SubElement(grid, 'row')
@@ -45,8 +45,11 @@ def generate_object(file: TextIOWrapper, filepath: str, typealgorithm: str):
 
 def main():
     folder = sys.argv[-1]
+    while folder[len(folder) - 1] == '\\' or folder[len(folder) - 1] == '/':
+        folder = folder[:len(folder) - 1:]
+    print(folder)
     os.chdir('..')
-    if f'{folder}_js' in os.listdir():
+    if f'{folder}_xml' in os.listdir():
         raise Exception(f'There is folder named {folder}_xml')
     os.mkdir(f'{folder}_xml')
     os.chdir(os.path.join('.', folder))

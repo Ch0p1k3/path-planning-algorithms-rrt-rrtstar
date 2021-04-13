@@ -3,9 +3,9 @@
     <height>32</height>
     <width>49</width>
     <startx>45.5</startx>
-    <starty>25.5</starty>
-    <finishx>24.5</finishx>
-    <finishy>29.5</finishy>
+    <starty>11.5</starty>
+    <finishx>40.5</finishx>
+    <finishy>20.5</finishy>
     <grid>
       <row>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</row>
       <row>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</row>
