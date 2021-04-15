@@ -119,7 +119,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                     }
                 }
             }
-            sf::CircleShape startCircle(((double)height / 100) * 1);
+            sf::CircleShape startCircle(((double)std::max(height, width) / 100) * 1);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
             startCircle.setPosition(sf::Vector2f(start.x, start.y));
             startCircle.setFillColor(sf::Color(0, 106, 0));
@@ -150,7 +150,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                         ++countOfEdges;
                         tmp = std::chrono::steady_clock::now();
                         if (window.isOpen()) {
-                            sf::CircleShape nodeCircle(((double)height / 100) * 0.1);
+                            sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.1);
                             nodeCircle.setFillColor(sf::Color::Black);
                             nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                             nodeCircle.setPosition(sf::Vector2f(xNew.x, xNew.y));
@@ -179,7 +179,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                 } else {
                     tmp = std::chrono::steady_clock::now();
                     if (window.isOpen()) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.1);
+                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.1);
                         nodeCircle.setFillColor(sf::Color::Red);
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(xNew.x, xNew.y));
@@ -219,7 +219,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                         }
                     }
                     if (window.isOpen() && !res.empty()) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.2);
+                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
                         nodeCircle.setFillColor(sf::Color(255, 169, 0));
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
@@ -228,7 +228,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                         window.draw(nodeCircle);
                         sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res.back(), tmp->point)), (double)height / 100 * 0.2));
                         line2.rotate(std::atan2(res.back().y - tmp->point.y, res.back().x - tmp->point.x) / M_PI * 180);
-                        line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
+                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
                         line2.setPosition(tmp->point.x, tmp->point.y);
                         line2.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line2);
@@ -338,7 +338,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
                     }
                 }
             }
-            sf::CircleShape startCircle(((double)height / 100) * 1);
+            sf::CircleShape startCircle(((double)std::max(height, width) / 100) * 1);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
             startCircle.setPosition(sf::Vector2f(start.x, start.y));
             startCircle.setFillColor(sf::Color(0, 106, 0));
@@ -353,7 +353,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
                 Tree::Node *tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.2);
+                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
                         nodeCircle.setFillColor(sf::Color(255, 169, 0));
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
@@ -362,7 +362,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
                         window.draw(nodeCircle);
                         sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(tmp->parent->point, tmp->point)), (double)height / 100 * 0.2));
                         line2.rotate(std::atan2(tmp->parent->point.y - tmp->point.y, tmp->parent->point.x - tmp->point.x) / M_PI * 180);
-                        line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
+                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
                         line2.setPosition(tmp->point.x, tmp->point.y);
                         line2.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line2);
@@ -484,7 +484,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
                     }
                 }
             }
-            sf::CircleShape startCircle(((double)height / 100) * 1);
+            sf::CircleShape startCircle(((double)std::max(height, width) / 100) * 1);
             startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
             startCircle.setPosition(sf::Vector2f(start.x, start.y));
             startCircle.setFillColor(sf::Color(0, 106, 0));
@@ -498,7 +498,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
                 Tree::Node *tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
-                        sf::CircleShape nodeCircle(((double)height / 100) * 0.2);
+                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
                         nodeCircle.setFillColor(sf::Color(255, 169, 0));
                         nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
                         nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
@@ -507,7 +507,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
                         window.draw(nodeCircle);
                         sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(tmp->parent->point, tmp->point)), (double)height / 100 * 0.2));
                         line2.rotate(std::atan2(tmp->parent->point.y - tmp->point.y, tmp->parent->point.x - tmp->point.x) / M_PI * 180);
-                        line2.setOrigin(0, ((double)height / 100 * 0.2) / 2);
+                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
                         line2.setPosition(tmp->point.x, tmp->point.y);
                         line2.setFillColor(sf::Color(255, 169, 0));
                         window.draw(line2);
@@ -546,4 +546,72 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
         isReady = true;
     }
     return searchResult;
+}
+
+void Secret::launch(const Map& map, const Algorithm& algo)
+{
+    SearchResult searchResult;
+    size_t countOfEdges = 0;
+    RRT rrt(map, algo);
+    Geometry::Point start = rrt.getStart();
+    Geometry::Point finish = rrt.getFinish();
+    const double EPS = rrt.getEps() * rrt.getEps();
+    size_t height = map.getMapHeight();
+    size_t width = map.getMapWidth();
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    double coef = std::min((double)desktop.width / width, (double)desktop.height / height);
+    sf::RenderWindow window(sf::VideoMode((unsigned int)(width * coef * 0.95), (unsigned int)(height * coef * 0.95), desktop.bitsPerPixel), "Algorithm", sf::Style::Close | sf::Style::Titlebar, settings);
+    sf::View view(sf::FloatRect(0., 0., (float)width, (float)height));
+    window.setView(view);
+    std::vector<sf::Shape> obst;
+    bool isReady = false;
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+        if (!isReady) {
+            window.clear(sf::Color::White);
+            for (size_t i = 0; i < height && window.isOpen(); ++i) {
+                while (window.pollEvent(event)) {
+                    if (event.type == sf::Event::Closed) {
+                        window.close();
+                    }
+                }
+                for (size_t j = 0; j < width && window.isOpen(); ++j) {
+                    while (window.pollEvent(event)) {
+                        if (event.type == sf::Event::Closed) {
+                            window.close();
+                        }
+                    }
+                    if (map[i][j]) {
+                        if (window.isOpen()) {
+                            sf::RectangleShape quad(sf::Vector2f(1., 1.));
+                            quad.setFillColor(sf::Color(0, 0, 125));
+                            quad.setPosition((float)j, (float)i);
+                            window.draw(quad);
+                        }
+                    }
+                }
+            }
+            sf::CircleShape startCircle(((double)std::max(height, width) / 100) * 1);
+            startCircle.setOrigin(startCircle.getRadius(), startCircle.getRadius());
+            startCircle.setPosition(sf::Vector2f(start.x, start.y));
+            startCircle.setFillColor(sf::Color(0, 106, 0));
+            sf::CircleShape finishCircle(rrt.getEps()); // width / desksf::RenderWindow window(sf::VideoMode(desktop.width - 100, desktop.height - 100 * 3
+            finishCircle.setOrigin(finishCircle.getRadius(), finishCircle.getRadius());
+            finishCircle.setPosition(sf::Vector2f(finish.x, finish.y));
+            finishCircle.setFillColor(sf::Color::Transparent);
+            finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 40);
+            finishCircle.setOutlineColor(sf::Color(255, 169, 0));
+            window.draw(startCircle);
+            window.draw(finishCircle);
+            window.display();
+            isReady = true;
+        }
+    }
 }

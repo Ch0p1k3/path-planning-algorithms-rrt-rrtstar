@@ -11,5 +11,9 @@ pip3 install -r requirements.txt
 ```
 After that you can run code with
 ```cmd
-python generate.py folder-with-tests
+python generate.py absolute-path-to-your-folder-with-tests
+```
+or
+```cmd
+python3 generate.py absolute-path-to-your-folder-with-tests
 ```

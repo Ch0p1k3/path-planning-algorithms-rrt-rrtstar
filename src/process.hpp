@@ -25,4 +25,9 @@ namespace RRTAlgorithm
     const SearchResult launchWithVisAfterWithoutTree(const Map&, const Algorithm&);
 }
 
+namespace Secret
+{
+    void launch(const Map&, const Algorithm&);
+}
+
 #endif

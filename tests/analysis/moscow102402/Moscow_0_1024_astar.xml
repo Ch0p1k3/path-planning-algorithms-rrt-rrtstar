@@ -1044,7 +1044,7 @@
     </algorithm>
     <options>
         <loglevel>0.5</loglevel>
-        <logpath>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\102402\Astar</logpath>
+        <logpath>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\moscow102402\Astar</logpath>
         <logfilename>Moscow_0_1024_log_10.xml</logfilename>
     </options>
 </root>

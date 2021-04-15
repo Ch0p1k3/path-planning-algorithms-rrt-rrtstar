@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     char *filePath = argv[1];
     Map m(filePath);
     Algorithm algo(filePath);
-    bool hasVis = false, hasVisAfter = false, hasVisAfterWithoutTree = false;
+    bool hasVis = false, hasVisAfter = false, hasVisAfterWithoutTree = false, hasSecret = false;
     for (size_t i = 2; i < argc; ++i) {
         if (!hasVis && !std::strcmp(argv[i], CS_ARG_VIS)) {
             hasVis = true;
@@ -33,10 +33,16 @@ int main(int argc, char *argv[])
         if (!hasVisAfterWithoutTree && !std::strcmp(argv[i], CS_ARG_VIS_AFTER_WITHOUT_TREE)) {
             hasVisAfterWithoutTree = true;
         }
+        if (!hasSecret && !std::strcmp(argv[i], CS_ARG_SECRET)) {
+            hasSecret = true;
+        }
     }
     Log log(filePath);
     SearchResult res;
-    if (hasVisAfterWithoutTree) {
+    if (hasSecret) {
+        Secret::launch(m, algo);
+        return 0;
+    } else if (hasVisAfterWithoutTree) {
         res = RRTAlgorithm::launchWithVisAfterWithoutTree(m, algo);
     } else if (hasVisAfter) {
         res = RRTAlgorithm::launchWithVisAfter(m, algo);

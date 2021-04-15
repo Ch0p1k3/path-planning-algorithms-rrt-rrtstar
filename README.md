@@ -16,7 +16,7 @@ This project uses
 Download current repository to your local machine. Use
 
 ```bash
-git clone https://github.com/Ch0p1k3/PathPlanningAlgorithms
+git clone https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-
 ```
 
 The project requires submodules, to install them use
@@ -125,11 +125,13 @@ In addition to the input data, there are arguments
 - `-v` - launch with a visualizer that builds a tree online.
 - `-va` - launch with a visualizer that will show the worked out algorithm at the end.
 - `-vawt` - same as `-va`, but without the tree itself.
+- `-secret` - just draws map, start and finish points.
 
 If no arguments are specified, then the launch will be without a visualizer. All other arguments are ignored.
 
 Argument priority
 
+- `-secret`
 - `-vawt`
 - `-va`
 - `-v`

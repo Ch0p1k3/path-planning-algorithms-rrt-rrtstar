@@ -1040,6 +1040,6 @@
     <eps>15</eps>
   </algorithm>
   <log>
-    <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\102402\RRT\Moscow_0_1024_log_10.xml</path>
+    <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\moscow102402\RRT\Moscow_0_1024_log_10.xml</path>
   </log>
 </root>

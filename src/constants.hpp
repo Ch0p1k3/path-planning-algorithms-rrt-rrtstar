@@ -2,6 +2,7 @@
 #define CS_ARG_VIS                                  "-v"
 #define CS_ARG_VIS_AFTER                            "-va"
 #define CS_ARG_VIS_AFTER_WITHOUT_TREE               "-vawt"
+#define CS_ARG_SECRET                               "-secret"
 #define CS_TAG_ROOT                                 "root"
 // input fule
     #define CS_TAG_MAP                              "map"
