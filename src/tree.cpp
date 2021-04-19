@@ -5,7 +5,7 @@ Tree::Tree(const Geometry::Point& p)
     root = new Node(std::vector<Node *>(), nullptr, p, 0);
     cloud.pts.clear();
     cloud.pts.push_back(Tree::Point{p.x, p.y, root});
-    index = new kdTree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
+    index = new kdTree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(20));
     used.clear();
     rootState = nullptr;
 }

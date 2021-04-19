@@ -18,7 +18,7 @@ Obstacle::Obstacle(const Map& map, const Algorithm& algo)
             }
         }
     }
-    index = new kdTree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
+    index = new kdTree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(20));
     index->buildIndex();
     Geometry::Point start = map.getStart();
     Geometry::Point finish = map.getFinish();
