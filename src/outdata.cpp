@@ -27,7 +27,7 @@ void OutData::fill(const std::string& filePath, const SearchResult& result)
             node.append_attribute(CS_ATR_Y) = e.y;
         }
     } else {
-        root.last_child().set_value("false");
+        root.last_child().append_child(pugi::node_pcdata).set_value("false");
     }
     // document.print(std::cout);
     std::cout << "Saving result: " << document.save_file(filePath.c_str()) << '\n';

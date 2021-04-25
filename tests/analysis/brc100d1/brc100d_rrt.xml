@@ -505,7 +505,7 @@
     <searchtype>rrt</searchtype>
     <numberofiterations>1000000</numberofiterations>
     <eps>10</eps>
-    <stepsize>7</stepsize>
+    <stepsize>3</stepsize>
   </algorithm>
   <log>
     <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\brc100d1\RRT\brc100d_log_10.xml</path>
