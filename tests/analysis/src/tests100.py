@@ -20,7 +20,7 @@ def process(binaryRRT: str,
     path = log.find('path')
     map_ = root.find('map')
     minDist = max(int(map_.find('width').text), int(map_.find('height').text))
-    minDist -= 100
+    minDist //= 2
     grid =  map_.find('grid')
     startX = map_.find('startx')
     startY = map_.find('starty')
