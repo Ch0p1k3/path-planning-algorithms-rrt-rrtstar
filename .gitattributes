@@ -1,2 +1,1 @@
-*.ipynb linguist-detectable=false
-*.py linguist-detectable=false
+tests/ linguist-vendored
