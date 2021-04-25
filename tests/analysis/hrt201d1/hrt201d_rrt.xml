@@ -284,6 +284,8 @@
   <algorithm>
     <searchtype>rrt</searchtype>
     <numberofiterations>1000000</numberofiterations>
+    <eps>10</eps>
+    <stepsize>5</stepsize>
   </algorithm>
   <log>
     <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\hrt201d1\RRT\hrt201d_log_10.xml</path>
