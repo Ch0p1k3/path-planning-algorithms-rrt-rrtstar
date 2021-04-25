@@ -1,1 +1,2 @@
-tests/ linguist-vendor
+*.ipynb linguist-detectable=false
+*.py linguist-detectable=false
