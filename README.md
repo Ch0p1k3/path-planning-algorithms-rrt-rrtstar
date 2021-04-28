@@ -93,10 +93,9 @@ If you have Windows and msys2, you can use:
 pacman -S mingw-w64-x86_64-sfml
 ```
 
-Another option is to build the downloaded SFML. SFML is located in `src/lib/SFML` you open is and use in terminal:
+Another option is to build the downloaded SFML. SFML is located in `src/lib/SFML`. You can use:
 
 #### Windows
-Terminal must be open with administrator rights
 ```cmd
 cd PathPlanningAlgorithms-RRT-RRTstar-/src/lib/SFML
 cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="SFML"
@@ -109,7 +108,7 @@ mingw32-make install
 cd PathPlanningAlgorithms-RRT-RRTstar-/src/lib/SFML
 cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild -DCMAKE_INSTALL_PREFIX="SFML"
 cd build
-sudo make install
+make install
 ```
 
 After these steps you will have SFML. The next is the build of the project itself.
