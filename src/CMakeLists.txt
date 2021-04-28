@@ -24,7 +24,7 @@ set(SOURCES     geometry.cpp
                 log.cpp)
 
 
-set(SFML_DIR "${PROJECT_SOURCE_DIR}/src/lib/SFML/lib/cmake/SFML")
+set(SFML_DIR "${PROJECT_SOURCE_DIR}/src/lib/SFML/build")
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} main.cpp)
