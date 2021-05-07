@@ -10,7 +10,8 @@ set(HEADERS     geometry.hpp
                 process.hpp
                 searchresult.hpp
                 outdata.hpp
-                log.hpp)
+                log.hpp
+                RRTStar.hpp)
 
 set(SOURCES     geometry.cpp
                 map.cpp
@@ -21,10 +22,11 @@ set(SOURCES     geometry.cpp
                 RRT.cpp
                 process.cpp
                 outdata.cpp
-                log.cpp)
+                log.cpp
+                RRTStar.cpp)
 
 
-set(SFML_DIR "${PROJECT_SOURCE_DIR}/src/lib/SFML/build")
+set(SFML_DIR "${PROJECT_SOURCE_DIR}/src/lib/SFML/SFML")
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} main.cpp)
