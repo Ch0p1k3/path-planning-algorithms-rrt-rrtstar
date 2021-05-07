@@ -5,16 +5,16 @@ const SearchResult RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
     size_t countOfEdges = 0;
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
-    Tree::Node *finishNode = nullptr;
+    Tree::Node* finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     auto time = std::chrono::steady_clock::now();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
-        Tree::Node *xNearest = rrt.getNearest(xRand);
+        Tree::Node* xNearest = rrt.getNearest(xRand);
         Geometry::Point xNew = rrt.steer(xNearest->point, xRand);
         if (rrt.obstacleFree(xNearest->point, xNew)) {
-            Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
+            Tree::Node* newNode = rrt.insertVertexAndEdge(xNearest, xNew);
             if (newNode) {
                 ++countOfEdges;
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
@@ -44,7 +44,7 @@ const SearchResult RRTAlgorithm::launch(const Map& map, const Algorithm& algo)
         searchResult.pathFound = true;
         searchResult.distance = finishNode->distance;
         std::cout << "Result distance: " << finishNode->distance << '\n';
-        Tree::Node *tmp = finishNode;
+        Tree::Node* tmp = finishNode;
         std::vector<Geometry::Point> res;
         while (tmp) {
             res.push_back(tmp->point);
@@ -72,7 +72,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
     RRT rrt(map, algo);
     Geometry::Point start = rrt.getStart();
     Geometry::Point finish = rrt.getFinish();
-    Tree::Node *finishNode = nullptr;
+    Tree::Node* finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     size_t height = map.getMapHeight();
@@ -142,10 +142,10 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                     }
                 }
                 Geometry::Point xRand = rrt.getRandomPoint();
-                Tree::Node *xNearest = rrt.getNearest(xRand);
+                Tree::Node* xNearest = rrt.getNearest(xRand);
                 Geometry::Point xNew = rrt.steer(xNearest->point, xRand);
                 if (rrt.obstacleFree(xNearest->point, xNew)) {
-                    Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
+                    Tree::Node* newNode = rrt.insertVertexAndEdge(xNearest, xNew);
                     if (newNode) {
                         ++countOfEdges;
                         tmp = std::chrono::steady_clock::now();
@@ -210,7 +210,7 @@ const SearchResult RRTAlgorithm::launchWithVis(const Map& map, const Algorithm& 
                 searchResult.pathFound = true;
                 searchResult.distance = finishNode->distance;
                 std::cout << "Result distance: " << finishNode->distance << '\n';
-                Tree::Node *tmp = finishNode;
+                Tree::Node* tmp = finishNode;
                 std::vector<Geometry::Point> res;
                 while (tmp) {
                     while (window.pollEvent(event)) {
@@ -264,16 +264,16 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Geometry::Point start = rrt.getStart();
-    Tree::Node *finishNode = nullptr;
+    Tree::Node* finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     auto time = std::chrono::steady_clock::now();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
-        Tree::Node *xNearest = rrt.getNearest(xRand);
+        Tree::Node* xNearest = rrt.getNearest(xRand);
         Geometry::Point xNew = rrt.steer(xNearest->point, xRand);
         if (rrt.obstacleFree(xNearest->point, xNew)) {
-            Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
+            Tree::Node* newNode = rrt.insertVertexAndEdge(xNearest, xNew);
             if (newNode) {
                 ++countOfEdges;
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
@@ -350,7 +350,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
             finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             rrt.drawTree(window);
             if (finishNode) {
-                Tree::Node *tmp = finishNode;
+                Tree::Node* tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
                         sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
@@ -380,7 +380,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfter(const Map& map, const Algori
                 searchResult.pathFound = true;
                 searchResult.distance = finishNode->distance;
                 std::cout << "Result distance: " << finishNode->distance << '\n';
-                Tree::Node *tmp = finishNode;
+                Tree::Node* tmp = finishNode;
                 std::vector<Geometry::Point> res;
                 while (tmp) {
                     res.push_back(tmp->point);
@@ -410,16 +410,16 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
     RRT rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
     Geometry::Point start = rrt.getStart();
-    Tree::Node *finishNode = nullptr;
+    Tree::Node* finishNode = nullptr;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
     auto time = std::chrono::steady_clock::now();
     for (size_t it = 0; it < numberOfIter; ++it) {
         Geometry::Point xRand = rrt.getRandomPoint();
-        Tree::Node *xNearest = rrt.getNearest(xRand);
+        Tree::Node* xNearest = rrt.getNearest(xRand);
         Geometry::Point xNew = rrt.steer(xNearest->point, xRand);
         if (rrt.obstacleFree(xNearest->point, xNew)) {
-            Tree::Node *newNode = rrt.insertEdge(xNearest, xNew);
+            Tree::Node* newNode = rrt.insertVertexAndEdge(xNearest, xNew);
             if (newNode) {
                 ++countOfEdges;
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
@@ -495,7 +495,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
             finishCircle.setOutlineThickness(finishCircle.getRadius() / 100 * 40);
             finishCircle.setOutlineColor(sf::Color(255, 169, 0));
             if (finishNode) {
-                Tree::Node *tmp = finishNode;
+                Tree::Node* tmp = finishNode;
                 while (tmp) {
                     if (tmp->parent) {
                         sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
@@ -525,7 +525,7 @@ const SearchResult RRTAlgorithm::launchWithVisAfterWithoutTree(const Map& map, c
                 searchResult.pathFound = true;
                 searchResult.distance = finishNode->distance;
                 std::cout << "Result distance: " << finishNode->distance << '\n';
-                Tree::Node *tmp = finishNode;
+                Tree::Node* tmp = finishNode;
                 std::vector<Geometry::Point> res;
                 while (tmp) {
                     res.push_back(tmp->point);

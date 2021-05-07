@@ -1,7 +1,7 @@
 #include "log.hpp"
 
 
-short Log::buildLog(const char *filePath)
+short Log::buildLog(const char* filePath)
 {
     pugi::xml_document document;
     pugi::xml_parse_result result = document.load_file(filePath);
@@ -27,7 +27,7 @@ short Log::buildLog(const char *filePath)
     return 1;
 }
 
-Log::Log(const char *filePath)
+Log::Log(const char* filePath)
 {
     auto res = buildLog(filePath);
     if (res == -1) {

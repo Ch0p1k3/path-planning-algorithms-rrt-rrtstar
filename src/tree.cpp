@@ -1,8 +1,10 @@
 #include "tree.hpp"
 
-Tree::Tree(const Geometry::Point& p)
+Tree::Tree(const Geometry::Point& p, const double step)
 {
-    root = new Node(std::vector<Node *>(), nullptr, p, 0);
+    n = 1;
+    stepSize = step;
+    root = new Node(std::unordered_set<Node*>(), nullptr, p, 0);
     cloud.pts.clear();
     cloud.pts.push_back(Tree::Point{p.x, p.y, root});
     index = new kdTree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(20));
@@ -10,10 +12,10 @@ Tree::Tree(const Geometry::Point& p)
     rootState = nullptr;
 }
 
-void Tree::deleteTree(Node *root)
+void Tree::deleteTree(Node* root)
 {
     if (!root) return;
-    for (Node *n: root->childrens) {
+    for (Node* n: root->childrens) {
         deleteTree(n);
     }
     if (root) {
@@ -29,7 +31,7 @@ Tree::~Tree()
     deleteTree(root);
 }
 
-Tree::Node *Tree::getNearest(const Geometry::Point& p) const
+Tree::Node* Tree::getNearest(const Geometry::Point& p) const
 {
     const size_t numResults = 1;
     size_t resIndex;
@@ -41,66 +43,92 @@ Tree::Node *Tree::getNearest(const Geometry::Point& p) const
     return cloud.pts[resIndex].link;
 }
 
-Tree::Node *Tree::insert(Tree::Node *node, const Geometry::Point& p)
+void Tree::getNear(Tree::Node* x, std::vector<Tree::Node* >& result)
+{
+    result.clear();
+    const double distance = std::min(stepSize, std::sqrt(log((double)n)  / (double)n));
+    std::vector<std::pair<size_t, double>> resMatches;
+    double queryPt[2] = {x->point.x, x->point.y};
+    nanoflann::RadiusResultSet<double, size_t> resultSet(distance, resMatches);
+    index->findNeighbors(resultSet, queryPt, nanoflann::SearchParams());
+    for (const auto& [index, _]: resMatches) {
+        result.push_back(cloud.pts[index].link);
+    }
+}
+
+void Tree::eraseEdge(Tree::Node* parent, Tree::Node* son)
+{
+    parent->childrens.erase(son);
+    son->parent = nullptr;
+}
+
+void Tree::insertEdge(Tree::Node* parent, Tree::Node* son)
+{
+    parent->childrens.insert(son);
+    son->parent = parent;
+}
+
+Tree::Node* Tree::insertVertexAndEdge(Tree::Node* node, const Geometry::Point& p)
 {
     double distance = std::sqrt(Geometry::euclideanMetric(node->point, p)) + node->distance;
     if (used.find(p.x) != used.end() && used[p.x].find(p.y) != used[p.x].end()) {
         return nullptr;
     }
-    Node *newNode = new Node(std::vector<Node *>(), node, p, distance);
-    node->childrens.push_back(newNode);
+    Node* newNode = new Node(std::unordered_set<Node* >(), node, p, distance);
+    node->childrens.insert(newNode);
     cloud.pts.push_back(Tree::Point{p.x, p.y, newNode});
     index->addPoints(cloud.pts.size() - 1, cloud.pts.size() - 1);
+    ++n;
     return newNode;
 }
 
-void Tree::printNode(const Tree::Node *node, std::ostream& out)
-{
-    nodePrintStateT* parentState;
-    if (rootState != nullptr) {
-        out << " ";
-        nodePrintStateT* s = rootState;
-        while (s->childState != nullptr) {
-            out << (s->printingLastChild ? "  " : "| ");
-            s = s->childState;
-        }
-        parentState = s;
-        out << (parentState->printingLastChild ? "L" : "+");
-    } else {
-        parentState = nullptr;
-    }
-    out << '>' << node->point << '\n';
-    if (!node->childrens.empty()) {
-        nodePrintStateT s;
-        if (parentState != nullptr) {
-            parentState->childState = &s;
-        } else {
-            rootState = &s;
-        }
-        s.childState = nullptr;
-        for (size_t i = 0; i < node->childrens.size(); ++i) {
-            if (i == node->childrens.size() - 1) {
-                s.printingLastChild = true;
-                printNode(node->childrens[i], out);
-            } else {
-                s.printingLastChild = false;
-                printNode(node->childrens[i], out);
-            }
-        }
-        if (parentState != nullptr) {
-           parentState->childState = nullptr;
-        } else {
-            rootState = nullptr;
-        }
-    }
-}
+// void Tree::printNode(const Tree::Node* node, std::ostream& out)
+// {
+//     nodePrintStateT* parentState;
+//     if (rootState != nullptr) {
+//         out << " ";
+//         nodePrintStateT* s = rootState;
+//         while (s->childState != nullptr) {
+//             out << (s->printingLastChild ? "  " : "| ");
+//             s = s->childState;
+//         }
+//         parentState = s;
+//         out << (parentState->printingLastChild ? "L" : "+");
+//     } else {
+//         parentState = nullptr;
+//     }
+//     out << '>' << node->point << '\n';
+//     if (!node->childrens.empty()) {
+//         nodePrintStateT s;
+//         if (parentState != nullptr) {
+//             parentState->childState = &s;
+//         } else {
+//             rootState = &s;
+//         }
+//         s.childState = nullptr;
+//         for (size_t i = 0; i < node->childrens.size(); ++i) {
+//             if (i == node->childrens.size() - 1) {
+//                 s.printingLastChild = true;
+//                 printNode(node->childrens[i], out);
+//             } else {
+//                 s.printingLastChild = false;
+//                 printNode(node->childrens[i], out);
+//             }
+//         }
+//         if (parentState != nullptr) {
+//            parentState->childState = nullptr;
+//         } else {
+//             rootState = nullptr;
+//         }
+//     }
+// }
 
-void Tree::printTree(std::ostream& out)
-{
-    printNode(root, out);
-}
+// void Tree::printTree(std::ostream& out)
+// {
+//     printNode(root, out);
+// }
 
-void Tree::recDrawTree(const Node *root, const Node *par, sf::RenderWindow& window)
+void Tree::recDrawTree(const Node* root, const Node* par, sf::RenderWindow& window)
 {
     sf::Event event;
 

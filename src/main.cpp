@@ -13,13 +13,13 @@
 #include "log.hpp"
 #include "outdata.hpp"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     if(argc < 2) {
         std::cout<<"Error! Pathfinding task file (XML) is not specified!"<<std::endl;
         return 0;
     }
-    char *filePath = argv[1];
+    char* filePath = argv[1];
     Map m(filePath);
     Algorithm algo(filePath);
     bool hasVis = false, hasVisAfter = false, hasVisAfterWithoutTree = false, hasSecret = false;

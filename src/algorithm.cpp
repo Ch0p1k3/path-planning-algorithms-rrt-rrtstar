@@ -1,6 +1,6 @@
 #include "algorithm.hpp"
 
-bool Algorithm::buildAlgorithm(const char *filePath)
+bool Algorithm::buildAlgorithm(const char* filePath)
 {
     pugi::xml_document document;
     pugi::xml_parse_result result = document.load_file(filePath);
@@ -106,7 +106,7 @@ bool Algorithm::buildAlgorithm(const char *filePath)
     return true;
 }
 
-Algorithm::Algorithm(const char *filePath)
+Algorithm::Algorithm(const char* filePath)
 {
     if (!buildAlgorithm(filePath)) {
         std::cerr << "Error! Input Error!\n";

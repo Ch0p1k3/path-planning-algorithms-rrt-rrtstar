@@ -1,6 +1,6 @@
 #include "map.hpp"
 
-bool Map::buildMap(const char *filePath) 
+bool Map::buildMap(const char* filePath) 
 {
     pugi::xml_document document;
     pugi::xml_parse_result result = document.load_file(filePath);
@@ -173,7 +173,7 @@ bool Map::buildMap(const char *filePath)
     return true;
 }
 
-Map::Map(const char *filePath) 
+Map::Map(const char* filePath) 
 {
     if (!buildMap(filePath)) {
         std::cerr << "Error! Input Error!\n";

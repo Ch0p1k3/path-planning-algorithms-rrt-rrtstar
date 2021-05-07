@@ -9,7 +9,7 @@ class Log
 {
 public:
     Log() = delete;
-    explicit Log(const char *);
+    explicit Log(const char*);
     ~Log() = default;
 
     inline std::string getPath() const
@@ -19,7 +19,7 @@ public:
 private:
     std::string path;
 
-    short buildLog(const char *);
+    short buildLog(const char*);
 };
 
 #endif

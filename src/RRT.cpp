@@ -8,7 +8,7 @@ RRT::RRT(const Map& map, const Algorithm& algo)
 , finish(map.getFinish())
 , stepSize(algo.getStepSize())
 , eps(algo.getEps())
-, tree(map.getStart())
+, tree(map.getStart(), algo.getStepSize())
 , obstacles(map, algo) {}
 
 Geometry::Point RRT::getRandomPoint() const
@@ -21,12 +21,12 @@ Geometry::Point RRT::getRandomPoint() const
     return Geometry::Point{xs(gen1), ys(gen2)};
 }
 
-Tree::Node *RRT::insertEdge(Tree::Node *x, const Geometry::Point& y)
+Tree::Node* RRT::insertVertexAndEdge(Tree::Node* x, const Geometry::Point& y)
 {
-    return tree.insert(x, y);
+    return tree.insertVertexAndEdge(x, y);
 }
 
-Tree::Node *RRT::getNearest(const Geometry::Point& p)
+Tree::Node* RRT::getNearest(const Geometry::Point& p)
 {
     return tree.getNearest(p);
 }
@@ -45,10 +45,10 @@ bool RRT::obstacleFree(const Geometry::Point& x, const Geometry::Point& y) const
     return obstacles.obstacleFree(x, y);
 }
 
-void RRT::printTree(std::ostream& out)
-{
-    tree.printTree(out);
-}
+// void RRT::printTree(std::ostream& out)
+// {
+//     tree.printTree(out);
+// }
 
 void RRT::drawTree(sf::RenderWindow& window)
 {

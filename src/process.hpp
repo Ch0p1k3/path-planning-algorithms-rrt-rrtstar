@@ -25,6 +25,17 @@ namespace RRTAlgorithm
     const SearchResult launchWithVisAfterWithoutTree(const Map&, const Algorithm&);
 }
 
+namespace RRTStarAlgorithm
+{
+    const SearchResult launch(const Map&, const Algorithm&);
+
+    const SearchResult launchWithVis(const Map&, const Algorithm&);
+
+    const SearchResult launchWithVisAfter(const Map&, const Algorithm&);
+
+    const SearchResult launchWithVisAfterWithoutTree(const Map&, const Algorithm&);
+}
+
 namespace Secret
 {
     void launch(const Map&, const Algorithm&);

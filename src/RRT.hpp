@@ -20,11 +20,11 @@ public:
     ~RRT() = default;
 
     Geometry::Point getRandomPoint() const;    
-    Tree::Node *insertEdge(Tree::Node *, const Geometry::Point&);
-    Tree::Node *getNearest(const Geometry::Point&);
+    Tree::Node* insertVertexAndEdge(Tree::Node* , const Geometry::Point&);
+    Tree::Node* getNearest(const Geometry::Point&);
     Geometry::Point steer(const Geometry::Point&, const Geometry::Point&) const;
     bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
-    void printTree(std::ostream& = std::cout);
+    // void printTree(std::ostream& = std::cout);
     void drawTree(sf::RenderWindow& window);
 
     inline Geometry::Point getStart() const
@@ -52,7 +52,7 @@ public:
         return eps;
     }
 
-private:
+protected:
     size_t maxIter;
     size_t height;
     size_t width;

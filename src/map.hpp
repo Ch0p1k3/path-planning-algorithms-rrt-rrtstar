@@ -13,7 +13,7 @@
 class Map
 {
 public:
-    explicit Map(const char *);
+    explicit Map(const char*);
     Map() = delete;
     ~Map() = default;
 
@@ -45,7 +45,7 @@ private:
     Geometry::Point finish;
     std::vector<std::vector<bool>> grid;
 
-    bool buildMap(const char *);
+    bool buildMap(const char*);
 };
 
 #endif

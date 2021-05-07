@@ -15,7 +15,7 @@ class Algorithm
 {
 public:
     Algorithm() = delete;
-    explicit Algorithm(const char *);
+    explicit Algorithm(const char*);
     ~Algorithm() = default;
 
     inline size_t getSearchType() const
@@ -46,7 +46,7 @@ private:
     double stepSize;
     double eps;
 
-    bool buildAlgorithm(const char *);
+    bool buildAlgorithm(const char*);
 };
 
 #endif
