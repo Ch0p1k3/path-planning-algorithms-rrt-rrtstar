@@ -9,6 +9,7 @@
 #include <chrono>
 #include "lib/SFML/include/SFML/Graphics.hpp"
 #include "RRT.hpp"
+#include "RRTStar.hpp"
 #include "map.hpp"
 #include "algorithm.hpp"
 #include "geometry.hpp"

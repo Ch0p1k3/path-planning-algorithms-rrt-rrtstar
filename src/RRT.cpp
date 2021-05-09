@@ -9,16 +9,17 @@ RRT::RRT(const Map& map, const Algorithm& algo)
 , stepSize(algo.getStepSize())
 , eps(algo.getEps())
 , tree(map.getStart(), algo.getStepSize())
-, obstacles(map, algo) {}
+, obstacles(map, algo)
+, gen((std::random_device())()) {}
 
-Geometry::Point RRT::getRandomPoint() const
+Geometry::Point RRT::getRandomPoint()
 {
-    std::random_device rd;
-    std::mt19937 gen1(rd());
+    // std::random_device rd;
+    // std::mt19937 gen1(rd());
     std::uniform_real_distribution<> xs(0, width);
-    std::mt19937 gen2(rd());
+    // std::mt19937 gen2(rd());
     std::uniform_real_distribution<> ys(0, height);
-    return Geometry::Point{xs(gen1), ys(gen2)};
+    return Geometry::Point{xs(gen), ys(gen)};
 }
 
 Tree::Node* RRT::insertVertexAndEdge(Tree::Node* x, const Geometry::Point& y)

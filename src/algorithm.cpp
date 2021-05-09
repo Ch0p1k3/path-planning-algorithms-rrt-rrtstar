@@ -19,7 +19,7 @@ bool Algorithm::buildAlgorithm(const char* filePath)
         std::cerr << "Error! No '" << CS_TAG_ALGORITHM << "' tag found in XML file!" << '\n';
         return false;
     }
-    bool hasST = false, hasNOI = false, hasSS = false, hasEps = false;;
+    bool hasST = false, hasNOI = false, hasSS = false, hasEps = false, hasGamma = false;
     for (pugi::xml_node tag: algorithm.children()) {
         std::string nameNode = tag.name();
         std::transform(nameNode.begin(), nameNode.end(), nameNode.begin(), [](unsigned char c) {
@@ -83,6 +83,20 @@ bool Algorithm::buildAlgorithm(const char* filePath)
                     eps = 3;
                 }
             }
+        } else if (nameNode == CS_TAG_GAMMA) {
+            if (hasGamma) {
+                std::cerr << "Warning! Repeat tag gamma. The old value will be used!\n";
+            } else {
+                hasGamma = true;
+                gamma = tag.text().as_double(std::numeric_limits<double>::infinity());
+                if (std::isinf(gamma)) {
+                    std::cerr << "Error! Gamma should be real number!\n";
+                    return false;
+                } else if (gamma < 1) {
+                    std::cerr << "Warning! Very small gamma. Gamma will be 3.\n";
+                    gamma = 3;
+                }
+            }
         } else {
             std::cerr << "Warning! Unknown tag " << nameNode << ". It will be skipped!\n";
         }
@@ -102,6 +116,10 @@ bool Algorithm::buildAlgorithm(const char* filePath)
     if (!hasEps) {
         eps = 3.;
         std::cerr << "Warning! No tag eps. Step size will be 3\n";
+    }
+    if (!hasGamma) {
+        gamma = 3.;
+        std::cerr << "Warning! No tag gamma. Step size will be 3\n";
     }
     return true;
 }

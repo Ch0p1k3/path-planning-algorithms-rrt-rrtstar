@@ -1,16 +1,11 @@
 #include "RRTStar.hpp"
 
-void RRTStar::insertEdge(Tree::Node* parent, Tree::Node* son)
+void RRTStar::changeEdge(Tree::Node* parent, Tree::Node* son, Tree::Node* newParent)
 {
-    tree.insertEdge(parent, son);
+    tree.changeEdge(parent, son, newParent);
 }
 
-void RRTStar::eraseEdge(Tree::Node* parent, Tree::Node* son)
+void RRTStar::getNear(const Geometry::Point& x, std::vector<Tree::Node*>& res)
 {
-    tree.eraseEdge(parent, son);
-}
-
-void RRTStar::getNear(Tree::Node* x, std::vector<Tree::Node*>& res)
-{
-    tree.getNear(x, res);
+    tree.getNear(x, gamma, res);
 }

@@ -87,7 +87,7 @@ bool Obstacle::obstacleFree(const Geometry::Point& x, const Geometry::Point& y) 
     //     }
     // }
     // return true;
-    const double searchRadius = Geometry::euclideanMetric(x, y);
+    const double searchRadius = Geometry::euclideanMetric(x, y) + 1;
     std::vector<std::pair<size_t, double>> resMatches;
     nanoflann::SearchParams params;
     const double query_point[2] = {x.x, x.y};

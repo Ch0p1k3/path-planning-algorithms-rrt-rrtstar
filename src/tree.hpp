@@ -16,37 +16,44 @@ class Tree
 public:
     struct Node
     {
-        std::unordered_set<Node *> childrens;
-        Node *parent;
+        std::unordered_set<Node*> childrens;
+        Node* parent;
         Geometry::Point point;
-        double distance;
 
-        Node(const std::unordered_set<Node *>& otherChildrens,
+        Node(const std::unordered_set<Node*>& otherChildrens,
             Node *otherParent,
-            const Geometry::Point& otherPoint,
-            double otherDistance)
+            const Geometry::Point& otherPoint)
             : childrens(otherChildrens.begin(), otherChildrens.end())
             , parent(otherParent)
-            , point(otherPoint)
-            , distance(otherDistance) {}
+            , point(otherPoint) {}
 
         Node(const Tree::Node& other)
         : childrens(other.childrens)
         , parent(other.parent)
-        , point(other.point)
-        , distance(other.distance) {}
+        , point(other.point) {}
 
         Node(Node&& other)
         : childrens(std::move(other.childrens))
         , parent(std::move(other.parent))
-        , point(std::move(other.point))
-        , distance(other.distance) {}
+        , point(std::move(other.point)) {}
 
         bool operator==(const Tree::Node& other) {
             return other.childrens == childrens 
             && parent == other.parent
-            && point == other.point
-            && distance == other.distance;
+            && point == other.point;
+        }
+
+        double getDistance() const
+        {
+            double res = 0;
+            const Node* prev = this;
+            const Node* cur = prev->parent;
+            while (cur != nullptr) {
+                res += std::sqrt(Geometry::euclideanMetric(prev->point, cur->point));
+                prev = cur;
+                cur = cur->parent;
+            }
+            return res;
         }
     };
 
@@ -56,15 +63,15 @@ public:
 
     Node* getNearest(const Geometry::Point&) const;
     Node* insertVertexAndEdge(Node* , const Geometry::Point&);
-    void eraseEdge(Node*, Node*);
-    void insertEdge(Node*, Node*);
-    void getNear(Node*, std::vector<Node*>&);
+    void changeEdge(Node*, Node*, Node*);
+    void getNear(const Geometry::Point&, const double gamma, std::vector<Node*>&);
+    // void getInRadius(const Geometry::Point&, double, std::vector<Node*>&);
     // void printTree(std::ostream& = std::cout);
     void drawTree(sf::RenderWindow&);
 
 private:
     Node* root;
-    size_t n{0};
+    size_t N{0};
     double stepSize{0};
 
     struct Point

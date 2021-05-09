@@ -43,13 +43,29 @@ int main(int argc, char* argv[])
         Secret::launch(m, algo);
         return 0;
     } else if (hasVisAfterWithoutTree) {
-        res = RRTAlgorithm::launchWithVisAfterWithoutTree(m, algo);
+        if (algo.getSearchType() == CI_TAG_RRT) {
+            res = RRTAlgorithm::launchWithVisAfterWithoutTree(m, algo);
+        } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
+            res = RRTStarAlgorithm::launchWithVisAfterWithoutTree(m, algo);
+        }
     } else if (hasVisAfter) {
-        res = RRTAlgorithm::launchWithVisAfter(m, algo);
+        if (algo.getSearchType() == CI_TAG_RRT) {
+            res = RRTAlgorithm::launchWithVisAfter(m, algo);
+        } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
+            res = RRTStarAlgorithm::launchWithVisAfter(m, algo);
+        }
     } else if (hasVis) {
-        res = RRTAlgorithm::launchWithVis(m, algo);
+        if (algo.getSearchType() == CI_TAG_RRT) {
+            res = RRTAlgorithm::launchWithVis(m, algo);
+        } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
+            res = RRTStarAlgorithm::launchWithVis(m, algo);
+        }
     } else {
-        res = RRTAlgorithm::launch(m, algo);
+        if (algo.getSearchType() == CI_TAG_RRT) {
+            res = RRTAlgorithm::launch(m, algo);
+        } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
+            res = RRTStarAlgorithm::launch(m, algo);
+        }
     }
     OutData::fill(log.getPath(), res);
 }

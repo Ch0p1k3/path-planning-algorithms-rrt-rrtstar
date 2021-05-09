@@ -1,6 +1,8 @@
 #ifndef RRT_RRTstar_RRT_HPP
 #define RRT_RRTstar_RRT_HPP
 
+#include <random>
+#include <iostream>
 #include "algorithm.hpp"
 #include "obstacle.hpp"
 #include "tree.hpp"
@@ -8,8 +10,6 @@
 #include "map.hpp"
 #include "constants.hpp"
 #include "lib/SFML/include/SFML/Graphics.hpp"
-#include <random>
-#include <iostream>
 
 class RRT
 {
@@ -19,7 +19,7 @@ public:
     RRT() = delete;
     ~RRT() = default;
 
-    Geometry::Point getRandomPoint() const;    
+    Geometry::Point getRandomPoint();    
     Tree::Node* insertVertexAndEdge(Tree::Node* , const Geometry::Point&);
     Tree::Node* getNearest(const Geometry::Point&);
     Geometry::Point steer(const Geometry::Point&, const Geometry::Point&) const;
@@ -62,6 +62,9 @@ protected:
     double eps;
     Tree tree;
     Obstacle obstacles;
+
+private:
+    std::mt19937 gen;
 };
 
 #endif

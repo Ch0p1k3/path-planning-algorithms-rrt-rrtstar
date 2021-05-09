@@ -59,7 +59,9 @@
     </grid>
   </map>
   <algorithm>
-    <searchtype>rrt</searchtype>
-    <numberofiterations>1000000</numberofiterations>
+    <searchtype>rrtstar</searchtype>
+    <numberofiterations>10000</numberofiterations>
+    <stepsize>1</stepsize>
+    <gamma>100000000000</gamma>
   </algorithm>
 </root>

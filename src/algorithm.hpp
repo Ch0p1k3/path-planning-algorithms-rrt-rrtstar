@@ -40,11 +40,16 @@ public:
         return eps;
     }
 
+    inline double getGamma() const
+    {
+        return gamma;
+    }
 private:
     size_t searchType;
     size_t numberOfIterations;
     double stepSize;
     double eps;
+    double gamma;
 
     bool buildAlgorithm(const char*);
 };

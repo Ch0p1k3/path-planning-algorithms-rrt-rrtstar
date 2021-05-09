@@ -266,7 +266,8 @@
     </grid>
   </map>
   <algorithm>
-    <searchtype>rrt</searchtype>
-    <numberofiterations>1000000</numberofiterations>
+    <searchtype>rrtstar</searchtype>
+    <numberofiterations>100</numberofiterations>
+    <eps>5</eps>
   </algorithm>
 </root>

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include "lib/nanoflann/include/nanoflann.hpp"
 
 namespace Geometry
 {

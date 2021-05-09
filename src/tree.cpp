@@ -2,9 +2,9 @@
 
 Tree::Tree(const Geometry::Point& p, const double step)
 {
-    n = 1;
+    N = 1;
     stepSize = step;
-    root = new Node(std::unordered_set<Node*>(), nullptr, p, 0);
+    root = new Node(std::unordered_set<Node*>(), nullptr, p);
     cloud.pts.clear();
     cloud.pts.push_back(Tree::Point{p.x, p.y, root});
     index = new kdTree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(20));
@@ -43,42 +43,59 @@ Tree::Node* Tree::getNearest(const Geometry::Point& p) const
     return cloud.pts[resIndex].link;
 }
 
-void Tree::getNear(Tree::Node* x, std::vector<Tree::Node* >& result)
+void Tree::getNear(const Geometry::Point& x, const double gamma, std::vector<Tree::Node*>& result)
 {
     result.clear();
-    const double distance = std::min(stepSize, std::sqrt(log((double)n)  / (double)n));
+    double distance = std::min(stepSize, gamma * std::sqrt(log((double)N)  / (double)(N)));
+    distance *= distance;
     std::vector<std::pair<size_t, double>> resMatches;
-    double queryPt[2] = {x->point.x, x->point.y};
+    double queryPt[2] = {x.x, x.y};
     nanoflann::RadiusResultSet<double, size_t> resultSet(distance, resMatches);
     index->findNeighbors(resultSet, queryPt, nanoflann::SearchParams());
     for (const auto& [index, _]: resMatches) {
         result.push_back(cloud.pts[index].link);
     }
+    // const size_t numResults = std::ceil(8 * std::exp(1) * 1.5 * log((double)N + 1));
+    // size_t resIndex[numResults];
+    // double outDistSqr[numResults];
+    // nanoflann::KNNResultSet<double> resultSet(numResults);
+    // resultSet.init(resIndex, outDistSqr);
+    // index->findNeighbors(resultSet, queryPt, nanoflann::SearchParams(10));
+    // for (size_t i = 0; i < resultSet.size(); ++i) {
+    //     result.push_back(cloud.pts[resIndex[i]].link);
+    // }
 }
 
-void Tree::eraseEdge(Tree::Node* parent, Tree::Node* son)
+// void Tree::getInRadius(const Geometry::Point& x, double distance, std::vector<Tree::Node* >& result)
+// {
+//     result.clear();
+//     distance *= distance;
+//     std::vector<std::pair<size_t, double>> resMatches;
+//     double queryPt[2] = {x.x, x.y};
+//     nanoflann::RadiusResultSet<double, size_t> resultSet(distance, resMatches);
+//     index->findNeighbors(resultSet, queryPt, nanoflann::SearchParams());
+//     for (const auto& [index, _]: resMatches) {
+//         result.push_back(cloud.pts[index].link);
+//     }
+// }
+
+void Tree::changeEdge(Tree::Node* parent, Tree::Node* son, Tree::Node* newParent)
 {
     parent->childrens.erase(son);
-    son->parent = nullptr;
-}
-
-void Tree::insertEdge(Tree::Node* parent, Tree::Node* son)
-{
-    parent->childrens.insert(son);
-    son->parent = parent;
+    son->parent = newParent;
+    newParent->childrens.insert(son);
 }
 
 Tree::Node* Tree::insertVertexAndEdge(Tree::Node* node, const Geometry::Point& p)
 {
-    double distance = std::sqrt(Geometry::euclideanMetric(node->point, p)) + node->distance;
     if (used.find(p.x) != used.end() && used[p.x].find(p.y) != used[p.x].end()) {
         return nullptr;
     }
-    Node* newNode = new Node(std::unordered_set<Node* >(), node, p, distance);
+    Node* newNode = new Node(std::unordered_set<Node*>(), node, p);
     node->childrens.insert(newNode);
     cloud.pts.push_back(Tree::Point{p.x, p.y, newNode});
     index->addPoints(cloud.pts.size() - 1, cloud.pts.size() - 1);
-    ++n;
+    ++N;
     return newNode;
 }
 
