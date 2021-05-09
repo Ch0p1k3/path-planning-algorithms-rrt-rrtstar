@@ -851,11 +851,29 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
                                         line[0].color = sf::Color::Black;
                                         line[1].color = sf::Color::Black;
                                         window.draw(line, 2, sf::Lines);
-                                        window.display();
+                                        window.draw(finishCircle);
                                     }
                                     resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
+                            } else {
+                                tmp = std::chrono::steady_clock::now();
+                                if (window.isOpen()) {
+                                    auto xParent = x->parent;
+                                    sf::Vertex line[] = {
+                                        sf::Vertex(sf::Vector2f(xParent->point.x, xParent->point.y)),
+                                        sf::Vertex(sf::Vector2f(x->point.x, x->point.y)),
+                                    };
+                                    line[0].color = sf::Color::Black;
+                                    line[1].color = sf::Color::Black;
+                                    window.draw(line, 2, sf::Lines);
                                 }
+                                resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
+                            }
                         }
+                        tmp = std::chrono::steady_clock::now();
+                        if (window.isOpen()) {
+                            window.display();
+                        }
+                        resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
                         if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                             finishNodes.push_back(newNode);
                         }
