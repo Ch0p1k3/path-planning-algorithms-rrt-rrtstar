@@ -115,11 +115,11 @@ bool Algorithm::buildAlgorithm(const char* filePath)
     }
     if (!hasEps) {
         eps = 3.;
-        std::cerr << "Warning! No tag eps. Step size will be 3\n";
+        std::cerr << "Warning! No tag eps. Epsilon will be 3\n";
     }
     if (!hasGamma) {
-        gamma = 3.;
-        std::cerr << "Warning! No tag gamma. Step size will be 3\n";
+        gamma = 100;
+        if (searchType == CI_TAG_RRT_STAR) std::cerr << "Warning! No tag gamma. Gamma will be 100\n";
     }
     return true;
 }
