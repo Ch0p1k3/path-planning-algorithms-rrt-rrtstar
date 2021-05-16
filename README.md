@@ -45,6 +45,7 @@ git submodule update
     - `numberofiterations` - number of iterations of the algorithm. In the case of RRT, if a path is found, the construction of the tree stops. In the case of RRT* algorithm will be improve path length. If you do not specify this tag, the default is set to 100000.
     - `stepsize` - maximum edge size in a tree. If you do not specify this tag, the default is set to 3. The value must be greater or equal than 1.
     - `eps` - error area the finish point. If you do not specify this tag, the default is set to 3. The value must be greater or equal than 1.
+    - `gamma` - constant for RRT*, see RRT* description for details.
   - Tag `log` - specified output options. This is optional. If there are not the tag, the output file will be create in the same name and directory with suffix _log.
     - `path` - path to output file(with the name of file).
 
@@ -170,6 +171,8 @@ In addition to the input data, there are arguments
 - `-secret` - just draws map, start and finish points.
 
 If no arguments are specified, then the launch will be without a visualizer. All other arguments are ignored.
+
+Algorithm time in -v mode NOT EXACT.
 
 Argument priority
 
