@@ -724,6 +724,7 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
     Geometry::Point start = rrt.getStart();
     Geometry::Point finish = rrt.getFinish();
     Tree::Node* finishNode = nullptr;
+    std::vector<Geometry::Point> prevFinishNode;
     std::vector<Tree::Node*> finishNodes;
     const double EPS = rrt.getEps() * rrt.getEps();
     const size_t numberOfIter = rrt.getNumberOfIterations();
@@ -852,6 +853,7 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
                                         line[1].color = sf::Color::Black;
                                         window.draw(line, 2, sf::Lines);
                                         window.draw(finishCircle);
+                                        window.draw(startCircle);
                                     }
                                     resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
                             } else {
@@ -877,6 +879,136 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
                         if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                             finishNodes.push_back(newNode);
                         }
+                        tmp = std::chrono::steady_clock::now();
+                        for (const auto& node: finishNodes) {
+                            if (!finishNode) {
+                                finishNode = node;
+                            } else {
+                                if (finishNode->getDistance() > node->getDistance()) {
+                                    finishNode = node;
+                                }
+                            }
+                        }
+                        Tree::Node* tmpNode = finishNode;
+                        std::vector<Geometry::Point> res;
+                        while (tmpNode) {
+                            res.push_back(tmpNode->point);
+                            tmpNode = tmpNode->parent;
+                        }
+                        if (res != prevFinishNode) {
+                            if (prevFinishNode.size() == 1) {
+                                while (window.pollEvent(event)) {
+                                    if (event.type == sf::Event::Closed) {
+                                        window.close();
+                                    }
+                                    sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                    nodeCircle.setFillColor(sf::Color::White);
+                                    nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                    nodeCircle.setPosition(sf::Vector2f(prevFinishNode[0].x, prevFinishNode[0].y));
+                                    window.draw(nodeCircle);
+                                }
+                            } else {
+                                for (int i = prevFinishNode.size() - 2; i > -1; --i) {
+                                    while (window.pollEvent(event)) {
+                                        if (event.type == sf::Event::Closed) {
+                                            window.close();
+                                        }
+                                    }
+                                    if (window.isOpen()) {
+                                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                        nodeCircle.setFillColor(sf::Color::White);
+                                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                        nodeCircle.setPosition(sf::Vector2f(prevFinishNode[i].x, prevFinishNode[i].y));
+                                        window.draw(nodeCircle);
+                                        nodeCircle.setPosition(sf::Vector2f(prevFinishNode[i + 1].x, prevFinishNode[i + 1].y));
+                                        window.draw(nodeCircle);
+                                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(prevFinishNode[i], prevFinishNode[i + 1])), (double)height / 100 * 0.2));
+                                        line2.rotate(std::atan2(prevFinishNode[i].y - prevFinishNode[i + 1].y, prevFinishNode[i].x - prevFinishNode[i + 1].x) / M_PI * 180);
+                                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
+                                        line2.setPosition(prevFinishNode[i + 1].x, prevFinishNode[i + 1].y);
+                                        line2.setFillColor(sf::Color::White);
+                                        window.draw(line2);
+                                    }
+                                }
+                            }
+                            rrt.drawTree(window);
+                            if (res.size() == 1) {
+                                while (window.pollEvent(event)) {
+                                    if (event.type == sf::Event::Closed) {
+                                        window.close();
+                                    }
+                                    sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                    nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                                    nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                    nodeCircle.setPosition(sf::Vector2f(res[0].x, res[0].y));
+                                    window.draw(nodeCircle);
+                                }
+                            } else {
+                                for (int i = res.size() - 2; i > -1; --i) {
+                                    while (window.pollEvent(event)) {
+                                        if (event.type == sf::Event::Closed) {
+                                            window.close();
+                                        }
+                                    }
+                                    if (window.isOpen()) {
+                                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                        nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                        nodeCircle.setPosition(sf::Vector2f(res[i].x, res[i].y));
+                                        window.draw(nodeCircle);
+                                        nodeCircle.setPosition(sf::Vector2f(res[i + 1].x, res[i + 1].y));
+                                        window.draw(nodeCircle);
+                                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res[i], res[i + 1])), (double)height / 100 * 0.2));
+                                        line2.rotate(std::atan2(res[i].y - res[i + 1].y, res[i].x - res[i + 1].x) / M_PI * 180);
+                                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
+                                        line2.setPosition(res[i + 1].x, res[i + 1].y);
+                                        line2.setFillColor(sf::Color(255, 169, 0));
+                                        window.draw(line2);
+                                    }
+                                }
+                            }
+                            prevFinishNode = res;
+                            window.display();
+                        } else {
+                            // rrt.drawTree(window);
+                            if (res.size() == 1) {
+                                while (window.pollEvent(event)) {
+                                    if (event.type == sf::Event::Closed) {
+                                        window.close();
+                                    }
+                                    sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                    nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                                    nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                    nodeCircle.setPosition(sf::Vector2f(res[0].x, res[0].y));
+                                    window.draw(nodeCircle);
+                                }
+                            } else {
+                                for (int i = res.size() - 2; i > -1; --i) {
+                                    while (window.pollEvent(event)) {
+                                        if (event.type == sf::Event::Closed) {
+                                            window.close();
+                                        }
+                                    }
+                                    if (window.isOpen()) {
+                                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                        nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                        nodeCircle.setPosition(sf::Vector2f(res[i].x, res[i].y));
+                                        window.draw(nodeCircle);
+                                        nodeCircle.setPosition(sf::Vector2f(res[i + 1].x, res[i + 1].y));
+                                        window.draw(nodeCircle);
+                                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res[i], res[i + 1])), (double)height / 100 * 0.2));
+                                        line2.rotate(std::atan2(res[i].y - res[i + 1].y, res[i].x - res[i + 1].x) / M_PI * 180);
+                                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
+                                        line2.setPosition(res[i + 1].x, res[i + 1].y);
+                                        line2.setFillColor(sf::Color(255, 169, 0));
+                                        window.draw(line2);
+                                    }
+                                }
+                            }
+                            window.display();
+                        }
+                        resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
                     }
                 }
             }
@@ -903,31 +1035,123 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
                 searchResult.pathFound = true;
                 searchResult.distance = finishNode->getDistance();
                 std::cout << "Result distance: " << finishNode->getDistance() << '\n';
-                Tree::Node* tmp = finishNode;
+                Tree::Node* tmpNode = finishNode;
                 std::vector<Geometry::Point> res;
-                while (tmp) {
-                    while (window.pollEvent(event)) {
-                        if (event.type == sf::Event::Closed) {
-                            window.close();
+                while (tmpNode) {
+                    res.push_back(tmpNode->point);
+                    tmpNode = tmpNode->parent;
+                }
+                if (res != prevFinishNode) {
+                    if (prevFinishNode.size() == 1) {
+                        while (window.pollEvent(event)) {
+                            if (event.type == sf::Event::Closed) {
+                                window.close();
+                            }
+                            sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                            nodeCircle.setFillColor(sf::Color::White);
+                            nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                            nodeCircle.setPosition(sf::Vector2f(prevFinishNode[0].x, prevFinishNode[0].y));
+                            window.draw(nodeCircle);
+                        }
+                    } else {
+                        for (int i = prevFinishNode.size() - 2; i > -1; --i) {
+                            while (window.pollEvent(event)) {
+                                if (event.type == sf::Event::Closed) {
+                                    window.close();
+                                }
+                            }
+                            if (window.isOpen()) {
+                                sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                nodeCircle.setFillColor(sf::Color::White);
+                                nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                nodeCircle.setPosition(sf::Vector2f(prevFinishNode[i].x, prevFinishNode[i].y));
+                                window.draw(nodeCircle);
+                                nodeCircle.setPosition(sf::Vector2f(prevFinishNode[i + 1].x, prevFinishNode[i + 1].y));
+                                window.draw(nodeCircle);
+                                sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(prevFinishNode[i], prevFinishNode[i + 1])), (double)height / 100 * 0.2));
+                                line2.rotate(std::atan2(prevFinishNode[i].y - prevFinishNode[i + 1].y, prevFinishNode[i].x - prevFinishNode[i + 1].x) / M_PI * 180);
+                                line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
+                                line2.setPosition(prevFinishNode[i + 1].x, prevFinishNode[i + 1].y);
+                                line2.setFillColor(sf::Color::White);
+                                window.draw(line2);
+                            }
                         }
                     }
-                    if (window.isOpen() && !res.empty()) {
-                        sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
-                        nodeCircle.setFillColor(sf::Color(255, 169, 0));
-                        nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
-                        nodeCircle.setPosition(sf::Vector2f(tmp->point.x, tmp->point.y));
-                        window.draw(nodeCircle);
-                        nodeCircle.setPosition(sf::Vector2f(res.back().x, res.back().y));
-                        window.draw(nodeCircle);
-                        sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res.back(), tmp->point)), (double)height / 100 * 0.2));
-                        line2.rotate(std::atan2(res.back().y - tmp->point.y, res.back().x - tmp->point.x) / M_PI * 180);
-                        line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
-                        line2.setPosition(tmp->point.x, tmp->point.y);
-                        line2.setFillColor(sf::Color(255, 169, 0));
-                        window.draw(line2);
+                    rrt.drawTree(window);
+                    if (res.size() == 1) {
+                        while (window.pollEvent(event)) {
+                            if (event.type == sf::Event::Closed) {
+                                window.close();
+                            }
+                            sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                            nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                            nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                            nodeCircle.setPosition(sf::Vector2f(res[0].x, res[0].y));
+                            window.draw(nodeCircle);
+                        }
+                    } else {
+                        for (int i = res.size() - 2; i > -1; --i) {
+                            while (window.pollEvent(event)) {
+                                if (event.type == sf::Event::Closed) {
+                                    window.close();
+                                }
+                            }
+                            if (window.isOpen()) {
+                                sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                                nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                nodeCircle.setPosition(sf::Vector2f(res[i].x, res[i].y));
+                                window.draw(nodeCircle);
+                                nodeCircle.setPosition(sf::Vector2f(res[i + 1].x, res[i + 1].y));
+                                window.draw(nodeCircle);
+                                sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res[i], res[i + 1])), (double)height / 100 * 0.2));
+                                line2.rotate(std::atan2(res[i].y - res[i + 1].y, res[i].x - res[i + 1].x) / M_PI * 180);
+                                line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
+                                line2.setPosition(res[i + 1].x, res[i + 1].y);
+                                line2.setFillColor(sf::Color(255, 169, 0));
+                                window.draw(line2);
+                            }
+                        }
                     }
-                    res.push_back(tmp->point);
-                    tmp = tmp->parent;
+                    window.display();
+                } else {
+                    rrt.drawTree(window);
+                    if (res.size() == 1) {
+                        while (window.pollEvent(event)) {
+                            if (event.type == sf::Event::Closed) {
+                                window.close();
+                            }
+                            sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                            nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                            nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                            nodeCircle.setPosition(sf::Vector2f(res[0].x, res[0].y));
+                            window.draw(nodeCircle);
+                        }
+                    } else {
+                        for (int i = res.size() - 2; i > -1; --i) {
+                            while (window.pollEvent(event)) {
+                                if (event.type == sf::Event::Closed) {
+                                    window.close();
+                                }
+                            }
+                            if (window.isOpen()) {
+                                sf::CircleShape nodeCircle(((double)std::max(height, width) / 100) * 0.2);
+                                nodeCircle.setFillColor(sf::Color(255, 169, 0));
+                                nodeCircle.setOrigin(nodeCircle.getRadius(), nodeCircle.getRadius());
+                                nodeCircle.setPosition(sf::Vector2f(res[i].x, res[i].y));
+                                window.draw(nodeCircle);
+                                nodeCircle.setPosition(sf::Vector2f(res[i + 1].x, res[i + 1].y));
+                                window.draw(nodeCircle);
+                                sf::RectangleShape line2(sf::Vector2f(std::sqrt(Geometry::euclideanMetric(res[i], res[i + 1])), (double)height / 100 * 0.2));
+                                line2.rotate(std::atan2(res[i].y - res[i + 1].y, res[i].x - res[i + 1].x) / M_PI * 180);
+                                line2.setOrigin(0, ((double)std::max(height, width) / 100 * 0.2) / 2);
+                                line2.setPosition(res[i + 1].x, res[i + 1].y);
+                                line2.setFillColor(sf::Color(255, 169, 0));
+                                window.draw(line2);
+                            }
+                        }
+                    }
+                    window.display();
                 }
                 std::cout << "Path:\n";
                 std::reverse(res.begin(), res.end());
