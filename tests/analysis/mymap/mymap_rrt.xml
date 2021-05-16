@@ -412,7 +412,7 @@
   <algorithm>
     <searchtype>rrt</searchtype>
     <numberofiterations>1000000</numberofiterations>
-    <stepsize>15</stepsize>
+    <stepsize>10</stepsize>
     <eps>15</eps>
   </algorithm>
   <log>
