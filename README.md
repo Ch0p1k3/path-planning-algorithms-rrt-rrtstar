@@ -224,7 +224,6 @@ RRT*
 ![visAfterW](./images/den520d_rrtstar.png)
 ![visAfterW](./images/den600d_rrtstar.png)
 
-
 ## Sources
 
 - LaValle, Steven M., Rapidly-exploring random trees: A new tool for path planning. Technical Report. Computer Science Department, Iowa State University  [**URL**](http://msl.cs.uiuc.edu/~lavalle/papers/Lav98c.pdf)
