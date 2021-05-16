@@ -180,6 +180,9 @@
   </map>
   <algorithm>
     <searchtype>rrtstar</searchtype>
-    <numberofiterations>1000000</numberofiterations>
+    <numberofiterations>100000</numberofiterations>
+    <gamma>1000</gamma>
+    <eps>3</eps>
+    <stepsize>4</stepsize>
   </algorithm>
 </root>

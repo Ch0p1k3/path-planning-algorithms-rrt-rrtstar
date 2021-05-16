@@ -620,8 +620,9 @@ void Secret::launch(const Map& map, const Algorithm& algo)
     }
 }
 
-const SearchResult RRTStarAlgorithm::launch(const Map& map, const Algorithm& algo)
+const std::pair<SearchResult, SearchResult> RRTStarAlgorithm::launch(const Map& map, const Algorithm& algo)
 {
+    std::pair<SearchResult, SearchResult> searchResult;
     size_t countOfEdges = 0;
     RRTStar rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
@@ -661,13 +662,20 @@ const SearchResult RRTStarAlgorithm::launch(const Map& map, const Algorithm& alg
                 }
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     finishNodes.push_back(newNode);
-                    // if (!finishNode) {
-                    //     finishNode = newNode;
-                    // } else {
-                    //     if (finishNode->getDistance() > newNode->getDistance()) {
-                    //         finishNode = newNode;
-                    //     }
-                    // }
+                    if (finishNodes.size() == 1) {
+                        searchResult.first.time = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
+                        searchResult.first.countOfEdges = countOfEdges;
+                        searchResult.first.pathFound = true;
+                        searchResult.first.distance = finishNodes.back()->getDistance();
+                        Tree::Node* tmp = finishNodes.back();
+                        std::vector<Geometry::Point> res;
+                        while (tmp) {
+                            res.push_back(tmp->point);
+                            tmp = tmp->parent;
+                        }
+                        std::reverse(res.begin(), res.end());
+                        searchResult.first.path = res;
+                    }
                 }
             }
         }
@@ -684,16 +692,15 @@ const SearchResult RRTStarAlgorithm::launch(const Map& map, const Algorithm& alg
     double timeRes = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
-    SearchResult searchResult;
-    searchResult.time = timeRes;
-    searchResult.countOfEdges = countOfEdges;
+    searchResult.second.time = timeRes;
+    searchResult.second.countOfEdges = countOfEdges;
     std::cout << "Time: " << timeRes << "\nCount of edges: " << countOfEdges << '\n';
     if (!finishNode) {
-        searchResult.pathFound = false;
+        searchResult.second.pathFound = false;
         std::cout << "Path not found.\n";
     } else {
-        searchResult.pathFound = true;
-        searchResult.distance = finishNode->getDistance();
+        searchResult.second.pathFound = true;
+        searchResult.second.distance = finishNode->getDistance();
         std::cout << "Result distance: " << finishNode->getDistance() << '\n';
         Tree::Node* tmp = finishNode;
         std::vector<Geometry::Point> res;
@@ -703,7 +710,7 @@ const SearchResult RRTStarAlgorithm::launch(const Map& map, const Algorithm& alg
         }
         std::cout << "Path:\n";
         std::reverse(res.begin(), res.end());
-        searchResult.path = res;
+        searchResult.second.path = res;
         for (size_t i = 0; i < res.size(); ++i) {
             if (!i) {
                 std::cout << res[i];
@@ -716,9 +723,9 @@ const SearchResult RRTStarAlgorithm::launch(const Map& map, const Algorithm& alg
     return searchResult;
 }
 
-const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
+const std::pair<SearchResult, SearchResult> RRTStarAlgorithm::launchWithVis(const Map& map, const Algorithm& algo)
 {
-    SearchResult searchResult;
+    std::pair<SearchResult, SearchResult> searchResult;
     size_t countOfEdges = 0;
     RRTStar rrt(map, algo);
     Geometry::Point start = rrt.getStart();
@@ -878,6 +885,20 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
                         resTime -= std::chrono::duration<double>(std::chrono::steady_clock::now() - tmp).count();
                         if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                             finishNodes.push_back(newNode);
+                            if (finishNodes.size() == 1) {
+                                searchResult.first.time = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
+                                searchResult.first.countOfEdges = countOfEdges;
+                                searchResult.first.pathFound = true;
+                                searchResult.first.distance = finishNodes.back()->getDistance();
+                                Tree::Node* tmp = finishNodes.back();
+                                std::vector<Geometry::Point> res;
+                                while (tmp) {
+                                    res.push_back(tmp->point);
+                                    tmp = tmp->parent;
+                                }
+                                std::reverse(res.begin(), res.end());
+                                searchResult.first.path = res;
+                            }
                         }
                         tmp = std::chrono::steady_clock::now();
                         for (const auto& node: finishNodes) {
@@ -1024,16 +1045,16 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
             resTime += std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
             std::cout.precision(8);
             std::cout << std::fixed;
-            searchResult.time = resTime;
-            searchResult.countOfEdges = countOfEdges;
+            searchResult.second.time = resTime;
+            searchResult.second.countOfEdges = countOfEdges;
             std::cout << "Time: " << resTime << '\n';
             std::cout << "Count of edges: " << countOfEdges << '\n';
             if (!finishNode) {
-                searchResult.pathFound = false;
+                searchResult.second.pathFound = false;
                 std::cout << "Path not found.\n";
             } else {
-                searchResult.pathFound = true;
-                searchResult.distance = finishNode->getDistance();
+                searchResult.second.pathFound = true;
+                searchResult.second.distance = finishNode->getDistance();
                 std::cout << "Result distance: " << finishNode->getDistance() << '\n';
                 Tree::Node* tmpNode = finishNode;
                 std::vector<Geometry::Point> res;
@@ -1155,7 +1176,7 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
                 }
                 std::cout << "Path:\n";
                 std::reverse(res.begin(), res.end());
-                searchResult.path = res;
+                searchResult.second.path = res;
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
                         std::cout << res[i];
@@ -1175,9 +1196,9 @@ const SearchResult RRTStarAlgorithm::launchWithVis(const Map& map, const Algorit
 }
 
 
-const SearchResult RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
+const std::pair<SearchResult, SearchResult> RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Algorithm& algo)
 {
-    SearchResult searchResult;
+    std::pair<SearchResult, SearchResult> searchResult;
     size_t countOfEdges = 0;
     RRTStar rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
@@ -1218,13 +1239,20 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Al
                 }
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     finishNodes.push_back(newNode);
-                    // if (!finishNode) {
-                    //     finishNode = newNode;
-                    // } else {
-                    //     if (finishNode->getDistance() > newNode->getDistance()) {
-                    //         finishNode = newNode;
-                    //     }
-                    // }
+                    if (finishNodes.size() == 1) {
+                        searchResult.first.time = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
+                        searchResult.first.countOfEdges = countOfEdges;
+                        searchResult.first.pathFound = true;
+                        searchResult.first.distance = finishNodes.back()->getDistance();
+                        Tree::Node* tmp = finishNodes.back();
+                        std::vector<Geometry::Point> res;
+                        while (tmp) {
+                            res.push_back(tmp->point);
+                            tmp = tmp->parent;
+                        }
+                        std::reverse(res.begin(), res.end());
+                        searchResult.first.path = res;
+                    }
                 }
             }
         }
@@ -1241,8 +1269,8 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Al
     double resTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
-    searchResult.time = resTime;
-    searchResult.countOfEdges = countOfEdges;
+    searchResult.second.time = resTime;
+    searchResult.second.countOfEdges = countOfEdges;
     std::cout << "Time: " << resTime << '\n';
     std::cout << "Count of edges: " << countOfEdges << '\n';
     size_t height = map.getMapHeight();
@@ -1323,11 +1351,11 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Al
             window.draw(finishCircle);
             window.display();
             if (!finishNode) {
-                searchResult.pathFound = false;
+                searchResult.second.pathFound = false;
                 std::cout << "Path not found.\n";
             } else {
-                searchResult.pathFound = true;
-                searchResult.distance = finishNode->getDistance();
+                searchResult.second.pathFound = true;
+                searchResult.second.distance = finishNode->getDistance();
                 std::cout << "Result distance: " << finishNode->getDistance() << '\n';
                 Tree::Node* tmp = finishNode;
                 std::vector<Geometry::Point> res;
@@ -1336,7 +1364,7 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Al
                     tmp = tmp->parent;
                 }
                 std::reverse(res.begin(), res.end());
-                searchResult.path = res;
+                searchResult.second.path = res;
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
                         std::cout << res[i];
@@ -1352,9 +1380,9 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfter(const Map& map, const Al
     return searchResult;
 }
 
-const SearchResult RRTStarAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm& algo)
+const std::pair<SearchResult, SearchResult> RRTStarAlgorithm::launchWithVisAfterWithoutTree(const Map& map, const Algorithm& algo)
 {
-    SearchResult searchResult;
+    std::pair<SearchResult, SearchResult> searchResult;
     size_t countOfEdges = 0;
     RRTStar rrt(map, algo);
     Geometry::Point finish = rrt.getFinish();
@@ -1395,13 +1423,20 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfterWithoutTree(const Map& ma
                 }
                 if (Geometry::euclideanMetric(newNode->point, finish) <= EPS) {
                     finishNodes.push_back(newNode);
-                    // if (!finishNode) {
-                    //     finishNode = newNode;
-                    // } else {
-                    //     if (finishNode->getDistance() > newNode->getDistance()) {
-                    //         finishNode = newNode;
-                    //     }
-                    // }
+                    if (finishNodes.size() == 1) {
+                        searchResult.first.time = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
+                        searchResult.first.countOfEdges = countOfEdges;
+                        searchResult.first.pathFound = true;
+                        searchResult.first.distance = finishNodes.back()->getDistance();
+                        Tree::Node* tmp = finishNodes.back();
+                        std::vector<Geometry::Point> res;
+                        while (tmp) {
+                            res.push_back(tmp->point);
+                            tmp = tmp->parent;
+                        }
+                        std::reverse(res.begin(), res.end());
+                        searchResult.first.path = res;
+                    }
                 }
             }
         }
@@ -1418,8 +1453,8 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfterWithoutTree(const Map& ma
     double resTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - time).count();
     std::cout.precision(8);
     std::cout << std::fixed;
-    searchResult.time = resTime;
-    searchResult.countOfEdges = countOfEdges;
+    searchResult.second.time = resTime;
+    searchResult.second.countOfEdges = countOfEdges;
     std::cout << "Time: " << resTime << '\n';
     std::cout << "Count of edges: " << countOfEdges << '\n';
     size_t height = map.getMapHeight();
@@ -1500,11 +1535,11 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfterWithoutTree(const Map& ma
             window.draw(finishCircle);
             window.display();
             if (!finishNode) {
-                searchResult.pathFound = false;
+                searchResult.second.pathFound = false;
                 std::cout << "Path not found.\n";
             } else {
-                searchResult.pathFound = true;
-                searchResult.distance = finishNode->getDistance();
+                searchResult.second.pathFound = true;
+                searchResult.second.distance = finishNode->getDistance();
                 std::cout << "Result distance: " << finishNode->getDistance() << '\n';
                 Tree::Node* tmp = finishNode;
                 std::vector<Geometry::Point> res;
@@ -1513,7 +1548,7 @@ const SearchResult RRTStarAlgorithm::launchWithVisAfterWithoutTree(const Map& ma
                     tmp = tmp->parent;
                 }
                 std::reverse(res.begin(), res.end());
-                searchResult.path = res;
+                searchResult.second.path = res;
                 for (size_t i = 0; i < res.size(); ++i) {
                     if (!i) {
                         std::cout << res[i];

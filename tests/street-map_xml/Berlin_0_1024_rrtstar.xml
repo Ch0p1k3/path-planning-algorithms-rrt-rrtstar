@@ -1035,7 +1035,7 @@
   </map>
   <algorithm>
     <searchtype>rrtstar</searchtype>
-    <numberofiterations>150000</numberofiterations>
+    <numberofiterations>50000</numberofiterations>
     <eps>15</eps>
     <stepsize>20</stepsize>
     <gamma>100000</gamma>

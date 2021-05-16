@@ -36,5 +36,10 @@
             #define CS_ATR_X                        "x"
             #define CS_ATR_Y                        "y"
             #define CS_ATR_NUMBER                   "number"
+// for first path found RRT*
+    #define CS_TAG_TIME_FIRST                       "timefirst"
+    #define CS_TAG_COUNT_OF_EDGES_FIRST             "countofedgesfirst"
+    #define CS_TAG_RESULT_DISTANCE_FIRST            "distancefirst"
+    #define CS_TAG_RESULT_PATH_FIRST                "pathfirst"
 
     

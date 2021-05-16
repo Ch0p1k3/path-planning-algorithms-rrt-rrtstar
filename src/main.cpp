@@ -38,34 +38,41 @@ int main(int argc, char* argv[])
         }
     }
     Log log(filePath);
-    SearchResult res;
+    std::pair<SearchResult, SearchResult> res;
     if (hasSecret) {
         Secret::launch(m, algo);
         return 0;
     } else if (hasVisAfterWithoutTree) {
         if (algo.getSearchType() == CI_TAG_RRT) {
-            res = RRTAlgorithm::launchWithVisAfterWithoutTree(m, algo);
+            res.second = RRTAlgorithm::launchWithVisAfterWithoutTree(m, algo);
         } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
             res = RRTStarAlgorithm::launchWithVisAfterWithoutTree(m, algo);
         }
     } else if (hasVisAfter) {
         if (algo.getSearchType() == CI_TAG_RRT) {
-            res = RRTAlgorithm::launchWithVisAfter(m, algo);
+            res.second = RRTAlgorithm::launchWithVisAfter(m, algo);
         } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
             res = RRTStarAlgorithm::launchWithVisAfter(m, algo);
         }
     } else if (hasVis) {
         if (algo.getSearchType() == CI_TAG_RRT) {
-            res = RRTAlgorithm::launchWithVis(m, algo);
+            res.second = RRTAlgorithm::launchWithVis(m, algo);
         } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
             res = RRTStarAlgorithm::launchWithVis(m, algo);
         }
     } else {
         if (algo.getSearchType() == CI_TAG_RRT) {
-            res = RRTAlgorithm::launch(m, algo);
+            res.second = RRTAlgorithm::launch(m, algo);
         } else if (algo.getSearchType() == CI_TAG_RRT_STAR) {
             res = RRTStarAlgorithm::launch(m, algo);
         }
     }
-    OutData::fill(log.getPath(), res);
+    if (algo.getSearchType() == CI_TAG_RRT) {
+        OutData::fill(log.getPath(), res.second);
+    } else {
+        OutData::fill(log.getPath(), res.second);
+        if (res.second.pathFound) {
+            OutData::fillFirst(log.getPath(), res.first);
+        }
+    }
 }

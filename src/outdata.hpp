@@ -11,6 +11,8 @@
 namespace OutData
 {
     void fill(const std::string&, const SearchResult &);
+
+    void fillFirst(const std::string&, const SearchResult &);
 }
 
 #endif

@@ -59,6 +59,10 @@ You can see an example of input data in the folder `tests`. [Sample](https://git
   - `pathfound` - the tag that describes whether a path is found.
   - `distance` - length of the path found.
   - `path` - describes points of the path.
+  - `timefirst` - it is only for RRT*, algorithm running time, time spent finding the first path.
+  - `countofedgesfirst` - it is only for RRT*, count of edges spent finding the first path.
+  - `distancefirst` - it is only for RRT*, distance finding the first path.
+  - `pathfirst` - it is only for RRT*, describes points of the first path.
 
 [Example of output data](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example_log.xml).
 
@@ -188,19 +192,52 @@ That is, if a higher priority argument is specified, the others will be ignored.
 ### Launch with visualizer
 
 - `-v`
+
+RRT
 ![vis](./images/Vis_Moscow_1024_rrt.gif)
 ![vis](./images/Vis_Berlin_1024_rrt.gif)
 ![vis](./images/Vis_Dervin_1024_rrt.gif)
 
+RRT*
+![vis](./images/Vis_Berlin_1024_rrtstar.gif)
+![vis](./images/Vis_NewYork_1024_rrtstar.gif)
+
 - `-va` - same as `-v`, but after working out the algorithm
+
+RRT
 ![visAfter](./images/brc000d.png)
 ![visAfter](./images/brc100d.png)
 ![visAfter](./images/brc101d.png)
 
+RRT*
+![visAfter](./images/brc504d_rrtstar.png)
+![visAfter](./images/brc997d_rrtstar.png)
+
 - `-vawt`
-![visAfter](./images/brc200d.png)
-![visAfter](./images/brc201d.png)
-![visAfter](./images/brc300d.png)
+
+RRT
+![visAfterW](./images/brc200d.png)
+![visAfterW](./images/brc201d.png)
+![visAfterW](./images/brc300d.png)
+
+RRT*
+![visAfterW](./images/den520d_rrtstar.png)
+![visAfterW](./images/den600d_rrtstar.png)
+
+
+## Sources
+
+- LaValle, Steven M., Rapidly-exploring random trees: A new tool for path planning. Technical Report. Computer Science Department, Iowa State University  [**URL**](http://msl.cs.uiuc.edu/~lavalle/papers/Lav98c.pdf)
+
+- LaValle, Steven M.; Kuffner Jr., James J., Randomized Kinodynamic Planning. The International Journal of Robotics Research (IJRR), [**URL**](http://msl.cs.uiuc.edu/~lavalle/papers/LavKuf01b.pdf)
+		
+- Karaman Sertac, Frazzoli Emilio, Incremental Sampling-based Algorithms for Optimal Motion Planning, [**URL**](https://arxiv.org/pdf/1005.0416.pdf)
+
+- Karaman Sertac, Frazzoli Emilio, Sampling-based Algorithms for Optimal Motion Planning, [**URL**](https://journals.sagepub.com/doi/pdf/10.1177/0278364911406761?casa_token=ru3w0CN-S1kAAAAA:PZXGaHXATpK2HATSCe6dzIKmdD9Sw5SpMgfY5nvRT3_k2u6LIeMh_keR20m6EYjYQuQoaDzhCteg)
+
+- Iram Noreen, Amna Khan, Zulfiqar Habib, Optimal Path Planning using RRT* based, [**URL**](https://pdfs.semanticscholar.org/9c35/2fec7a86c875eec17fc054106414b6914b7d.pdf)
+
+- Sturtevant, N., Transactions on Computational Intelligence and AI in Games, Benchmarks for Grid-Based Pathfinding, vol. 4, num. 2, pp. 144-148
 
 ## Mentors
 
@@ -214,6 +251,7 @@ Dergachev Stepan
 
 - sadergachev@edu.hse.ru
 - Telegram: @haiot4105
+
 
 ## Me
 
