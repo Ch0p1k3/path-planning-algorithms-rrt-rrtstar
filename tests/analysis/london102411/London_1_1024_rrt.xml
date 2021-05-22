@@ -1034,12 +1034,13 @@
     </grid>
   </map>
   <algorithm>
-    <searchtype>rrt</searchtype>
-    <numberofiterations>1000000</numberofiterations>
-    <stepsize>10</stepsize>
-    <eps>15</eps>
+    <searchtype>rrtstar</searchtype>
+    <numberofiterations>100000</numberofiterations>
+    <stepsize>15</stepsize>
+    <eps>20</eps>
+    <gamma>10000</gamma>
   </algorithm>
   <log>
-    <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\london102411\RRT\London_1_1024_log_10.xml</path>
+    <path></path>
   </log>
 </root>

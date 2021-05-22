@@ -29,23 +29,17 @@ def process(binaryRRT: str,
     freeCeils = []
     for i, row in enumerate(grid):
         for j, e in enumerate(row.text.split(' ')):
-            if e == '0' and 31 <= i <= 373 and 40 <= j <= 199:
+            if e == '0':
                 freeCeils.append((j, i))
     random.shuffle(freeCeils)
     startX_, startY_ = .5 + freeCeils[0][0], .5 + freeCeils[0][1]
-    freeCeils = []
-    for i, row in enumerate(grid):
-        l = len(row.text.split(' '))
-        for j, e in enumerate(row.text.split(' ')):
-            if e == '0' and 31 <= i <= 373 and 300 <= j <= 460:
-                freeCeils.append((j, i))
     random.shuffle(freeCeils)
     finishX_, finishY_ = .5 + freeCeils[0][0], .5 + freeCeils[0][1]
-    # while (startX_ - finishX_) ** 2 + (startY_ - finishY_) ** 2 < minDist ** 2:
-    #     random.shuffle(freeCeils)
-    #     startX_, startY_ = .5 + freeCeils[0][0], .5 + freeCeils[0][1]
-    #     random.shuffle(freeCeils)
-    #     finishX_, finishY_ = .5 + freeCeils[0][0], .5 + freeCeils[0][1]
+    while (startX_ - finishX_) ** 2 + (startY_ - finishY_) ** 2 < minDist ** 2:
+        random.shuffle(freeCeils)
+        startX_, startY_ = .5 + freeCeils[0][0], .5 + freeCeils[0][1]
+        random.shuffle(freeCeils)
+        finishX_, finishY_ = .5 + freeCeils[0][0], .5 + freeCeils[0][1]
     startX.text, startY.text = str(startX_), str(startY_)
     finishX.text, finishY.text = str(finishX_), str(finishY_)
     nameFile = pathFileRRT.split(os.sep)[-1].split('.')[0]
