@@ -398,13 +398,13 @@
     </grid>
   </map>
   <algorithm>
-    <searchtype>rrt</searchtype>
-    <numberofiterations>1000000</numberofiterations>
+    <searchtype>rrtstar</searchtype>
+    <numberofiterations>109000</numberofiterations>
     <stepsize>5</stepsize>
     <eps>5</eps>
     <gamma>10000</gamma>
   </algorithm>
   <log>
-    <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\brc201d1\RRT\brc201d_log_10.xml</path>
+    <path>D:\Projects\PathPlanningAlgorithms-RRT-RRTstar-\tests\analysis\brc201d1\RRTstaroutput\brc201d_rrt_log_99.xml</path>
   </log>
 </root>
