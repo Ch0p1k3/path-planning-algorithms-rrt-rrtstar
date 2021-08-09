@@ -3,7 +3,7 @@
 ## Description
 
 A software project at the Higher School of Economics. 
-Pathfinding algorithms(at the moment, RRT algorithm implemented).
+Pathfinding algorithms.
 
 This project uses
 
