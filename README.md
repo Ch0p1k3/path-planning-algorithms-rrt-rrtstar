@@ -1,4 +1,4 @@
-# PathPlanningAlgorithms(RRT, RRT*)
+# PathPlanningAlgorithms (RRT, RRT*)
 
 ## Description
 
@@ -16,7 +16,7 @@ This project uses
 Download current repository to your local machine. Use
 
 ```bash
-git clone https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-
+git clone https://github.com/Ch0p1k3/path-planning-algorithms-rrt-rrtstar
 ```
 
 The project requires submodules, to install them use
