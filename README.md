@@ -11,7 +11,7 @@ This project uses
 - [nanoflann](https://github.com/jlblancoc/nanoflann) - kd tree, is used to find the n nearest neighbors and find the nearest neighbors in the radius
 - [SFML](https://github.com/SFML/SFML) - to create a visualizer
 
-## Installing
+## Downloading
 
 Download current repository to your local machine. Use
 
@@ -117,7 +117,7 @@ cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild --target rrt-rrtstar -G"MinGW Makefil
 **Launching**
 
 ```bash
-cd build/bin/rrt-rrtstar <path to XML file> <args>
+build/bin/rrt-rrtstar <path to XML file> <args>
 ```
 
 **Arguments**
