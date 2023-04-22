@@ -2,7 +2,7 @@
 
 ## Description
 
-A software project at the Higher School of Economics. 
+A software project at the Higher School of Economics.
 Pathfinding algorithms.
 
 This project uses
@@ -22,7 +22,7 @@ git clone https://github.com/Ch0p1k3/path-planning-algorithms-rrt-rrtstar
 The project requires submodules, to install them use
 
 ```bash
-cd PathPlanningAlgorithms-RRT-RRTstar-
+cd path-planning-algorithms-rrt-rrtstar
 git submodule init
 git submodule update
 ```
@@ -49,7 +49,7 @@ git submodule update
   - Tag `log` - specified output options. This is optional. If there are not the tag, the output file will be create in the same name and directory with suffix _log.
     - `path` - path to output file(with the name of file).
 
-You can see an example of input data in the folder `tests`. [Sample](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example.xml). In case of incorrect data, there may be undefined behavior.
+You can see an example of input data in the folder `tests`. [Sample](https://github.com/Ch0p1k3/path-planning-algorithms-rrt-rrtstar/blob/main/tests/sample/example.xml). In case of incorrect data, there may be undefined behavior.
 
 ### Output file
 
@@ -64,7 +64,7 @@ You can see an example of input data in the folder `tests`. [Sample](https://git
   - `distancefirst` - it is only for RRT*, distance finding the first path.
   - `pathfirst` - it is only for RRT*, describes points of the first path.
 
-[Example of output data](https://github.com/Ch0p1k3/PathPlanningAlgorithms-RRT-RRTstar-/blob/main/tests/sample/example_log.xml).
+[Example of output data](https://github.com/Ch0p1k3/path-planning-algorithms-rrt-rrtstar/blob/main/tests/sample/example_log.xml).
 
 ## Getting started
 
@@ -74,46 +74,18 @@ The project should be built with CMake.
 
 Building and launching can be done both from the command line and using various IDEs. Below are the build and run scripts using the command line.
 
-In order to build SFML on Linux, several libraries and their development headers need to be installed first. [Tutorial: Installing SFML dependencies.](https://github.com/SFML/SFML/wiki/Tutorial%3A-Installing-SFML-dependencies)
-
-### SFML
-
-If you have SFML, you can skip this. if you have Linux, you can download binaries of SFML with:
-
-```bash
-sudo apt-get install libsfml-dev
-```
-
-This was example for Ubuntu, for other Linux system is similar.
-
-If you have MacOS:
-
-```bash
-brew install sfml
-```
-
-If you have Windows and msys2, you can use:
-
-```bash
-pacman -S mingw-w64-x86_64-sfml
-```
-
-Another option is to build the downloaded SFML. SFML is located in `src/lib/SFML`. You can use:
+In order to build SFML on Linux, several libraries and their development headers need to be installed first. [Tutorial: Installing SFML dependencies.](https://github.com/SFML/SFML/wiki/Tutorial%3A-Installing-SFML-dependencies). Or launch `install.sh` from script folder.
 
 #### Windows
 ```cmd
-cd PathPlanningAlgorithms-RRT-RRTstar-/src/lib/SFML
+cd path-planning-algorithms-rrt-rrtstar/src/lib/SFML
 cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="SFML"
-cd build
-mingw32-make install
 ```
 
 #### Linux and Mac
 ```bash
-cd PathPlanningAlgorithms-RRT-RRTstar-/src/lib/SFML
+cd path-planning-algorithms-rrt-rrtstar/src/lib/SFML
 cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild -DCMAKE_INSTALL_PREFIX="SFML"
-cd build
-make install
 ```
 
 After these steps you will have SFML. The next is the build of the project itself.
@@ -123,19 +95,15 @@ After these steps you will have SFML. The next is the build of the project itsel
 **Release building**
 
 ```bash
-cd PathPlanningAlgorithms-RRT-RRTstar-
-cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild
-cd build
-make install
+cd path-planning-algorithms-rrt-rrtstar
+cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild --target rrt-rrtstar
 ```
 
 **Debug building**
 
 ```bash
-cd PathPlanningAlgorithms-RRT-RRTstar-
-cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild
-cd build
-make install
+cd path-planning-algorithms-rrt-rrtstar
+cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild --target rrt-rrtstar
 ```
 
 #### Windows
@@ -143,26 +111,21 @@ make install
 **Release building**
 
 ```cmd
-cd PathPlanningAlgorithms-RRT-RRTstar-
-cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild -G"MinGW Makefiles"
-cd build
-mingw32-make install
+cd path-planning-algorithms-rrt-rrtstar
+cmake . -DCMAKE_BUILD_TYPE="Release" -Bbuild --target rrt-rrtstar -G"MinGW Makefiles"
 ```
 
 **Debug building**
 
 ```cmd
-cd PathPlanningAlgorithms-RRT-RRTstar-
-cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild -G"MinGW Makefiles"
-cd build
-mingw32-make install
+cd path-planning-algorithms-rrt-rrtstar
+cmake . -DCMAKE_BUILD_TYPE="Debug" -Bbuild --target rrt-rrtstar -G"MinGW Makefiles"
 ```
 
 **Launching**
 
 ```bash
-cd bin/{debug|release}/
-./RRT-RRTstar <path to XML file> <args>
+cd build/bin/rrt-rrtstar <path to XML file> <args>
 ```
 
 **Arguments**
@@ -229,7 +192,7 @@ RRT*
 - LaValle, Steven M., Rapidly-exploring random trees: A new tool for path planning. Technical Report. Computer Science Department, Iowa State University  [**URL**](http://msl.cs.uiuc.edu/~lavalle/papers/Lav98c.pdf)
 
 - LaValle, Steven M.; Kuffner Jr., James J., Randomized Kinodynamic Planning. The International Journal of Robotics Research (IJRR), [**URL**](http://msl.cs.uiuc.edu/~lavalle/papers/LavKuf01b.pdf)
-		
+
 - Karaman Sertac, Frazzoli Emilio, Incremental Sampling-based Algorithms for Optimal Motion Planning, [**URL**](https://arxiv.org/pdf/1005.0416.pdf)
 
 - Karaman Sertac, Frazzoli Emilio, Sampling-based Algorithms for Optimal Motion Planning, [**URL**](https://journals.sagepub.com/doi/pdf/10.1177/0278364911406761?casa_token=ru3w0CN-S1kAAAAA:PZXGaHXATpK2HATSCe6dzIKmdD9Sw5SpMgfY5nvRT3_k2u6LIeMh_keR20m6EYjYQuQoaDzhCteg)
