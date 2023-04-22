@@ -1,5 +1,4 @@
-#ifndef RRT_RRTstar_ALGORITHM_HPP
-#define RRT_RRTstar_ALGORITHM_HPP
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -8,7 +7,7 @@
 #include <limits>
 #include <sstream>
 #include <algorithm>
-#include "lib/pugixml/src/pugixml.hpp"
+#include <pugixml.hpp>
 #include "constants.hpp"
 
 class Algorithm
@@ -53,5 +52,3 @@ private:
 
     bool buildAlgorithm(const char*);
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef RRT_RRTstar_RRT_HPP
-#define RRT_RRTstar_RRT_HPP
+#pragma once
 
 #include <random>
 #include <iostream>
@@ -9,17 +8,17 @@
 #include "geometry.hpp"
 #include "map.hpp"
 #include "constants.hpp"
-#include "lib/SFML/include/SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 
 class RRT
 {
-    
+
 public:
     RRT(const Map&, const Algorithm&);
     RRT() = delete;
     ~RRT() = default;
 
-    Geometry::Point getRandomPoint();    
+    Geometry::Point getRandomPoint();
     Tree::Node* insertVertexAndEdge(Tree::Node* , const Geometry::Point&);
     Tree::Node* getNearest(const Geometry::Point&);
     Geometry::Point steer(const Geometry::Point&, const Geometry::Point&) const;
@@ -66,5 +65,3 @@ protected:
 private:
     std::mt19937 gen;
 };
-
-#endif

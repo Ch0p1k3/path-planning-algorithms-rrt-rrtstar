@@ -1,12 +1,11 @@
-#ifndef RRT_RRTstar_MAP_HPP
-#define RRT_RRTstar_MAP_HPP
+#pragma once
 
 #include <iostream>
 #include <vector>
 #include <cstdio>
 #include <limits>
 #include <sstream>
-#include "lib/pugixml/src/pugixml.hpp"
+#include <pugixml.hpp>
 #include "geometry.hpp"
 #include "constants.hpp"
 
@@ -47,5 +46,3 @@ private:
 
     bool buildMap(const char*);
 };
-
-#endif

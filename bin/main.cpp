@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include "lib/SFML/include/SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 #include "algorithm.hpp"
 #include "geometry.hpp"
 #include "obstacle.hpp"

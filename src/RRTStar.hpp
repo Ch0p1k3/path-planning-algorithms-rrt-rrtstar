@@ -1,5 +1,4 @@
-#ifndef RRT_RRTstar_RRT_STAR_HPP
-#define RRT_RRTstar_RRT_STAR_HPP
+#pragma once
 
 #include "RRT.hpp"
 
@@ -18,5 +17,3 @@ public:
 private:
     double gamma{stepSize};
 };
-
-#endif

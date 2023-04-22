@@ -1,5 +1,4 @@
-#ifndef RRT_RRTstar_TREE_HPP
-#define RRT_RRTstar_TREE_HPP
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -8,8 +7,8 @@
 #include <utility>
 #include <cmath>
 #include "geometry.hpp"
-#include "lib/nanoflann/include/nanoflann.hpp"
-#include "lib/SFML/include/SFML/Graphics.hpp"
+#include <nanoflann.hpp>
+#include <SFML/Graphics.hpp>
 
 class Tree
 {
@@ -38,7 +37,7 @@ public:
         , point(std::move(other.point)) {}
 
         bool operator==(const Tree::Node& other) {
-            return other.childrens == childrens 
+            return other.childrens == childrens
             && parent == other.parent
             && point == other.point;
         }
@@ -94,7 +93,7 @@ private:
             }
 
             if (dim == 0) return pts[idx].x;
-            
+
             return pts[idx].y;
         }
 
@@ -121,5 +120,3 @@ private:
     void deleteTree(Node*);
     void recDrawTree(const Node*, const Node*, sf::RenderWindow&);
 };
-
-#endif

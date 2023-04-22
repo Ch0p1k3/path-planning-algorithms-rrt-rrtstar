@@ -1,5 +1,2 @@
-src
-CMakeFiles
-*.cmake
-*.txt
-Makefile
+*
+!.gitignore

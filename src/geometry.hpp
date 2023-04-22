@@ -1,10 +1,9 @@
-#ifndef RRT_RRTstar_GEOMETRY_HPP
-#define RRT_RRTstar_GEOMETRY_HPP
+#pragma once
 
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-#include "lib/nanoflann/include/nanoflann.hpp"
+#include <nanoflann.hpp>
 
 namespace Geometry
 {
@@ -15,14 +14,14 @@ namespace Geometry
         double x, y;
 
         Point() = default;
-        
+
         Point(const double x1, const double y1)
         : x(x1)
         , y(y1) {}
 
         inline bool operator==(const Geometry::Point a) const
         {
-            return abs(x - a.x) < Geometry::EPS && (y - a.y) < Geometry::EPS;
+            return std::abs(x - a.x) < Geometry::EPS && (y - a.y) < Geometry::EPS;
         }
 
         inline Geometry::Point operator-(const Geometry::Point& other) const
@@ -91,7 +90,7 @@ namespace Geometry
         }
     };
 
-    template <typename T> 
+    template <typename T>
     inline int sgn(const T val)
     {
         return (T(0) < val) - (val <= T(0));
@@ -105,4 +104,3 @@ namespace Geometry
 }
 
 std::ostream& operator<<(std::ostream& out, const Geometry::Point&);
-#endif

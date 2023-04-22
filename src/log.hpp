@@ -1,8 +1,8 @@
-#ifndef RRT_RRTstar_LOG_HPP
-#define RRT_RRTstar_LOG_HPP
+#pragma once
+
 
 #include <iostream>
-#include "lib/pugixml/src/pugixml.hpp"
+#include <pugixml.hpp>
 #include "constants.hpp"
 
 class Log
@@ -21,5 +21,3 @@ private:
 
     short buildLog(const char*);
 };
-
-#endif

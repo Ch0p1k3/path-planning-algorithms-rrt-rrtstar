@@ -1,9 +1,8 @@
-#ifndef RRT_RRTstar_OBSTACLE_HPP
-#define RRT_RRTstar_OBSTACLE_HPP
+#pragma once
 
 #include <iostream>
 #include <vector>
-#include "lib/nanoflann/include/nanoflann.hpp"
+#include <nanoflann.hpp>
 #include "geometry.hpp"
 #include "constants.hpp"
 #include "map.hpp"
@@ -15,7 +14,7 @@ public:
     Obstacle(const Map&, const Algorithm&);
     Obstacle() = delete;
     ~Obstacle();
-    
+
     bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
 
 private:
@@ -39,7 +38,7 @@ private:
             }
 
             if (dim == 0) return pts[idx].x;
-            
+
             return pts[idx].y;
         }
 
@@ -57,5 +56,3 @@ private:
 
     double stepSize;
 };
-
-#endif

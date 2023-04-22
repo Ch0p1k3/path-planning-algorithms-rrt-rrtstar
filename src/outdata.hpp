@@ -1,10 +1,9 @@
-#ifndef RRT_RRTstar_OUT_DATA_HPP
-#define RRT_RRTstar_OUT_DATA_HPP
+#pragma once
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include "lib/pugixml/src/pugixml.hpp"
+#include <pugixml.hpp>
 #include "searchresult.hpp"
 #include "constants.hpp"
 
@@ -14,5 +13,3 @@ namespace OutData
 
     void fillFirst(const std::string&, const SearchResult &);
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef RRT_RRTstar_SEARCH_RESULT_HPP
-#define RRT_RRTstar_SEARCH_RESULT_HPP
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -17,10 +16,10 @@ struct SearchResult
     ~SearchResult() = default;
 
     SearchResult(
-        const double time_, 
-        const size_t countOfEdges_, 
-        const bool pathFound_, 
-        const double distance_, 
+        const double time_,
+        const size_t countOfEdges_,
+        const bool pathFound_,
+        const double distance_,
         const std::vector<Geometry::Point>& path_
     )
     : time(time_)
@@ -43,6 +42,4 @@ struct SearchResult
         return *this;
     }
 };
-
-#endif
 

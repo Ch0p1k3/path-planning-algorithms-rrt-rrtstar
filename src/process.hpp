@@ -1,5 +1,4 @@
-#ifndef RRT_RRTstar_PROCESS_HPP
-#define RRT_RRTstar_PROCESS_HPP
+#pragma once
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -7,7 +6,7 @@
 #include <optional>
 #include <vector>
 #include <chrono>
-#include "lib/SFML/include/SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 #include "RRT.hpp"
 #include "RRTStar.hpp"
 #include "map.hpp"
@@ -41,5 +40,3 @@ namespace Secret
 {
     void launch(const Map&, const Algorithm&);
 }
-
-#endif
