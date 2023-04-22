@@ -1,48 +1,44 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
 #include <cstdio>
+#include <iostream>
 #include <limits>
-#include <sstream>
 #include <pugixml.hpp>
-#include "geometry.hpp"
-#include "constants.hpp"
+#include <sstream>
+#include <vector>
 
-class Map
-{
-public:
-    explicit Map(const char*);
-    Map() = delete;
-    ~Map() = default;
+#include <constants.hpp>
+#include <geometry.hpp>
 
-    size_t getMapHeight() const
-    {
-        return height;
-    }
+class Map {
+ public:
+  explicit Map(const char*);
+  Map() = delete;
+  ~Map() = default;
 
-    size_t getMapWidth() const
-    {
-        return width;
-    }
+  size_t getMapHeight() const {
+    return height;
+  }
 
-    Geometry::Point getStart() const
-    {
-        return start;
-    }
+  size_t getMapWidth() const {
+    return width;
+  }
 
-    Geometry::Point getFinish() const
-    {
-        return finish;
-    }
+  Geometry::Point getStart() const {
+    return start;
+  }
 
-    const std::vector<bool>& operator[](const size_t) const;
+  Geometry::Point getFinish() const {
+    return finish;
+  }
 
-private:
-    size_t height, width;
-    Geometry::Point start;
-    Geometry::Point finish;
-    std::vector<std::vector<bool>> grid;
+  const std::vector<bool>& operator[](const size_t) const;
 
-    bool buildMap(const char*);
+ private:
+  size_t height, width;
+  Geometry::Point start;
+  Geometry::Point finish;
+  std::vector<std::vector<bool>> grid;
+
+  bool buildMap(const char*);
 };

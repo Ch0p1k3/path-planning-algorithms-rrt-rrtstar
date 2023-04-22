@@ -1,7 +1,7 @@
 add_library(
     lib
-    RRT.cpp
-    RRTStar.cpp
+    rrt.cpp
+    rrtstar.cpp
     algorithm.cpp
     geometry.cpp
     log.cpp

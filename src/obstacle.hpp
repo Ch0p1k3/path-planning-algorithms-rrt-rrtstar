@@ -1,58 +1,59 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 #include <nanoflann.hpp>
-#include "geometry.hpp"
-#include "constants.hpp"
-#include "map.hpp"
-#include "algorithm.hpp"
+#include <vector>
 
-class Obstacle
-{
-public:
-    Obstacle(const Map&, const Algorithm&);
-    Obstacle() = delete;
-    ~Obstacle();
+#include <algorithm.hpp>
+#include <constants.hpp>
+#include <geometry.hpp>
+#include <map.hpp>
 
-    bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
+class Obstacle {
+ public:
+  Obstacle(const Map&, const Algorithm&);
+  Obstacle() = delete;
+  ~Obstacle();
 
-private:
-    struct Point
-    {
-        double  x, y;
-        double  x1, y1, x2, y2;
-    };
+  bool obstacleFree(const Geometry::Point&, const Geometry::Point&) const;
 
-    struct PointCloud
-    {
-        std::vector<Point> pts;
+ private:
+  struct Point {
+    double x, y;
+    double x1, y1, x2, y2;
+  };
 
-        inline size_t kdtree_get_point_count() const { return pts.size(); }
+  struct PointCloud {
+    std::vector<Point> pts;
 
-        inline double kdtree_get_pt(const size_t idx, const size_t dim) const
-        {
-            if (dim >= 2) {
-                std::cerr << "Error! dim.\n";
-                exit(EXIT_FAILURE);
-            }
+    inline size_t kdtree_get_point_count() const {
+      return pts.size();
+    }
 
-            if (dim == 0) return pts[idx].x;
+    inline double kdtree_get_pt(const size_t idx, const size_t dim) const {
+      if (dim >= 2) {
+        std::cerr << "Error! dim.\n";
+        exit(EXIT_FAILURE);
+      }
 
-            return pts[idx].y;
-        }
+      if (dim == 0)
+        return pts[idx].x;
 
-        template <class BBOX>
-	    bool kdtree_get_bbox(BBOX&) const { return false; }
-    };
+      return pts[idx].y;
+    }
 
-    typedef nanoflann::KDTreeSingleIndexAdaptor<
-                nanoflann::L2_Simple_Adaptor<double, PointCloud>,
-                PointCloud,
-                2> kdTree;
+    template <class BBOX>
+    bool kdtree_get_bbox(BBOX&) const {
+      return false;
+    }
+  };
 
-    kdTree *index;
-    PointCloud cloud;
+  typedef nanoflann::KDTreeSingleIndexAdaptor<
+      nanoflann::L2_Simple_Adaptor<double, PointCloud>, PointCloud, 2>
+      kdTree;
 
-    double stepSize;
+  kdTree* index;
+  PointCloud cloud;
+
+  double stepSize;
 };

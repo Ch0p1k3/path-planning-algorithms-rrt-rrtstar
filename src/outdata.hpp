@@ -1,15 +1,15 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
-#include <string>
 #include <pugixml.hpp>
-#include "searchresult.hpp"
-#include "constants.hpp"
+#include <string>
+#include <vector>
 
-namespace OutData
-{
-    void fill(const std::string&, const SearchResult &);
+#include <constants.hpp>
+#include <searchresult.hpp>
 
-    void fillFirst(const std::string&, const SearchResult &);
-}
+namespace OutData {
+void fill(const std::string&, const SearchResult&);
+
+void fillFirst(const std::string&, const SearchResult&);
+}  // namespace OutData

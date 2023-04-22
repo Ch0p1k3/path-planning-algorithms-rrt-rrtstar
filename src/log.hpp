@@ -1,23 +1,22 @@
 #pragma once
 
-
 #include <iostream>
 #include <pugixml.hpp>
-#include "constants.hpp"
 
-class Log
-{
-public:
-    Log() = delete;
-    explicit Log(const char*);
-    ~Log() = default;
+#include <constants.hpp>
 
-    inline std::string getPath() const
-    {
-        return path;
-    }
-private:
-    std::string path;
+class Log {
+ public:
+  Log() = delete;
+  explicit Log(const char*);
+  ~Log() = default;
 
-    short buildLog(const char*);
+  inline std::string getPath() const {
+    return path;
+  }
+
+ private:
+  std::string path;
+
+  short buildLog(const char*);
 };

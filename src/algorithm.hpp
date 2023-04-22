@@ -1,54 +1,50 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <iostream>
 #include <limits>
-#include <sstream>
-#include <algorithm>
 #include <pugixml.hpp>
-#include "constants.hpp"
+#include <sstream>
+#include <vector>
 
-class Algorithm
-{
-public:
-    Algorithm() = delete;
-    explicit Algorithm(const char*);
-    ~Algorithm() = default;
+#include <constants.hpp>
 
-    inline size_t getSearchType() const
-    {
-        // CI_TAG_RRT                      0
-        // CI_TAG_RRT_STAR                 1
-        return searchType;
-    }
+class Algorithm {
+ public:
+  Algorithm() = delete;
+  explicit Algorithm(const char*);
+  ~Algorithm() = default;
 
-    inline size_t getNumberOfIterations() const
-    {
-        return numberOfIterations;
-    }
+  inline size_t getSearchType() const {
+    // CI_TAG_RRT                      0
+    // CI_TAG_RRT_STAR                 1
+    return searchType;
+  }
 
-    inline double getStepSize() const
-    {
-        return stepSize;
-    }
+  inline size_t getNumberOfIterations() const {
+    return numberOfIterations;
+  }
 
-    inline double getEps() const
-    {
-        return eps;
-    }
+  inline double getStepSize() const {
+    return stepSize;
+  }
 
-    inline double getGamma() const
-    {
-        return gamma;
-    }
-private:
-    size_t searchType;
-    size_t numberOfIterations;
-    double stepSize;
-    double eps;
-    double gamma;
+  inline double getEps() const {
+    return eps;
+  }
 
-    bool buildAlgorithm(const char*);
+  inline double getGamma() const {
+    return gamma;
+  }
+
+ private:
+  size_t searchType;
+  size_t numberOfIterations;
+  double stepSize;
+  double eps;
+  double gamma;
+
+  bool buildAlgorithm(const char*);
 };
