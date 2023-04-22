@@ -19,14 +19,6 @@ Download current repository to your local machine. Use
 git clone https://github.com/Ch0p1k3/path-planning-algorithms-rrt-rrtstar
 ```
 
-The project requires submodules, to install them use
-
-```bash
-cd path-planning-algorithms-rrt-rrtstar
-git submodule init
-git submodule update
-```
-
 ## Input and output
 
 ### Input file
